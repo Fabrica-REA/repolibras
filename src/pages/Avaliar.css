@@ -1,0 +1,56 @@
+.container {
+    /* Add styles for .container here */
+  }
+  
+  .video-container {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .video-column {
+    flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+  
+  .video-title {
+    margin-bottom: 0;
+  }
+  
+  .video-player {
+    width: 100%;
+  }
+  
+  .icon {
+    width: 50px;
+  }
+  
+  .observations {
+    width: 100%;
+  }
+  
+  .save-button {
+    /* Add styles for .save-button here */
+  }
+  
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  
+  .grid-item {
+    /* Styles for each grid item */
+  }
+  
+  .video-player {
+    width: 100% !important;
+    height: auto !important;
+  }
+  

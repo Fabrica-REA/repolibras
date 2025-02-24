@@ -1,0 +1,48 @@
+ 
+  .Enviar-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .Enviar-column {
+    flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .Enviar-title {
+    margin-bottom: 0;
+  }
+  
+  .Enviar-player {
+    width: 100%;
+  }
+  
+  .icon {
+    width: 50px;
+  }
+  
+  .observations {
+    width: 100%;
+  }
+  
+  .save-button {
+    /* Add styles for .save-button here */
+  }
+  
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  
+  .grid-item {
+    /* Styles for each grid item */
+  }
+  
+  .Enviar-player {
+    width: 100% !important;
+    height: auto !important;
+  }
+  

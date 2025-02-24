@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 10px;
+}
+
+.colesquerda {
+  width: 40%;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.coldireita {
+  width: 60%;
+  text-align: center;
+  margin-left: 10px;
+}
+.colunica {
+  width: 100%;
+  text-align: left;
+  margin-right: 10px;
+}

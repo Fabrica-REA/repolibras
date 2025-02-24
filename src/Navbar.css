@@ -1,0 +1,52 @@
+/* CYI Navbar.css 2023 11
+ */
+
+.navbar {
+  background-color: #333;
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #DE8531;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-brand:hover {
+  color: #EFAC41; /* Cor amarela clara */
+}
+
+.navbar-toggler {
+  border-color: #B32900;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%236C1305' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.dropdown-menu {
+  background-color: #efac41;
+}
+
+.dropdown-item {
+  color: #6C1305;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: #FFFFFF; /* Cor branca */
+  background-color: #EFAC41;
+}
+
+.navbar-nav .dropdown-toggle {
+  color: #DE8531;
+}
+
+.navbar-nav .dropdown-toggle:active,
+.navbar-nav .dropdown-toggle.show {
+  color: #EFAC41; /* Cor amarela clara */
+}
+
+.menu-button {
+  background-color: #4A2500; /* Dark green */
+  color: #FFFFFF; /* White */
+}
