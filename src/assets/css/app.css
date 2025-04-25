@@ -1,3 +1,35 @@
-main {
-    padding: 20px 20px 0 20px;
+:root {
+    --primary-color: #001B48;
+    --secondary-color: #02457A;
+    --tertiary-color: #018ABE;
+    --quaternary-color: #97CAD8;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+}
+
+section {
+    padding: 20px;
+    margin: 20px;
+    max-width: calc(100% - 40px);
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-flex;
+    gap: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
 }

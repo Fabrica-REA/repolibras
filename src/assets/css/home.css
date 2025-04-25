@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0 0 0;
+}
+
+.opcoes {
+    display: flex;
+    gap: 30px;
+}
+
+.opcoes img {
+    height: 50px;
+    width: 50px;
+}
+
+.flag-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.sobre {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.sobre h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.sobre p {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    line-height: 1.5;
+    margin: 10px 0;
+}
