@@ -1,11 +1,8 @@
-@import "primeicons/primeicons.css";
-
 :root {
     --primary-color: #001B48;
     --secondary-color: #02457A;
     --tertiary-color: #018ABE;
     --quaternary-color: #97CAD8;
-    --text-color: white;
 }
 
 body{
@@ -14,7 +11,6 @@ body{
 }
 
 section {
-    display: flex;
     padding: 20px;
     margin: 20px;
     max-width: calc(100% - 40px);
@@ -36,9 +32,4 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     align-items: center;
-}
-
-input:focus{
-    border: 1px solid var(--primary-color);
-    outline-style: none;
 }
