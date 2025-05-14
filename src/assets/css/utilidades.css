@@ -1,0 +1,31 @@
+.container-404 {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.container-404 h1 {
+    font-size: 6rem;
+    margin: 20px 0;
+    color: var(--primary-color);
+}
+
+.container-404 p {
+    font-size: 1.5rem;
+    margin: 20px 0;
+    color: var(--secondary-color);
+}
+
+.container-404 .home-button {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.container-404 .home-button:hover {
+    background-color: var(--secondary-color);
+}
