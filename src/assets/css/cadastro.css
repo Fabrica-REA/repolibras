@@ -1,17 +1,22 @@
 .cadastro-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    min-width: 450px;
     max-width: 600px;
-    margin: 120px auto;
+    margin: auto;
     text-align: center;
+    width: 100%;
 }
 
 .cadastro-container h1 {
     font-size: 2rem;
     color: var(--primary-color);
     margin-bottom: 20px;
+}
+
+.cadastro-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 .cadastro-container i {
@@ -23,26 +28,20 @@
     padding: 4px 8px;
 }
 
-.cadastro-container i::before{
+.cadastro-container i::before {
     padding: 16px 24px 16px 16px;
     margin: 4px;
     border-right: 1px solid #333;
 }
 
 .cadastro-container input {
+    width: 100%;
     padding: 16px;
     border: none;
     border-radius: 6px;
     font-size: 16px;
     color: var(--primary-color);
     transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.cadastro-container label {
-    align-self: flex-start;
-    font-size: 1rem;
-    color: #333;
-    margin-left: 5px;
 }
 
 .cadastro-container button {

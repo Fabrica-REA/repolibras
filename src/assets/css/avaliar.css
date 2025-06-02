@@ -1,0 +1,71 @@
+.avaliar-page {
+    padding: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 2.5rem;
+}
+
+.video-container {
+    padding: 20px;
+    text-align: start;
+    border-radius: 1rem;
+}
+
+.video-player {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+}
+
+.video-container video{
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+}
+
+.video-info{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: min-content;
+}
+
+.video-info h2{
+    font-size: larger;
+}
+
+.video-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 10px 0;
+}
+
+.video-row h2 {
+    font-size: larger;
+    margin: 0;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0;
+}
+
+.button-group button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: #f0f0f0;
+    transition: background 0.2s;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}

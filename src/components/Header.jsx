@@ -13,15 +13,13 @@ import Gerenciar from "../pages/Gerenciar";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Estatistica from "../pages/Estatistica";
-import Pesquisar from "../pages/Pesquisar";
-import { Pagina404 } from "../utils/utilidades";
+import Pesquisar from "../pages/Pesquisar";;
+import { Pagina404 } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 
 const Header = () => {
   const { usuario } = useUsuario();
-
   
-
   return (
     <>
       <header className="header">
@@ -29,8 +27,8 @@ const Header = () => {
           <Link to="/">Repositório de Libras</Link>
         </div>
         <nav className="header-nav">
-          {usuario ? (
-            <>
+          {/* {usuario ? (
+            <> */}
               <Link to="/" className="nav-button">
                 <button className="nav-button-circle">
                   <img src={home} alt="Home" />
@@ -56,7 +54,7 @@ const Header = () => {
                   <img src={gerenciar} alt="Gerenciar" />
                 </button>
               </Link>
-            </>
+            {/* </>
           ) : (
             <>
               <Link to="/login" className="login-btn">
@@ -66,7 +64,7 @@ const Header = () => {
                 Cadastro
               </Link>
             </>
-          )}
+          )} */}
         </nav>
       </header>
       <Routes>

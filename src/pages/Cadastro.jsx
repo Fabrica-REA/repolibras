@@ -5,13 +5,21 @@ const Cadastro = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleRegister = () => {
-        alert('Conta criada com sucesso!');
+    const handleRegister = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        // Simulate async request
+        setTimeout(() => {
+            alert('Conta criada com sucesso!');
+            setLoading(false);
+        }, 1000);
     };
 
     return (
         <div className="cadastro-container">
+            <form action="" method="post">
             <h1>Cadastro</h1>
             <i className='pi pi-user'>
                 <input type="text" placeholder="Nome" value={username} onChange={(e) => setUsername(e.target.value)} minLength={8} maxLength={100} pattern='' required />
@@ -22,7 +30,10 @@ const Cadastro = () => {
             <i className='pi pi-lock'>
                 <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} maxLength={100} pattern='' onInvalid={e => e.target.setCustomValidity("A senha deve conter 8 caracteres")} required />
             </i>
-            <button onClick={() => handleRegister()}>Criar Conta</button>
+            <button onClick={handleRegister} disabled={loading}>
+                {loading ? <li className="pi pi-spin pi-spinner"></li> : "Criar Conta"}
+            </button>
+            </form>
         </div>
     );
 }

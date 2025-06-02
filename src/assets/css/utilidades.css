@@ -29,3 +29,110 @@
 .container-404 .home-button:hover {
     background-color: var(--secondary-color);
 }
+
+/*End of the 404 page styles*/
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content h2,
+.modal-content p,
+.modal-content span,
+.modal-content li,
+.modal-content textarea {
+    box-sizing: border-box;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    color: var(--primary-color, #333);
+}
+
+.modal-content p {
+    margin-bottom: 2rem;
+    color: var(--secondary-color, #555);
+}
+
+.modal-overlay .modal-content button,
+.modal-overlay .modal-content button:last-child,
+.modal-overlay .modal-content button:hover {
+    margin: 0 0.5rem;
+    padding: 0.7rem 1.5rem !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    cursor: pointer;
+    background-color: var(--primary-color, #007bff) !important;
+    color: #fff !important;
+    transition: background 0.2s !important;
+}
+
+.modal-overlay .modal-content button:last-child {
+    background-color: var(--secondary-color, #6c757d) !important;
+}
+
+.modal-overlay .modal-content button:hover {
+    opacity: 0.85 !important;
+}
+
+.modal-content span {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.modal-content li {
+    font-size: 6rem;
+    color: orange;
+    margin-bottom: 10px;
+}
+
+.decline-container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    height: 100%;
+}
+
+.decline-textarea {
+    align-self: center;
+    margin: 20px 0;
+    height: auto;
+    font-size: large;
+    font-weight: 800;
+}
+
+.modal-content .button-group {
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+}
+
+.modal-content .button-group button {
+    height: auto;
+    width: 100%;
+    margin: 0 !important;
+}

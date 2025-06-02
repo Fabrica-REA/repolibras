@@ -1,17 +1,22 @@
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    min-width: 450px;
     max-width: 600px;
-    margin: 120px auto;
+    margin: auto;
     text-align: center;
+    width: 100%;
 }
 
 .login-container h1 {
     font-size: 2rem;
     color: var(--primary-color);
     margin-bottom: 20px;
+}
+
+.cadastro-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 .login-container i {
@@ -30,6 +35,7 @@
 }
 
 .login-container input {
+    width: 100%;
     padding: 16px;
     border: none;
     border-radius: 6px;
