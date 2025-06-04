@@ -1,19 +1,20 @@
-import "../assets/css/perfil.css";
+import { useState, useRef } from "react";
 import imgPerfil from "../assets/images/profile_icon.svg";
-import { useState } from "react";
+import { ActionButton } from "../utils/Utilidades";
 
-const options = [
-  { key: "perfil", label: "Perfil", icon: " pi-user" },
-  { key: "config", label: "Configurações", icon: " pi-cog" },
-  { key: "access", label: "Acessibilidade", icon: "pi pi-eye" },
-  { key: "terms", label: "Termos ...", icon: "pi-file" },
-];
-
-const ConteudoPerfil = () => {
+const Perfil = () => {
   const [avatar, setAvatar] = useState(imgPerfil);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
+  const [edit, setEdit] = useState({
+    avatar: false,
+    username: false,
+    email: false,
+    password: false,
+    ConfirmPassword: false,
+  });
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -22,7 +23,24 @@ const ConteudoPerfil = () => {
       reader.onload = (ev) => setAvatar(ev.target.result);
       reader.readAsDataURL(file);
     }
+    setEdit((prev) => ({ ...prev, avatar: false }));
   };
+
+  // Store initial values in refs so they don't change on re-render
+  const initialValues = useRef({
+    avatar: imgPerfil,
+    username: "",
+    email: "",
+    password: "",
+    ConfirmPassword: "",
+  });
+
+  const isChanged =
+    avatar !== initialValues.current.avatar ||
+    username !== initialValues.current.username ||
+    email !== initialValues.current.email ||
+    password !== initialValues.current.password ||
+    ConfirmPassword !== initialValues.current.ConfirmPassword;
 
   return (
     <div className="option-container">
@@ -36,106 +54,63 @@ const ConteudoPerfil = () => {
               accept="image/*"
               style={{ display: "none" }}
               onChange={handleAvatarChange}
-              readOnly
+              // input is always readonly visually, edit icon triggers file dialog
             />
-            <span className="edit-avatar-text">Editar</span>
+            <span
+              className="edit-avatar-text"
+              onClick={() => handleEditClick("avatar")}
+            >
+              <i className="pi pi-pencil" />
+            </span>
           </label>
         </div>
       </div>
-      <div className="info">
-        <label className="profile-label">
-          Nome de usuário:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="profile-input"
-            readOnly
-          />
-        </label>
-        <label className="profile-label">
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="profile-input"
-            readOnly
-          />
-        </label>
-        <label className="profile-label">
-          Senha:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="profile-input"
-            readOnly
-          />
-        </label>
-      </div>
-    </div>
-  );
-};
+      {/* {Profile img section} */}
 
-const OptionContent = ({ selected }) => {
-  switch (selected) {
-    case "perfil":
-      return <ConteudoPerfil />;
-    case "config":
-      return (
-        <div className="option-section">
-          {/* Wireframe for Configurações */}
-          <div className="setting-item"></div>
-          <div className="setting-item"></div>
-          <div className="setting-item"></div>
+      <form className="profile-form">
+        <label htmlFor="nomeCompleto">Nome Completo:</label>
+        <input
+          id="nomeCompleto"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="profile-input"
+          minLength={2}
+          maxLength={100}
+        />
+        <label htmlFor="email">Email:</label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="profile-input"
+        />
+        <label htmlFor="senha">Senha:</label>
+        <input
+          id="senha"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="profile-input"
+          minLength={8}
+        />
+        <label htmlFor="confirmeSenha">Confirme sua Senha:</label>
+        <input
+          id="confirmeSenha"
+          type="password"
+          value={ConfirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="profile-input"
+          minLength={8}
+        />
+        <div className="profile-actions">
+          <button className="btn" type="submit" disabled={!isChanged}>
+            Salvar Mudanças
+          </button>
+          <button className="btn"> Cancelar</button>
         </div>
-      );
-    case "access":
-      return (
-        <div className="option-section">
-          {/* Wireframe for Acessibilidade */}
-          <div className="toggle-placeholder"></div>
-          <div className="slider-placeholder"></div>
-        </div>
-      );
-    case "terms":
-      return (
-        <div className="option-section">
-          {/* Wireframe for Termos ... */}
-          <div className="text-block"></div>
-          <div className="text-block short"></div>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
-
-const Perfil = () => {
-  const [selected, setSelected] = useState("perfil");
-  return (
-    <div className="profile-layout">
-      <div className="options-container">
-        <div className="options">
-          {options.map((opt) => (
-            <div
-              key={opt.key}
-              className={`option-item${selected === opt.key ? " selected" : ""
-                }`}
-              onClick={() => setSelected(opt.key)}
-            >
-              <div className="option-icon">
-                <i className={`pi ${opt.icon}`} />
-                {opt.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="content-container">
-        <OptionContent selected={selected} />
-      </div>
+      </form>
     </div>
   );
 };

@@ -1,120 +1,123 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/css/pesquisar.css";
 import Video from "../components/Video";
+import getPalavras from "../api/Pesquisar";
+import { Loading } from "../utils/Utilidades";
 
-const resultadosMock = [
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",
-      "https://samplelib.com/mp4/sample-5s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",
-      "https://samplelib.com/mp4/sample-5s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-];
+// const resultadosMock = [
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",
+//       "https://samplelib.com/mp4/sample-5s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",
+//       "https://samplelib.com/mp4/sample-5s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",    ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+// ];
 
 function Pesquisar() {
   const [modalAberto, setModalAberto] = useState(false);
   const [modalVideos, setModalVideos] = useState([]);
   const [busca, setBusca] = useState("");
-  const [open, setOpen] = useState(false);
+  const [palavras, setPalavras] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const abrirModalVideos = (videos) => {
-    setModalVideos(videos);
-    setModalAberto(true);
-  };
+  // const abrirModalVideos = (videos) => {
+  //   setModalVideos(videos);
+  //   setModalAberto(true);
+  // };
 
   const fecharModalVideos = () => {
     setModalAberto(false);
@@ -123,17 +126,32 @@ function Pesquisar() {
 
   const limparBusca = () => setBusca("");
 
-  const resultadosFiltrados = resultadosMock.filter((item) =>
-    item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
-  );
+  useEffect(() => {
+    setTimeout(() => {
+      getPalavras(busca)
+        .then(res => {
+          setPalavras(res);
+          setLoading(false);
+        })
+        .catch(e => {
+          console.error('Erro na busca das palavras:', e);
+          setLoading(false);
+        });
+    }, 1000)
+  }, [busca])
 
-  console.log("Resultados filtrados:", resultadosFiltrados);  
+  // const resultadosFiltrados = resultadosMock.filter((item) =>
+  //   item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
+  // );
+
+  console.log("palavras:", palavras);
+
 
   return (
     <div className="pesquisar-container">
       <div
         className={
-          busca && resultadosFiltrados.length !== 0
+          busca && palavras.length !== 0
             ? "input-wrapper input-wrapper-active"
             : "input-wrapper"
         }
@@ -164,11 +182,11 @@ function Pesquisar() {
             ×
           </span>
         )}
-        {busca && resultadosFiltrados.length > 0 && (
+        {busca && palavras.length > 0 && (
           <div className="search-dropdown">
-            {resultadosFiltrados.map((item, idx) => (
-              <div className="dropdown-item" key={idx}>
-                <span>{item.palavra}</span>
+            {palavras.map((palavra, id) => (
+              <div className="dropdown-item" key={id}>
+                <span>{palavra.DesPalavra}</span>
                 <span
                   style={{
                     marginLeft: "auto",
@@ -176,7 +194,7 @@ function Pesquisar() {
                     fontSize: "0.95em",
                   }}
                 >
-                  {item.contexto}
+                  {palavra.DesContexto}
                 </span>
               </div>
             ))}
@@ -185,7 +203,7 @@ function Pesquisar() {
       </div>
       {/* done for now  */}
       <div className="grid-resultados">
-        {busca && resultadosFiltrados.length === 0 ? (
+        {busca && palavras.length === 0 ? (
           <div className="nenhum-resultado">
             <p>Nenhum resultado encontrado para "{busca}".</p>
             <button
@@ -196,58 +214,62 @@ function Pesquisar() {
             </button>
           </div>
         ) : (
-          resultadosFiltrados.map((item, index) => (
-            <div className="card" key={index}>
-              <div className="card-header">
-                <div>
-                  <h3>{item.palavra}</h3>
-                  <p>{item.contexto}</p>
+          loading ? (
+            <Loading open={loading} />
+          ) : (
+            palavras.map((palavra, id) => (
+              <div className="card" key={id}>
+                <div className="card-header">
+                  <div>
+                    <h3>{palavra.DesPalavra}</h3>
+                    <p>{palavra.DesContexto}</p>
+                  </div>
+                </div>
+                <div className="video-grid">
+                  {/* {(() => {
+                    switch (item.videos.length) {
+                      case 0:
+                        return (
+                          <div className="nenhum-resultado">
+                            <li className="pi pi-clock"></li>
+                            <span>A palavra está em processo de gravação</span>
+                          </div>
+                        );
+                      case 1:
+                        return (
+                          <Video src={item.videos[0]} classNameVideo={"video-thumb single"} index={0} />
+                        );
+                      case 2:
+                        return (
+                          <>
+                            <Video src={item.videos[0]} classNameVideo={"video-thumb double double-top"} index={0} />
+                            <Video src={item.videos[1]} classNameVideo={"video-thumb double double-bottom"} index={1} />
+                          </>
+                        );
+                      default:
+                        return (
+                          <>
+                            {item.videos.slice(0, 3).map((src, idx) => (
+                              <Video src={src} classNameVideo={"video-thumb"} index={idx} />
+                            ))}
+                            {item.videos.length > 3 !== index && (
+                              <div
+                                className="video-thumb mais"
+                                onClick={() => abrirModalVideos(item.videos)}
+                              >
+                                + {item.videos.length - 3}
+                              </div>
+                            )}
+                          </>
+                        );
+                    }
+                  })()} */}
                 </div>
               </div>
-              <div className="video-grid">
-                {(() => {
-                  switch (item.videos.length) {
-                    case 0:
-                      return (
-                        <div className="nenhum-resultado">
-                          <li className="pi pi-clock"></li>
-                          <span>A palavra está em processo de gravação</span>
-                        </div>
-                      );
-                    case 1:
-                      return (
-                        <Video src={item.videos[0]} classNameVideo={"video-thumb single"} index={0} />
-                      );
-                    case 2:
-                      return (
-                        <>
-                          <Video src={item.videos[0]} classNameVideo={"video-thumb double double-top"} index={0} />
-                          <Video src={item.videos[1]} classNameVideo={"video-thumb double double-bottom"} index={1} />
-                        </>
-                      );
-                    default:
-                      return (
-                        <>
-                          {item.videos.slice(0, 3).map((src, idx) => (
-                            <Video src={src} classNameVideo={"video-thumb"} index={idx} />
-                          ))}
-                          {item.videos.length > 3 !== index && (
-                            <div
-                              className="video-thumb mais"
-                              onClick={() => abrirModalVideos(item.videos)}
-                            >
-                              + {item.videos.length - 3}
-                            </div>
-                          )}
-                        </>
-                      );
-                  }
-                })()}
-              </div>
-            </div>
-          ))
-        )}
+            ))
+          ))}
       </div>
+
       {/* done for now */}
       {modalAberto && (
         <div className="modal-videos-overlay" onClick={fecharModalVideos}>

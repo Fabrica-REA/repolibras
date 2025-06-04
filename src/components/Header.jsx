@@ -5,6 +5,7 @@ import enviar from "../assets/images/send_icon.svg";
 import gerenciar from "../assets/images/user_cog_icon.svg";
 import avaliar from "../assets/images/clipboard_icon.svg";
 import solicitacoes from "../assets/images/request_icon.svg";
+import conta from "../assets/images/profile_icon.svg";
 import Home from "../pages/Home";
 import Enviar from "../pages/Enviar";
 import Solicitacoes from "../pages/Solicitacoes";
@@ -13,7 +14,8 @@ import Gerenciar from "../pages/Gerenciar";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Estatistica from "../pages/Estatistica";
-import Pesquisar from "../pages/Pesquisar";;
+import Pesquisar from "../pages/Pesquisar";
+import Conta from "../pages/Conta";
 import { Pagina404 } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 
@@ -54,6 +56,11 @@ const Header = () => {
                   <img src={gerenciar} alt="Gerenciar" />
                 </button>
               </Link>
+              <Link to="/conta" className="nav-button">
+                <button className="nav-button-circle">
+                  <img src={conta} alt="Conta_icon" />
+                </button>
+              </Link>
             {/* </>
           ) : (
             <>
@@ -77,6 +84,7 @@ const Header = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/pesquisar" element={<Pesquisar />} />
+        <Route path="/conta" element={<Conta />} />
         <Route path="*" element={<Pagina404 />} />
       </Routes>
     </>
