@@ -29,7 +29,7 @@ class ErrorBoundary extends React.Component {
           <div className="error-boundary-fallback">
             <div className="error-boundary-content">
               <h1>WHOPPS!</h1>
-              <h2>Alguma coisa deu errado. Isso é constrangedor</h2>
+              <h2>Alguma coisa deu errado. Isso é vergonhoso</h2>
               <h3>Caso o erro persista, consulte administrador do sistema</h3>
               <button className="btn exception-button"
                 onClick={() => {

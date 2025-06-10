@@ -1,13 +1,17 @@
-import { useState, useRef } from "react";
+import { useState, useRef, use } from "react";
 import imgPerfil from "../assets/images/profile_icon.svg";
 import { ActionButton } from "../utils/Utilidades";
+import { useUsuario } from "../context/usuarioContext";
+import { editarCredenciais } from "../api/Usuario";
 
 const Perfil = () => {
+  const { usuario } = useUsuario();
   const [avatar, setAvatar] = useState(imgPerfil);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [ConfirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState(usuario.nome);
+  const [email, setEmail] = useState(usuario.email);
+  const [password, setPassword] = useState(usuario.senha);
+  const [ConfirmPassword, setConfirmPassword] = useState(usuario.senha);
+
   const [edit, setEdit] = useState({
     avatar: false,
     username: false,
@@ -15,6 +19,12 @@ const Perfil = () => {
     password: false,
     ConfirmPassword: false,
   });
+
+  const handleEdit = (username, email, password) => {
+    // editarCredenciais(username, email, password)
+    //   .then((res) => {})
+    //   .catch((e) => console.log(e));
+  };
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -29,10 +39,10 @@ const Perfil = () => {
   // Store initial values in refs so they don't change on re-render
   const initialValues = useRef({
     avatar: imgPerfil,
-    username: "",
-    email: "",
-    password: "",
-    ConfirmPassword: "",
+    username: usuario.nome,
+    email: usuario.email,
+    password: usuario.senha,
+    ConfirmPassword: usuario.senha,
   });
 
   const isChanged =
@@ -54,11 +64,10 @@ const Perfil = () => {
               accept="image/*"
               style={{ display: "none" }}
               onChange={handleAvatarChange}
-              // input is always readonly visually, edit icon triggers file dialog
             />
             <span
               className="edit-avatar-text"
-              onClick={() => handleEditClick("avatar")}
+              onClick={() => handleEdit("avatar")}
             >
               <i className="pi pi-pencil" />
             </span>
@@ -105,10 +114,10 @@ const Perfil = () => {
           minLength={8}
         />
         <div className="profile-actions">
-          <button className="btn" type="submit" disabled={!isChanged}>
-            Salvar Mudanças
-          </button>
-          <button className="btn"> Cancelar</button>
+          {!isChanged
+            ? (<button className="btn" type="submit" onClick={handleEdit} disabled={!isChanged}> Salvar Mudanças</button>)
+            : (<ActionButton type={"confirm"} class={"btn"} title={"Confirmar Alteração"} message={"Tem certeza que dejeja alterar suas credenciais?"}>Salvar Mudanças</ActionButton>)}
+          <button className="btn">Cancelar</button>
         </div>
       </form>
     </div>

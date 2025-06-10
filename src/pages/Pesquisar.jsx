@@ -1,123 +1,123 @@
 import { useEffect, useState } from "react";
 import "../assets/css/pesquisar.css";
 import Video from "../components/Video";
-import getPalavras from "../api/Pesquisar";
+import getresultadosFiltrados from "../api/Pesquisar";
 import { Loading } from "../utils/Utilidades";
 
-// const resultadosMock = [
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",
-//       "https://samplelib.com/mp4/sample-5s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",
-//       "https://samplelib.com/mp4/sample-5s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",    ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-// ];
+const resultadosMock = [
+  {
+    palavra: "Casa",
+    contexto: "Lugar onde você mora",
+    videos: [
+      "https://www.w3schools.com/html/mov_bbb.mp4",
+      "https://samplelib.com/mp4/sample-5s.mp4",
+      "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+    ],
+  },
+  {
+    palavra: "Árvore",
+    contexto: "Planta grande com tronco",
+    videos: [
+    ]
+  },
+  {
+    palavra: "Carro",
+    contexto: "Veículo de transporte",
+    videos: [
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+      "https://samplelib.com/mp4/sample-10s.mp4",
+      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    ],
+  },
+  {
+    palavra: "Casa",
+    contexto: "Lugar onde você mora",
+    videos: [
+      "https://www.w3schools.com/html/mov_bbb.mp4",
+      "https://samplelib.com/mp4/sample-5s.mp4",
+      "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+    ],
+  },
+  {
+    palavra: "Árvore",
+    contexto: "Planta grande com tronco",
+    videos: [
+    ]
+  },
+  {
+    palavra: "Carro",
+    contexto: "Veículo de transporte",
+    videos: [
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+      "https://samplelib.com/mp4/sample-10s.mp4",
+      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    ],
+  },
+  {
+    palavra: "Casa",
+    contexto: "Lugar onde você mora",
+    videos: [
+      "https://www.w3schools.com/html/mov_bbb.mp4",    ],
+  },
+  {
+    palavra: "Árvore",
+    contexto: "Planta grande com tronco",
+    videos: [
+    ]
+  },
+  {
+    palavra: "Carro",
+    contexto: "Veículo de transporte",
+    videos: [
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+      "https://samplelib.com/mp4/sample-10s.mp4",
+      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    ],
+  },
+  {
+    palavra: "Casa",
+    contexto: "Lugar onde você mora",
+    videos: [
+      "https://www.w3schools.com/html/mov_bbb.mp4",
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+    ],
+  },
+  {
+    palavra: "Árvore",
+    contexto: "Planta grande com tronco",
+    videos: [
+    ]
+  },
+  {
+    palavra: "Carro",
+    contexto: "Veículo de transporte",
+    videos: [
+      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+      "https://samplelib.com/mp4/sample-10s.mp4",
+      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    ],
+  },
+];
 
 function Pesquisar() {
   const [modalAberto, setModalAberto] = useState(false);
   const [modalVideos, setModalVideos] = useState([]);
   const [busca, setBusca] = useState("");
-  const [palavras, setPalavras] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [resultadosFiltrados, setresultadosFiltrados] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // const abrirModalVideos = (videos) => {
-  //   setModalVideos(videos);
-  //   setModalAberto(true);
-  // };
+  const abrirModalVideos = (videos) => {
+    setModalVideos(videos);
+    setModalAberto(true);
+  };
 
   const fecharModalVideos = () => {
     setModalAberto(false);
@@ -126,32 +126,32 @@ function Pesquisar() {
 
   const limparBusca = () => setBusca("");
 
-  useEffect(() => {
-    setTimeout(() => {
-      getPalavras(busca)
-        .then(res => {
-          setPalavras(res);
-          setLoading(false);
-        })
-        .catch(e => {
-          console.error('Erro na busca das palavras:', e);
-          setLoading(false);
-        });
-    }, 1000)
-  }, [busca])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     getresultadosFiltrados(busca)
+  //       .then(res => {
+  //         setresultadosFiltrados(res);
+  //         setLoading(false);
+  //       })
+  //       .catch(e => {
+  //         console.error('Erro na busca das resultadosFiltrados:', e);
+  //         setLoading(false);
+  //       });
+  //   }, 1000)
+  // }, [busca])
 
-  // const resultadosFiltrados = resultadosMock.filter((item) =>
-  //   item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
-  // );
+  const resultadosFiltrados = resultadosMock.filter((item) =>
+    item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
+  );
 
-  console.log("palavras:", palavras);
+  console.log("resultadosFiltrados:", resultadosFiltrados);
 
 
   return (
     <div className="pesquisar-container">
       <div
         className={
-          busca && palavras.length !== 0
+          busca && resultadosFiltrados.length !== 0
             ? "input-wrapper input-wrapper-active"
             : "input-wrapper"
         }
@@ -182,11 +182,11 @@ function Pesquisar() {
             ×
           </span>
         )}
-        {busca && palavras.length > 0 && (
+        {busca && resultadosFiltrados.length > 0 && (
           <div className="search-dropdown">
-            {palavras.map((palavra, id) => (
+            {resultadosFiltrados.map((palavra, id) => (
               <div className="dropdown-item" key={id}>
-                <span>{palavra.DesPalavra}</span>
+                <span>{palavra.palavra}</span>
                 <span
                   style={{
                     marginLeft: "auto",
@@ -194,7 +194,7 @@ function Pesquisar() {
                     fontSize: "0.95em",
                   }}
                 >
-                  {palavra.DesContexto}
+                  {palavra.contexto}
                 </span>
               </div>
             ))}
@@ -203,7 +203,7 @@ function Pesquisar() {
       </div>
       {/* done for now  */}
       <div className="grid-resultados">
-        {busca && palavras.length === 0 ? (
+        {busca && resultadosFiltrados.length === 0 ? (
           <div className="nenhum-resultado">
             <p>Nenhum resultado encontrado para "{busca}".</p>
             <button
@@ -217,16 +217,16 @@ function Pesquisar() {
           loading ? (
             <Loading open={loading} />
           ) : (
-            palavras.map((palavra, id) => (
-              <div className="card" key={id}>
+            resultadosFiltrados.map((item, index) => (
+              <div className="card" key={index}>
                 <div className="card-header">
                   <div>
-                    <h3>{palavra.DesPalavra}</h3>
-                    <p>{palavra.DesContexto}</p>
+                    <h3>{item.palavra}</h3>
+                    <p>{item.contexto}</p>
                   </div>
                 </div>
                 <div className="video-grid">
-                  {/* {(() => {
+                  {(() => {
                     switch (item.videos.length) {
                       case 0:
                         return (
@@ -263,7 +263,7 @@ function Pesquisar() {
                           </>
                         );
                     }
-                  })()} */}
+                  })()}
                 </div>
               </div>
             ))

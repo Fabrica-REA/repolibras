@@ -17,11 +17,10 @@
     <li>
       <a href="#sobre-o-projeto">Sobre o Projeto</a>
       <ul>
-        <li><a href="#contruido-com">Construído com</a></li>
+        <li><a href="#construído-com">Construído com</a></li>
       </ul>
     </li>
     <li>
-      <a href="#começando">Começando</a>
       <ul>
         <li>
           <a href="#pré-requisitos">Pré-Requisitos</a>
@@ -34,47 +33,39 @@
         <li><a href="#instalação">Instalação</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Uso</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#roadmap">Roadmap</a>
+      <ul>
+        <li><a href="#v1.0">v1.0</a></li>
+        <li><a href="#v2.0">v2.0</a></li>
+      </ul>
+    </li>
     <li><a href="#contribuir">Contribuir</a></li>
     <li><a href="#contribuidores">Contribuidores</a></li>
-    <li><a href="#contact">Contato</a></li>
+    <li><a href="#contato">Contato</a></li>
   </ol>
 </details>
 
 ## Sobre o Projeto
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][home-screenshot]](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png)
 
-Existem muitos ótimos modelos de README disponíveis no GitHub; no entanto, não encontrei um que realmente atendesse às minhas necessidades, então criei este modelo aprimorado. Quero criar um modelo de README tão incrível que será o último que você precisará -- acredito que este é o ideal.
+<!-- [![Product Name Screen Shot][home-screenshot]](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png) -->
 
-Aqui está o porquê:
-* Seu tempo deve ser focado em criar algo incrível. Um projeto que resolve um problema e ajuda outras pessoas.
-* Você não deve fazer as mesmas tarefas repetidamente, como criar um README do zero.
-* Você deve aplicar princípios DRY ao resto da sua vida :smile:
-
-É claro que nenhum modelo servirá para todos os projetos, pois suas necessidades podem ser diferentes. Portanto, adicionarei mais em breve. Você também pode sugerir alterações bifurcando este repositório e criando um pull request ou abrindo uma issue. Obrigado a todas as pessoas que contribuíram para expandir este modelo!
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Construído com
+
 ![TechStack](https://skillicons.dev/icons?i=html,css,js,react,nodejs,npm,express,mysql,git,github)
 
-+ **HTML/CSS:** Para construção da estrutura e design responsivo da plataforma.
-+ **JavaScript (JS):** Linguagem de programação utilizada tanto no frontend quanto no backend.
-+ **React:** Biblioteca JavaScript para construção de interfaces de usuário.
-+ **NodeJS:** Linguagem utilizada para rodar JavaScript no servidor e para aplicações backend.
-+ **NPM:** Gerenciador de pacotes padrão para ambientes NodeJS e JavaScript.
-+ **Express:** Framework backend para construção da API e gerenciamento de dados.
-+ **MySql:** Banco de dados utilizado para armazenar os dados do usuário e os vídeos dos sinais de Libras.
-+ **Git/GitHub:** Para controle de versão e colaboração no desenvolvimento do projeto.
-
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
-
-## Começando 
-
-Este é um exemplo de como você pode dar instruções para configurar seu projeto localmente.
-Para obter uma cópia local e rodar, siga estes passos simples.
+- **HTML/CSS:** Para construção da estrutura e design responsivo da plataforma.
+- **JavaScript (JS):** Linguagem de programação utilizada tanto no frontend quanto no backend.
+- **React:** Biblioteca JavaScript para construção de interfaces de usuário.
+- **NodeJS:** Linguagem utilizada para rodar JavaScript no servidor e para aplicações backend.
+- **NPM:** Gerenciador de pacotes padrão para ambientes NodeJS e JavaScript.
+- **Express:** Framework backend para construção da API e gerenciamento de dados.
+- **MySql:** Banco de dados utilizado para armazenar os dados do usuário e os vídeos dos sinais de Libras.
+- **Git/GitHub:** Para controle de versão e colaboração no desenvolvimento do projeto.
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
@@ -82,27 +73,45 @@ Para obter uma cópia local e rodar, siga estes passos simples.
 
 ### Windows
 
-**Npm**
- ```sh
-  npm install npm@latest -g
-  ```
-**Node.js**
-  ```sh
-  npm install npm@latest -g
-  ```
-**Git**
-  ```sh
-  npm install npm@latest -g
-  ```
+1. Instale o [Node.js](https://nodejs.org/) (inclui o npm).
+2. Instale o [Git](https://git-scm.com/download/win).
+3. Verifique se node, npm e git foram instalados corretamente:
+   ```sh
+   npm -v && node -v && git -v
+   ```
 
-  Verifique se node, npm e git foram instalados corretamente 
-  ```sh
-    npm -v && node -v && git -v
-  ```
+### Linux
 
-### Linux 
+1. Instale o Node.js e npm ([guia oficial](https://github.com/nodesource/distributions/blob/master/README.md)):
+
+   ```sh
+   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+   ```
+
+2. Instale o Git:
+   ```sh
+   sudo apt-get install git
+   ```
+3. Verifique se node, npm e git foram instalados corretamente:
+   ```sh
+   npm -v && node -v && git -v
+   ```
 
 ### macOS
+
+1. Instale o [Homebrew](https://brew.sh/) se ainda não tiver:
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+2. Instale o Node.js e Git:
+   ```sh
+   brew install node git
+   ```
+3. Verifique se node, npm e git foram instalados corretamente:
+   ```sh
+   npm -v && node -v && git -v
+   ```
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
@@ -110,7 +119,7 @@ Para obter uma cópia local e rodar, siga estes passos simples.
 
 Passo a passo para instalar o repositório de Libras localmente
 
-1. Clone o repositório 
+1. Clone o repositório
    ```sh
    git clone https://github.com/Fabrica-REA/repolibras.git
    ```
@@ -121,25 +130,26 @@ Passo a passo para instalar o repositório de Libras localmente
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
-## Uso
-
-Use este espaço para mostrar exemplos úteis de como o projeto pode ser utilizado. Capturas de tela adicionais, exemplos de código e demonstrações funcionam bem neste espaço. Você também pode vincular a mais recursos.
-
-_Para mais exemplos, consulte a [Documentação](https://example.com)_
-
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
-
 ## Roadmap
 
-- [x] Adicionar Changelog
-- [x] Adicionar links de voltar ao topo
-- [ ] Adicionar templates adicionais com exemplos
-- [ ] Adicionar documento de "componentes" para copiar e colar seções do readme facilmente
-- [ ] Suporte multilíngue
-- [ ] Chinês
-    - [ ] Espanhol
+### v1.0 (finalizado)
+- [x] Pesquisa de Palavras em Libras pelo Contexto
+- [x] Envio de Sinais com Significado e Contexto
+- [x] Visualização de Solicitações
+- [x] Gerenciamento de Solicitações (Envio ou Exclusão)
+- [x] Cadastro e autenticação de usuários
+- [x] Avaliação de Solicitações
 
-Veja as [issues abertas](https://github.com/othneildrew/Best-README-Template/issues) para uma lista completa de recursos propostos (e problemas conhecidos).
+### v2.0 (finalizado)
+- [x] Melhorar responsividade e experiência do usuário (UX)
+- [x] Implementar cadastro e login aprimorados com autenticação
+- [x] Adicionar níveis de acesso de usuário
+- [x] Criar página de gerenciamento de vídeos e administração
+- [ ] Desenvolver página de estatísticas com KPIs
+
+<!-- ### v3.0 (planejado) -->
+
+Veja as [issues abertas](https://github.com/Fabrica-REA/repolibras/issues) para uma lista completa de recursos propostos (e problemas conhecidos).
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 

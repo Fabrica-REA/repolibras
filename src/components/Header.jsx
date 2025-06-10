@@ -6,6 +6,7 @@ import gerenciar from "../assets/images/user_cog_icon.svg";
 import avaliar from "../assets/images/clipboard_icon.svg";
 import solicitacoes from "../assets/images/request_icon.svg";
 import conta from "../assets/images/profile_icon.svg";
+import estatisticas from "../assets/images/statistics_icon.svg";
 import Home from "../pages/Home";
 import Enviar from "../pages/Enviar";
 import Solicitacoes from "../pages/Solicitacoes";
@@ -29,8 +30,8 @@ const Header = () => {
           <Link to="/">Repositório de Libras</Link>
         </div>
         <nav className="header-nav">
-          {/* {usuario ? (
-            <> */}
+          {usuario ? (
+            <>
               <Link to="/" className="nav-button">
                 <button className="nav-button-circle">
                   <img src={home} alt="Home" />
@@ -56,22 +57,27 @@ const Header = () => {
                   <img src={gerenciar} alt="Gerenciar" />
                 </button>
               </Link>
+              <Link to="/estatistica" className="nav-button">
+                <button className="nav-button-circle">
+                  <img src={estatisticas} alt="Statistica_icon" />
+                </button>
+              </Link>
               <Link to="/conta" className="nav-button">
                 <button className="nav-button-circle">
                   <img src={conta} alt="Conta_icon" />
                 </button>
               </Link>
-            {/* </>
+            </>
           ) : (
             <>
-              <Link to="/login" className="login-btn">
+              <Link to="/login" className="login-btn">pi-chart-bar
                 Login
               </Link>
               <Link to="/cadastro" className="register-btn">
                 Cadastro
               </Link>
             </>
-          )} */}
+          )}
         </nav>
       </header>
       <Routes>
@@ -88,7 +94,7 @@ const Header = () => {
         <Route path="*" element={<Pagina404 />} />
       </Routes>
     </>
-  );
+  ); 
 };
 
 export default Header;

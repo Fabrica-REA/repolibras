@@ -26,7 +26,7 @@ export const login = async (email, senha) => {
 
 export const logout = async () => {
     try {
-        const response = await axios.post('http://localhost:5002/logout', {}, {
+        const response = await axios.post('http://localhost:5002/librasapi/logout', {}, {
             headers: { 'Content-Type': 'application/json' }
         });
         return { data: response.data };
@@ -38,7 +38,7 @@ export const logout = async () => {
 
 export const editarCredenciais = async (id, nome, email, senha) => {
     try {
-        const response = await axios.put(`http://localhost:5002/usuario/${id}`, { nome, email, senha }, {
+        const response = await axios.put(`http://localhost:5002/librasapi/${id}`, { nome, email, senha }, {
             headers: { 'Content-Type': 'application/json' }
         });
         return { data: response.data };

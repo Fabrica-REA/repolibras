@@ -119,6 +119,12 @@
   max-width: 80px;
 }
 
+.enviar-col-right .submit-button img {
+  width: 32px;
+  height: 32px;
+  transition: filter 0.2s;
+}
+
 .enviar-col-right .submit-button:hover {
   background: var(--primary-color);
 }

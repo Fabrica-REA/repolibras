@@ -12,15 +12,15 @@ const Solicitacoes = () => {
 
   useEffect(() => {
     // setTimeout(() => {
-      getSolicitacoes()
-        .then((res) => {
-          setSolicitacoes(res);
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.error("Erro ao carregar solicitações:", e);
-          setLoading(false);
-        });
+    getSolicitacoes()
+      .then((res) => {
+        setSolicitacoes(res);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.error("Erro ao carregar solicitações:", e);
+        setLoading(false);
+      });
     // }, 2000);
   }, []);
 
@@ -51,8 +51,8 @@ const Solicitacoes = () => {
                 </td>
                 <td>
                   <div className="acoes-cell">
-                    <ActionButton title="Recusar" />
-                    <ActionButton icon={"pi-send"} type={"icon-btn accept-button"} title="Enviar"/>
+                    <ActionButton icon={"pi-trash"} type={"confirm"} class={"icon-btn decline-button"} message={"O video foi aprovado!"}/>
+                    <ActionButton icon={"pi-send"} type={"send"} class={"icon-btn accept-button"} message={"A Solicitação foi enviado!"}/>
                   </div>
                 </td>
               </tr>

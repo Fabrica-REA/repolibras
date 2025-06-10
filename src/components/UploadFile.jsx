@@ -1,7 +1,7 @@
 import { useState } from "react";
 import '../assets/css/uploadFile.css';
 
-const UploadFile = ({classNameFile}) => {
+const UploadFile = ({ classNameFile, width, onFileChange }) => {
     const [file, setFile] = useState(null);
     const [selected, setSelectedStatus] = useState(false);
 
@@ -10,12 +10,18 @@ const UploadFile = ({classNameFile}) => {
         if (selectedFile) {
             setFile(selectedFile);
             setSelectedStatus(true);
+            if (onFileChange) {
+                onFileChange(selectedFile);
+            }
         }
     };
 
     const handleRemove = () => {
         setFile(null);
         setSelectedStatus(false);
+        if (onFileChange) {
+            onFileChange(null);
+        }
     };
 
     return (
@@ -54,8 +60,8 @@ const UploadFile = ({classNameFile}) => {
                     </div>
                 </label>
             ) : (
-                <div className="upload-wrapper" style={{ width: "100%", height: "100%" }}>
-                    <div className="upload-container" style={{ width: "100%", height: "100%" }}>
+                <div className="upload-wrapper">
+                    <div className="upload-container" style={{ width: `${width}%` }}>
                         <div className="file-info">
                             {selected && <div className="success-checkmark" />}
                             <div className="file-text">
