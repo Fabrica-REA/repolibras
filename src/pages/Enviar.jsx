@@ -15,7 +15,7 @@ const Enviar = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const { usuario } = useUsuario();
-  
+
   const upload = async (e) => {
     e.preventDefault();
     if (!file) {
@@ -25,10 +25,9 @@ const Enviar = () => {
     setLoading(true);
     try {
       // Optionally, you can send other form data as well
-      const response = await postArquivo(file, contextoSelecionado, usuario);
-      // Handle response as needed
-      alert("Arquivo enviado com sucesso!");
-      // Optionally reset form fields here
+      const response = await postArquivo(file, contextoSelecionado, usuario, palavra);
+      console.log("Resposta do servidor:", response);
+
       setFile(null);
       setPalavra("");
       setLink("");

@@ -3,9 +3,7 @@
   <a href="https://github.com/Fabrica-REA/repolibras">
     <img src="/public/img/logo.jpeg" alt="Logo" width="80" height="80">
   </a>
-
   <h3 align="center">Repositório de Libras</h3>
-
   <p align="center">
    Repositório de Libras para os professores de Libras na UFPR, onde os usuários podem pesquisar, visualizar e contribuir com vídeos de sinais de Libras.
   </p>
@@ -47,10 +45,8 @@
 
 ## Sobre o Projeto
 
-[![Product Name Screen Shot][home-screenshot]](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png)
-
+![Product Name Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png)
 <!-- [![Product Name Screen Shot][home-screenshot]](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png) -->
-
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
@@ -132,7 +128,7 @@ Passo a passo para instalar o repositório de Libras localmente
 
 ## Roadmap
 
-### v1.0 (finalizado)
+### v1.0 (Finalizado)
 - [x] Pesquisa de Palavras em Libras pelo Contexto
 - [x] Envio de Sinais com Significado e Contexto
 - [x] Visualização de Solicitações
@@ -140,14 +136,14 @@ Passo a passo para instalar o repositório de Libras localmente
 - [x] Cadastro e autenticação de usuários
 - [x] Avaliação de Solicitações
 
-### v2.0 (finalizado)
+### v2.0 (Finalizado)
 - [x] Melhorar responsividade e experiência do usuário (UX)
 - [x] Implementar cadastro e login aprimorados com autenticação
 - [x] Adicionar níveis de acesso de usuário
 - [x] Criar página de gerenciamento de vídeos e administração
 - [ ] Desenvolver página de estatísticas com KPIs
 
-<!-- ### v3.0 (planejado) -->
+<!-- ### v3.0 (Planejado) -->
 
 Veja as [issues abertas](https://github.com/Fabrica-REA/repolibras/issues) para uma lista completa de recursos propostos (e problemas conhecidos).
 

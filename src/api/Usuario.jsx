@@ -47,3 +47,15 @@ export const editarCredenciais = async (id, nome, email, senha) => {
         return { data: null };
     }
 }
+
+export const getUsuarios = async () => {
+    try {
+        const response = await axios.get('http://localhost:5002/librasapi/usuarios', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return { data: response.data };
+    } catch (e) {
+        console.error('Erro ao obter usuários:', e);
+        return { data: null };
+    }
+}

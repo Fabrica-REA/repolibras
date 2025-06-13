@@ -1,118 +1,123 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../assets/css/pesquisar.css";
 import Video from "../components/Video";
 import getresultadosFiltrados from "../api/Pesquisar";
 import { Loading } from "../utils/Utilidades";
 
-const resultadosMock = [
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",
-      "https://samplelib.com/mp4/sample-5s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",
-      "https://samplelib.com/mp4/sample-5s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-  {
-    palavra: "Casa",
-    contexto: "Lugar onde você mora",
-    videos: [
-      "https://www.w3schools.com/html/mov_bbb.mp4",
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    ],
-  },
-  {
-    palavra: "Árvore",
-    contexto: "Planta grande com tronco",
-    videos: [
-    ]
-  },
-  {
-    palavra: "Carro",
-    contexto: "Veículo de transporte",
-    videos: [
-      "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-      "https://samplelib.com/mp4/sample-10s.mp4",
-      "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-      "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-    ],
-  },
-];
+// const resultadosMock = [
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",
+//       "https://samplelib.com/mp4/sample-5s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",
+//       "https://samplelib.com/mp4/sample-5s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",    ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Casa",
+//     contexto: "Lugar onde você mora",
+//     videos: [
+//       "https://www.w3schools.com/html/mov_bbb.mp4",
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+//     ],
+//   },
+//   {
+//     palavra: "Árvore",
+//     contexto: "Planta grande com tronco",
+//     videos: [
+//     ]
+//   },
+//   {
+//     palavra: "Carro",
+//     contexto: "Veículo de transporte",
+//     videos: [
+//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
+//       "https://samplelib.com/mp4/sample-10s.mp4",
+//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
+//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+//     ],
+//   },
+// ];
 
 function Pesquisar() {
   const [modalAberto, setModalAberto] = useState(false);
   const [modalVideos, setModalVideos] = useState([]);
   const [busca, setBusca] = useState("");
-  // const [resultadosFiltrados, setresultadosFiltrados] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [resultadosFiltrados, setresultadosFiltrados] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Track video loading
+  const [videosToLoad, setVideosToLoad] = useState(0);
+  const [videosLoaded, setVideosLoaded] = useState(0);
+  const firstLoad = useRef(true);
 
   const abrirModalVideos = (videos) => {
     setModalVideos(videos);
@@ -126,26 +131,51 @@ function Pesquisar() {
 
   const limparBusca = () => setBusca("");
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     getresultadosFiltrados(busca)
-  //       .then(res => {
-  //         setresultadosFiltrados(res);
-  //         setLoading(false);
-  //       })
-  //       .catch(e => {
-  //         console.error('Erro na busca das resultadosFiltrados:', e);
-  //         setLoading(false);
-  //       });
-  //   }, 1000)
-  // }, [busca])
+  useEffect(() => {
+    setLoading(true);
+    setVideosToLoad(0);
+    setVideosLoaded(0);
+    setTimeout(() => {
+      getresultadosFiltrados(busca)
+        .then(res => {
+          setresultadosFiltrados(res);
+          // Count total videos
+          const totalVideos = res.reduce((acc, item) => acc + (item.videos ? item.videos.length : 0), 0);
+          setVideosToLoad(totalVideos);
+          // If no videos, loading should be false
+          if (totalVideos === 0) setLoading(false);
+        })
+        .catch(e => {
+          console.error('Erro na busca dos videos:', e);
+          setLoading(false);
+        });
+    }, 0)
+  }, [busca])
 
-  const resultadosFiltrados = resultadosMock.filter((item) =>
-    item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
-  );
+  // When all videos loaded, hide loading
+  useEffect(() => {
+    if (!firstLoad.current && videosToLoad > 0 && videosLoaded >= videosToLoad) {
+      setLoading(false);
+    }
+    firstLoad.current = false;
+  }, [videosLoaded, videosToLoad]);
+
+  // Reset counters when results change
+  useEffect(() => {
+    setVideosLoaded(0);
+    const totalVideos = resultadosFiltrados.reduce((acc, item) => acc + (item.videos ? item.videos.length : 0), 0);
+    setVideosToLoad(totalVideos);
+    if (totalVideos === 0) setLoading(false);
+  }, [resultadosFiltrados]);
+
+  // Video load/error handler
+  const handleVideoLoaded = () => setVideosLoaded(v => v + 1);
+
+  // const resultadosFiltrados = resultadosMock.filter((item) =>
+  //   item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
+  // );
 
   console.log("resultadosFiltrados:", resultadosFiltrados);
-
 
   return (
     <div className="pesquisar-container">
@@ -186,7 +216,7 @@ function Pesquisar() {
           <div className="search-dropdown">
             {resultadosFiltrados.map((palavra, id) => (
               <div className="dropdown-item" key={id}>
-                <span>{palavra.palavra}</span>
+                <span>{palavra.DesPalavra}</span>
                 <span
                   style={{
                     marginLeft: "auto",
@@ -194,7 +224,7 @@ function Pesquisar() {
                     fontSize: "0.95em",
                   }}
                 >
-                  {palavra.contexto}
+                  {palavra.DesContexto}
                 </span>
               </div>
             ))}
@@ -217,53 +247,68 @@ function Pesquisar() {
           loading ? (
             <Loading open={loading} />
           ) : (
-            resultadosFiltrados.map((item, index) => (
-              <div className="card" key={index}>
+            resultadosFiltrados.map((item, id) => (
+              <div className="card" key={id}>
                 <div className="card-header">
                   <div>
-                    <h3>{item.palavra}</h3>
-                    <p>{item.contexto}</p>
+                    <h3>{item.DesPalavra}</h3>
+                    <p>{item.DesContexto}</p>
                   </div>
                 </div>
                 <div className="video-grid">
-                  {(() => {
-                    switch (item.videos.length) {
-                      case 0:
-                        return (
-                          <div className="nenhum-resultado">
-                            <li className="pi pi-clock"></li>
-                            <span>A palavra está em processo de gravação</span>
-                          </div>
-                        );
-                      case 1:
-                        return (
-                          <Video src={item.videos[0]} classNameVideo={"video-thumb single"} index={0} />
-                        );
-                      case 2:
-                        return (
-                          <>
-                            <Video src={item.videos[0]} classNameVideo={"video-thumb double double-top"} index={0} />
-                            <Video src={item.videos[1]} classNameVideo={"video-thumb double double-bottom"} index={1} />
-                          </>
-                        );
-                      default:
-                        return (
-                          <>
-                            {item.videos.slice(0, 3).map((src, idx) => (
-                              <Video src={src} classNameVideo={"video-thumb"} index={idx} />
-                            ))}
-                            {item.videos.length > 3 !== index && (
-                              <div
-                                className="video-thumb mais"
-                                onClick={() => abrirModalVideos(item.videos)}
-                              >
-                                + {item.videos.length - 3}
-                              </div>
-                            )}
-                          </>
-                        );
-                    }
-                  })()}
+                  {/* Render videos with load/error handlers */}
+                  {item.videos && item.videos.length === 0 ? (
+                    <div className="nenhum-resultado">
+                      <li className="pi pi-clock"></li>
+                      <span>A palavra está em processo de gravação</span>
+                    </div>
+                  ) : item.videos && item.videos.length === 1 ? (
+                    <Video
+                      src={item.videos[0]}
+                      classNameVideo={"video-thumb single"}
+                      index={0}
+                      onLoadedData={handleVideoLoaded}
+                      onError={handleVideoLoaded}
+                    />
+                  ) : item.videos && item.videos.length === 2 ? (
+                    <>
+                      <Video
+                        src={item.videos[0]}
+                        classNameVideo={"video-thumb double double-top"}
+                        index={0}
+                        onLoadedData={handleVideoLoaded}
+                        onError={handleVideoLoaded}
+                      />
+                      <Video
+                        src={item.videos[1]}
+                        classNameVideo={"video-thumb double double-bottom"}
+                        index={1}
+                        onLoadedData={handleVideoLoaded}
+                        onError={handleVideoLoaded}
+                      />
+                    </>
+                  ) : item.videos && item.videos.length > 2 ? (
+                    <>
+                      {item.videos.slice(0, 3).map((src, idx) => (
+                        <Video
+                          key={idx}
+                          src={src}
+                          classNameVideo={"video-thumb"}
+                          index={idx}
+                          onLoadedData={handleVideoLoaded}
+                          onError={handleVideoLoaded}
+                        />
+                      ))}
+                      {item.videos.length > 3 && (
+                        <div
+                          className="video-thumb mais"
+                          onClick={() => abrirModalVideos(item.videos)}
+                        >
+                          + {item.videos.length - 3}
+                        </div>
+                      )}
+                    </>
+                  ) : null}
                 </div>
               </div>
             ))
@@ -278,8 +323,15 @@ function Pesquisar() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-videos-grid">
-              {modalVideos.map((src, idx) => (
-                <Video src={src} classNameVideo={"video-thumb"} index={idx} />
+              {modalVideos.map((src, id) => (
+                <Video
+                  key={id}
+                  src={src}
+                  classNameVideo={"video-thumb"}
+                  index={id}
+                  onLoadedData={handleVideoLoaded}
+                  onError={handleVideoLoaded}
+                />
               ))}
             </div>
           </div>

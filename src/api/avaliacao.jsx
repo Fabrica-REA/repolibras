@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getAvaliacoes = async () => {
     try {
-        const response = await axios.get('http://localhost:5002/librasapi/faltaavaliar', {
+        const response = await axios.get('http://localhost:5002/librasapi/avaliacoes', {
             headers: { 'Content-Type': 'application/json' }
         });
         return response.data

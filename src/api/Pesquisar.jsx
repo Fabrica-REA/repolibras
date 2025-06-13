@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getPalavras = async (q) => {
-    if (q === undefined || q.trim() === "") {
+    if (q === undefined) {
         return [];
     } else {
         try {

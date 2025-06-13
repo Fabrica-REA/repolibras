@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getContextos = async () => {
     try {
-        const response = await axios.get('http://localhost:5002/librasapi/contextosdes', {
+        const response = await axios.get('http://localhost:5002/librasapi/contextos', {
             headers: { 'Content-Type': 'application/json' }
         });
         return response.data
@@ -35,7 +35,7 @@ export const getContextos = async () => {
 //     }
 //   };
 
-export const postArquivo = async (videoFile, contexto, usuario) => {
+export const postArquivo = async (videoFile, contexto, usuario, palavra) => {
     try {
         // Create a new FormData instance
         const formData = new FormData();
@@ -43,14 +43,9 @@ export const postArquivo = async (videoFile, contexto, usuario) => {
         formData.append('usuarioid', usuario.id);
         formData.append('contexto', contexto.descricao);
         formData.append('contextoid', contexto.id);
-        formData.append('novoNomeArquivo', videoFile.name);
+        formData.append('palavra', palavra);
 
         console.log(formData);
-        
-
-        // Append the video file to the FormData
-        // 'video' is the field name that the server expects
-        formData.append('video', videoFile);
 
         const response = await axios.post('http://localhost:5002/librasapi/upload', formData, {
             headers: {
@@ -71,7 +66,7 @@ export const postArquivo = async (videoFile, contexto, usuario) => {
             }
         });
 
-        return response.data;
+        return response.status;
     } catch (e) {
         console.error('Erro ao enviar arquivo de vídeo:', e);
         throw e;
