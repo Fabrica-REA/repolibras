@@ -1,4 +1,4 @@
-import { useState, useRef, use } from "react";
+import { useState, useRef } from "react";
 import imgPerfil from "../assets/images/profile_icon.svg";
 import { ActionButton } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
@@ -6,39 +6,55 @@ import { editarCredenciais } from "../api/Usuario";
 
 const Perfil = () => {
   const { usuario } = useUsuario();
-  const [avatar, setAvatar] = useState(imgPerfil);
+  const [avatar] = useState(usuario.avatar || imgPerfil);
   const [username, setUsername] = useState(usuario.nome);
   const [email, setEmail] = useState(usuario.email);
   const [password, setPassword] = useState(usuario.senha);
   const [ConfirmPassword, setConfirmPassword] = useState(usuario.senha);
 
-  const [edit, setEdit] = useState({
-    avatar: false,
-    username: false,
-    email: false,
-    password: false,
-    ConfirmPassword: false,
-  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleEdit = (username, email, password) => {
-    // editarCredenciais(username, email, password)
-    //   .then((res) => {})
-    //   .catch((e) => console.log(e));
-  };
-
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => setAvatar(ev.target.result);
-      reader.readAsDataURL(file);
+  const handleEdit = (usuario, username, email, password, avatarParam) => {
+    // Convert base64 to Blob if needed for MySQL BLOB storage
+    let avatarToSend = avatarParam ? avatarParam : avatar;
+    if (avatarToSend && avatarToSend.startsWith("data:image")) {
+      // Convert base64 to Blob
+      const byteString = atob(avatarToSend.split(',')[1]);
+      const mimeString = avatarToSend.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      avatarToSend = new Blob([ab], { type: mimeString });
     }
-    setEdit((prev) => ({ ...prev, avatar: false }));
+    editarCredenciais(
+      usuario.id,
+      username,
+      email,
+      password,
+      avatarToSend
+    )
+      .then((res) => console.log(res))
+      .catch((e) => console.log(e));
+    // setTimeout(() => window.location.reload(), 800);
   };
+
+  // const handleAvatarChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (ev) => {
+  //       setAvatar(ev.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   // Store initial values in refs so they don't change on re-render
   const initialValues = useRef({
-    avatar: imgPerfil,
+    avatar: usuario.avatar,
     username: usuario.nome,
     email: usuario.email,
     password: usuario.senha,
@@ -58,7 +74,7 @@ const Perfil = () => {
         <div className="avatar editable-avatar">
           <label htmlFor="avatar-upload" className="avatar-label">
             <img src={avatar} alt="Avatar" className="avatar-img" />
-            <input
+            {/* <input
               id="avatar-upload"
               type="file"
               accept="image/*"
@@ -67,15 +83,13 @@ const Perfil = () => {
             />
             <span
               className="edit-avatar-text"
-              onClick={() => handleEdit("avatar")}
+              onClick={() => document.getElementById("avatar-upload").click()}
             >
               <i className="pi pi-pencil" />
-            </span>
+            </span> */}
           </label>
         </div>
       </div>
-      {/* {Profile img section} */}
-
       <form className="profile-form">
         <label htmlFor="nomeCompleto">Nome Completo:</label>
         <input
@@ -96,27 +110,78 @@ const Perfil = () => {
           className="profile-input"
         />
         <label htmlFor="senha">Senha:</label>
-        <input
-          id="senha"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="profile-input"
-          minLength={8}
-        />
+        <div style={{ position: "relative" }}>
+          <input
+            id="senha"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="profile-input"
+            minLength={8}
+          />
+          <span
+            style={{
+              position: "absolute",
+              right: 10,
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+            }}
+            onClick={() => setShowPassword((prev) => !prev)}
+            tabIndex={0}
+            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+          >
+            <i className={`pi ${showPassword ? "pi-eye-slash" : "pi-eye"}`} />
+          </span>
+        </div>
         <label htmlFor="confirmeSenha">Confirme sua Senha:</label>
-        <input
-          id="confirmeSenha"
-          type="password"
-          value={ConfirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="profile-input"
-          minLength={8}
-        />
+        <div style={{ position: "relative" }}>
+          <input
+            id="confirmeSenha"
+            type={showConfirmPassword ? "text" : "password"}
+            value={ConfirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="profile-input"
+            minLength={8}
+          />
+          <span
+            style={{
+              position: "absolute",
+              right: 10,
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+            }}
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+            tabIndex={0}
+            aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+          >
+            <i className={`pi ${showConfirmPassword ? "pi-eye-slash" : "pi-eye"}`} />
+          </span>
+        </div>
         <div className="profile-actions">
-          {!isChanged
-            ? (<button className="btn" type="submit" onClick={handleEdit} disabled={!isChanged}> Salvar Mudanças</button>)
-            : (<ActionButton type={"confirm"} class={"btn"} title={"Confirmar Alteração"} message={"Tem certeza que dejeja alterar suas credenciais?"}>Salvar Mudanças</ActionButton>)}
+          {!isChanged ? (
+            <button
+              className="btn"
+              type="submit"
+              onClick={handleEdit}
+              disabled={!isChanged}
+            >
+              {" "}
+              Salvar Mudanças
+            </button>
+          ) : (
+            <ActionButton
+              type={"confirm"}
+              class={"btn"}
+              title={"Confirmar Alteração"}
+              endMessage="Credenciais alteradas com sucesso!"
+              message={"Tem certeza que deseja alterar suas credenciais?"}
+              action={() => handleEdit(usuario, username, email, password, avatar)}
+            >
+              Salvar Mudanças
+            </ActionButton>
+          )}
           <button className="btn">Cancelar</button>
         </div>
       </form>

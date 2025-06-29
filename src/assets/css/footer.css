@@ -11,5 +11,45 @@
 .footer p {
     margin: 0;
     color: #6c757d;
-    font-size: 14px;
+    font-size: 1rem;
+    margin: 0 1rem;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    .footer p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 414px) {
+    .footer p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Desktop: 1920×1080 (Full HD) */
+@media (min-width: 1920px) {
+    .footer p {
+        font-size: 16px;
+    }
+}
+
+/* Keep only the broader queries */
+@media (max-width: 768px) {
+    .footer p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 414px) {
+    .footer p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .footer p {
+        font-size: 16px;
+    }
 }

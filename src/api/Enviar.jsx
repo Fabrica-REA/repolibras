@@ -11,54 +11,21 @@ export const getContextos = async () => {
     }
 }
 
-//  const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const formData = new FormData();
-//     formData.append('file', file);
-//     formData.append('usuarioid', 1);
-//     formData.append('contexto', contexto);
-//     formData.append('contextoid', contextoid);
-//     formData.append('novoNomeArquivo', newFileName);
-//     setObservacoes( file.name + ' ' + contexto + ' ' + contextoid + ' ' + newFileName);
-//     console.log(file);
-//     console.log(contextoid);
-//     console.log(newFileName);
-//     try {
-//       const response = await cyiapi.post('/upload', formData);
-//       console.log(response.data[0]);
-//       if (response.data[0].mensagem)
-//         setObservacoes( response.data[0].mensagem);
-//       else
-//         setObservacoes(`Arquivo ${file.name} foi enviado com sucesso.`);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-
-export const postArquivo = async (videoFile, contexto, usuario, palavra) => {
-    try {
-        // Create a new FormData instance
+export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, observacao) => {
+    try {    
         const formData = new FormData();
-        formData.append('file', videoFile);
+        if (videoFileOrLink instanceof File) {
+            formData.append('file', videoFileOrLink);
+        } else if (typeof videoFileOrLink === 'string') {
+            formData.append('link', videoFileOrLink);
+        }
         formData.append('usuarioid', usuario.id);
         formData.append('contexto', contexto.descricao);
         formData.append('contextoid', contexto.id);
         formData.append('palavra', palavra);
-
-        console.log(formData);
+        formData.append('observacao', observacao);
 
         const response = await axios.post('http://localhost:5002/librasapi/upload', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                // Add accept header for video types
-                'Accept': 'video/*'
-            },
-
-            //     contexto: contexto.descricao,
-            //     usuarioid: usuario.id,
-            //     contextoid: contexto.id,
-            //     originalname: videoFile.name
-            // },
             // Add progress monitoring (optional)
             onUploadProgress: (progressEvent) => {
                 const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);

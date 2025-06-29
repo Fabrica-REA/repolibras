@@ -1,7 +1,7 @@
 import { useState } from "react";
 import '../assets/css/uploadFile.css';
 
-const UploadFile = ({ classNameFile, width, onFileChange }) => {
+const UploadFile = ({ classNameFile, width, onFileChange, rowId = null }) => {
     const [file, setFile] = useState(null);
     const [selected, setSelectedStatus] = useState(false);
 
@@ -11,7 +11,7 @@ const UploadFile = ({ classNameFile, width, onFileChange }) => {
             setFile(selectedFile);
             setSelectedStatus(true);
             if (onFileChange) {
-                onFileChange(selectedFile);
+                onFileChange(rowId || selectedFile); 
             }
         }
     };
@@ -20,7 +20,7 @@ const UploadFile = ({ classNameFile, width, onFileChange }) => {
         setFile(null);
         setSelectedStatus(false);
         if (onFileChange) {
-            onFileChange(null);
+            onFileChange(rowId || null); 
         }
     };
 
@@ -28,7 +28,7 @@ const UploadFile = ({ classNameFile, width, onFileChange }) => {
         <div
             className={classNameFile ? classNameFile : "upload-container"}>
             {!file ? (
-                <label htmlFor="dropzone-file" className="upload-content" >
+                <label htmlFor={`dropzone-file${rowId ? `-${rowId}` : ""}`} className="upload-content" >
                     <div className="upload-wrapper" >
                         <svg
                             className="upload-icon"
@@ -50,7 +50,7 @@ const UploadFile = ({ classNameFile, width, onFileChange }) => {
                         </p>
                         <p className="upload-subtext">MP4, MOV ou WMV</p>
                         <input
-                            id="dropzone-file"
+                            id={`dropzone-file${rowId ? `-${rowId}` : ""}`}
                             type="file"
                             className="hidden-input"
                             accept="video/*"

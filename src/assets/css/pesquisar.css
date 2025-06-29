@@ -322,4 +322,8 @@
   .grid-resultados {
     grid-template-columns: 1fr;
   }
+
+  .pesquisar-container{
+    margin: 0 20px 20px 20px;
+  }
 }

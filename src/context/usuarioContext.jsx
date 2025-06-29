@@ -9,8 +9,8 @@ const UsuarioContext = createContext({
 
 export const UsuarioProvider = ({ children }) => {
   //for testing purposes, you can remove this later
-  const [usuario, setUsuario] = useState({ id: "1" ,nome: "Teste", email: "teste@gmail.com", senha: "12345678", acesso: "gestor" });
-  // const [usuario, setUsuario] = useState(null);
+  // const [usuario, setUsuario] = useState({ id: "1" ,nome: "Teste", email: "teste@gmail.com", senha: "12345678", acesso: "administrador" });
+  const [usuario, setUsuario] = useState(null);
   console.log(usuario);
 
   const login = (data) => {

@@ -36,9 +36,9 @@ export const logout = async () => {
     }
 }
 
-export const editarCredenciais = async (id, nome, email, senha) => {
+export const editarCredenciais = async (id, nome, email, senha, avatar) => {
     try {
-        const response = await axios.put(`http://localhost:5002/librasapi/${id}`, { nome, email, senha }, {
+        const response = await axios.put(`http://localhost:5002/librasapi/usuario/${id}`, { nome, email, senha, avatar }, {
             headers: { 'Content-Type': 'application/json' }
         });
         return { data: response.data };

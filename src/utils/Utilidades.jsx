@@ -83,6 +83,7 @@ export const DeclinePopUp = ({
   onCancel,
   loading,
   showOnlyMessage,
+  observationMode, // <-- new prop to toggle observation mode
 }) => {
   const [reason, setReason] = useState("");
 
@@ -108,7 +109,10 @@ export const DeclinePopUp = ({
           </div>
         ) : (
           <div className="decline-container">
-            <li className="pi pi-times-circle" />
+            <li
+              className={`pi ${observationMode ? "pi-comment" : "pi-times-circle"
+                }`}
+            />
             <h2>{title}</h2>
             <span>{message}</span>
             <textarea
@@ -119,9 +123,13 @@ export const DeclinePopUp = ({
                 marginBottom: "1.2rem",
                 borderRadius: "0.7rem",
                 padding: "0.7rem",
-                border: "1.5px solid #e57373",
+                border: observationMode ? "1.5px solid #1976d2" : "1.5px solid #e57373",
               }}
-              placeholder="Digite o motivo da recusa..."
+              placeholder={
+                observationMode
+                  ? "Digite uma observação..."
+                  : "Digite o motivo da recusa..."
+              }
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             />
@@ -181,6 +189,9 @@ export const ActionButton = ({
   title,
   message,
   children,
+  action,
+  endMessage,
+  observationMode, // <-- allow passing this prop
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -193,19 +204,25 @@ export const ActionButton = ({
     setShowOnlyMessage(false);
   };
 
-  const handleConfirm = () => {
+  // Remove handleConfirm's argumentless version and allow passing a value (reason)
+  const handleConfirm = (value) => {
     setLoading(true);
     setShowOnlyMessage(false);
     setTimeout(() => {
       setLoading(false);
       if (type === "accept") {
-        setResult("O video foi aprovado!");
+        setResult(endMessage || "O video foi aprovado!");
       } else if (type === "send") {
-        setResult(message || "Enviado com sucesso!");
+        setResult(endMessage || "Enviado com sucesso!");
+      } else if (type === "confirm") {
+        setResult(endMessage || "Item removido com sucesso");
       } else {
-        setResult("Item removido com sucesso");
+        setResult(endMessage || "Item removido com sucesso");
       }
       setShowOnlyMessage(true);
+      if (typeof action === "function") {
+        action(value);
+      }
       setTimeout(() => {
         setOpen(false);
         setResult("");
@@ -222,7 +239,7 @@ export const ActionButton = ({
 
   return (
     <>
-      <button className={className} onClick={handleRemove}>
+      <button className={className} onClick={handleRemove} type="button">
         {icon ? <i className={`pi ${icon}`}></i> : children}
       </button>
       {(() => {
@@ -241,7 +258,7 @@ export const ActionButton = ({
                 }
                 loading={loading}
                 showOnlyMessage={showOnlyMessage}
-                onConfirm={!loading && !result ? handleConfirm : undefined}
+                onConfirm={!loading && !result ? () => handleConfirm() : undefined}
                 onCancel={!loading && !result ? handleCancel : undefined}
               />
             );
@@ -249,12 +266,21 @@ export const ActionButton = ({
             return (
               <DeclinePopUp
                 open={open}
-                title={"Confirmar Recusa"}
+                title={
+                  observationMode ? "Adicionar Observação" : "Confirmar Recusa"
+                }
                 message={
-                  "Por favor, escreva o motivo da recusa abaixo para confirmar esta ação."
+                  result
+                    ? <span>{result}</span>
+                    : observationMode
+                      ? "Adicione uma observação para esta solicitação."
+                      : "Por favor, escreva o motivo da recusa abaixo para confirmar esta ação."
                 }
                 onConfirm={!loading && !result ? handleConfirm : undefined}
                 onCancel={!loading && !result ? handleCancel : undefined}
+                loading={loading}
+                showOnlyMessage={showOnlyMessage}
+                observationMode={observationMode}
               />
             );
           case "send":
@@ -264,7 +290,7 @@ export const ActionButton = ({
                 message={result ? result : message}
                 loading={loading}
                 showOnlyMessage={showOnlyMessage}
-                onSend={!loading && !result ? handleConfirm : undefined}
+                onSend={!loading && !result ? () => handleConfirm() : undefined}
               />
             );
           case "confirm":
@@ -276,12 +302,12 @@ export const ActionButton = ({
                   result ? (
                     <span>{result}</span>
                   ) : (
-                    "Tem certeza que deseja remover este item?"
+                    <span>{message}</span>
                   )
                 }
                 loading={loading}
                 showOnlyMessage={showOnlyMessage}
-                onConfirm={!loading && !result ? handleConfirm : undefined}
+                onConfirm={!loading && !result ? () => handleConfirm() : undefined}
                 onCancel={!loading && !result ? handleCancel : undefined}
               />
             );

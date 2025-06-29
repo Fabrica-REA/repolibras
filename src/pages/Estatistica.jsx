@@ -1,6 +1,7 @@
 import "../assets/css/estatistica.css";
 import { useState } from "react";
 import GerenciarUsuarios from "./GerenciarUsuarios";
+import Gerenciar from "./Gerenciar";
 
 const pages = {
   dashboard: (
@@ -8,7 +9,8 @@ const pages = {
       <h2 style={{ marginBottom: 24 }}>Visão Geral</h2>
     </div>
   ),
-  usuários: <div className="dashboard-content"><GerenciarUsuarios/></div>,
+  usuários: <div className="dashboard-content"><GerenciarUsuarios /></div>,
+  videos: <div className="dashboard-content"><Gerenciar /></div>,
   // relatórios: <div className="dashboard-content">Reports & Analytics</div>,
   // configurações: <div className="dashboard-content">Settings</div>,
 };
@@ -24,7 +26,11 @@ const Estatistica = () => {
     // },
     {
       icon: "pi pi-users",
-      label: "Usuários",
+      label: "usuários",
+    },
+    {
+      icon: "pi pi-video",
+      label: "videos",
     },
     // {
     //   icon: "pi pi-clipboard",

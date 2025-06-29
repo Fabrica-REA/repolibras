@@ -7,12 +7,11 @@
 }
 
 .solicitacoes-table {
-    width: 100%;
-    height: 100%;
-    border-collapse: collapse;
     background: #f8fafc;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: auto;
+    width: 100%;
+    table-layout: auto;
 }
 
 .solicitacoes-table th,
@@ -42,17 +41,9 @@
 }
 
 .solicitacoes-table tbody {
-    display: block;
     max-height: calc(100vh - 56px);
     overflow-y: auto;
     width: 100%;
-}
-
-.solicitacoes-table thead,
-.solicitacoes-table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
 }
 
 .acoes-cell {
@@ -61,24 +52,75 @@
     gap: 1.5rem;
 }
 
-@media (max-width: 1200px) {
-    .solicitacoes-container {
-        margin: 20px 80px;
-    }
-}
-
-@media (max-width: 600px) {
-    .solicitacoes-container {
-        margin: 20px 40px;
-    }
+@media (max-width: 768px) {
 
     .solicitacoes-table th,
     .solicitacoes-table td {
-        padding: 0.5rem;
-        font-size: 0.95rem;
+        padding: 0.4rem;
+        font-size: 0.9rem;
     }
 
     .video-preview {
-        width: 80px;
+        width: 60px;
+        height: 40px;
+    }
+
+    .upload-container {
+        min-height: 32px;
+        padding: 4px 6px;
+    }
+
+    .upload-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .upload-text {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    @media (max-width: 767px) {
+        .solicitacoes-container {
+            margin: 20px 0;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            display: block;
+            position: relative;
+        }
+
+        .solicitacoes-table {
+            width: auto;
+            min-width: 100%;
+            display: table;
+            border-collapse: collapse;
+            white-space: nowrap;    
+            margin-left: 0;
+            table-layout: auto;
+        }
+
+     
+        .solicitacoes-table th,
+        .solicitacoes-table td {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .solicitacoes-table select {
+            max-width: 100px;
+        }
+
+        .acoes-cell {
+            gap: 0.5rem;
+        }
+
+        .video-preview {
+            width: 30px;
+            height: 20px;
+        }
     }
 }

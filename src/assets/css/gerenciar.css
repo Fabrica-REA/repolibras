@@ -1,23 +1,38 @@
-.solictacoes-container {
+.gerenciar-container {
   margin: 0 auto;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: block;
 }
 
-.solictacoes-table {
+.gerenciar-table {
+  background: #f8fafc;
+  overflow: hidden;
   width: 100%;
-  border-collapse: collapse;
+  table-layout: auto;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.solictacoes-table th,
-.solictacoes-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.gerenciar-table th,
+.gerenciar-table td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+  justify-content: center;
 }
 
-.solictacoes-table th {
-  background-color: #f2f2f2;
+.gerenciar-table th {
+  background: var(--secondary-color);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.gerenciar-table tr:last-child td {
+  border-bottom: none;
 }
 
 .video-preview {
@@ -27,16 +42,16 @@
   image-rendering: optimizeQuality;
 }
 
-.edit-row{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
+.edit-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
 }
 
-.edit-row > .icon-btn {
-    margin: 0 0 0 0.5rem;
-    padding: 0.3rem;
+.edit-row>.icon-btn {
+  margin: 0 0 0 0.5rem;
+  padding: 0.3rem;
 }
 
 .editable-input {
@@ -57,11 +72,52 @@
 }
 
 select {
-    background-color: white;
+  background-color: white;
 }
 
 select:focus {
-   background-color: white;
-    color: black;
-    outline: none;
+  background-color: white;
+  color: black;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .gerenciar-container {
+    padding: 0 5px;
+  }
+
+  .gerenciar-table {
+    width: 100%;
+  }
+
+  .gerenciar-table th,
+  .gerenciar-table td {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .gerenciar-table td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 414px) {
+  .gerenciar-container {
+    padding: 0;
+  }
+
+  .gerenciar-table {
+    width: 100%;
+  }
+
+  .gerenciar-table th,
+  .gerenciar-table td {
+    padding: 5px;
+  }
+
+  .gerenciar-table td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }

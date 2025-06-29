@@ -1,111 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import "../assets/css/pesquisar.css";
+import "../assets/css/utilidades.css";
 import Video from "../components/Video";
 import getresultadosFiltrados from "../api/Pesquisar";
-import { Loading } from "../utils/Utilidades";
-
-// const resultadosMock = [
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",
-//       "https://samplelib.com/mp4/sample-5s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",
-//       "https://samplelib.com/mp4/sample-5s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",    ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Casa",
-//     contexto: "Lugar onde você mora",
-//     videos: [
-//       "https://www.w3schools.com/html/mov_bbb.mp4",
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-//     ],
-//   },
-//   {
-//     palavra: "Árvore",
-//     contexto: "Planta grande com tronco",
-//     videos: [
-//     ]
-//   },
-//   {
-//     palavra: "Carro",
-//     contexto: "Veículo de transporte",
-//     videos: [
-//       "https://www.appsloveworld.com/wp-content/uploads/2018/10/SampleVideo_1280x720_1mb.mp4",
-//       "https://samplelib.com/mp4/sample-10s.mp4",
-//       "https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4",
-//       "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-//     ],
-//   },
-// ];
+import { ConfirmPopUp, Loading } from "../utils/Utilidades";
+import { useUsuario } from "../context/usuarioContext";
+import { postSolicitacao } from "../api/Solicitacoes";
 
 function Pesquisar() {
   const [modalAberto, setModalAberto] = useState(false);
@@ -113,11 +13,11 @@ function Pesquisar() {
   const [busca, setBusca] = useState("");
   const [resultadosFiltrados, setresultadosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Track video loading
-  const [videosToLoad, setVideosToLoad] = useState(0);
-  const [videosLoaded, setVideosLoaded] = useState(0);
-  const firstLoad = useRef(true);
+  const { usuario } = useUsuario();
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageText, setMessageText] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const inputRef = useRef(null);
 
   const abrirModalVideos = (videos) => {
     setModalVideos(videos);
@@ -129,59 +29,72 @@ function Pesquisar() {
     setModalVideos([]);
   };
 
-  const limparBusca = () => setBusca("");
+  console.log(resultadosFiltrados);
+  
 
   useEffect(() => {
     setLoading(true);
-    setVideosToLoad(0);
-    setVideosLoaded(0);
     setTimeout(() => {
       getresultadosFiltrados(busca)
-        .then(res => {
+        .then((res) => {
           setresultadosFiltrados(res);
-          // Count total videos
-          const totalVideos = res.reduce((acc, item) => acc + (item.videos ? item.videos.length : 0), 0);
-          setVideosToLoad(totalVideos);
-          // If no videos, loading should be false
-          if (totalVideos === 0) setLoading(false);
+          setLoading(false);
+          setDropdownVisible(busca && res.length > 0);
         })
-        .catch(e => {
-          console.error('Erro na busca dos videos:', e);
+        .catch((e) => {
+          console.error("Erro na busca dos videos:", e);
           setLoading(false);
         });
-    }, 0)
-  }, [busca])
+    }, 0);
+  }, [busca]);
 
-  // When all videos loaded, hide loading
-  useEffect(() => {
-    if (!firstLoad.current && videosToLoad > 0 && videosLoaded >= videosToLoad) {
-      setLoading(false);
+  const handlePalavraSolicitacao = async (palavra, contexto, usuario) => {
+    try {
+      const res = await postSolicitacao(palavra, contexto, usuario);
+      if (res && res.message) {
+        setMessageText(res.message);
+      } else if (typeof res === "string") {
+        setMessageText(res);
+      } else {
+        setMessageText("Solicitação enviada com sucesso!");
+      }
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+        setBusca(""); 
+      }, 800);
+    } catch (e) {
+      setMessageText("Erro ao enviar solicitação.");
+      console.log(e);
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 800);
     }
-    firstLoad.current = false;
-  }, [videosLoaded, videosToLoad]);
+  };
 
-  // Reset counters when results change
-  useEffect(() => {
-    setVideosLoaded(0);
-    const totalVideos = resultadosFiltrados.reduce((acc, item) => acc + (item.videos ? item.videos.length : 0), 0);
-    setVideosToLoad(totalVideos);
-    if (totalVideos === 0) setLoading(false);
-  }, [resultadosFiltrados]);
+  // Hide dropdown on Enter
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      setDropdownVisible(false);
+    }
+  };
 
-  // Video load/error handler
-  const handleVideoLoaded = () => setVideosLoaded(v => v + 1);
-
-  // const resultadosFiltrados = resultadosMock.filter((item) =>
-  //   item.palavra.toLowerCase().includes(busca.toLowerCase().trim())
-  // );
-
-  console.log("resultadosFiltrados:", resultadosFiltrados);
+  // Autofill and hide dropdown on click
+  const handleDropdownItemClick = (palavra) => {
+    setBusca(palavra.DesPalavra);
+    setDropdownVisible(false);
+    setTimeout(() => {
+      inputRef.current && inputRef.current.blur();
+    }, 0);
+  };
+  
 
   return (
     <div className="pesquisar-container">
       <div
         className={
-          busca && resultadosFiltrados.length !== 0
+          busca && resultadosFiltrados.length !== 0 && dropdownVisible
             ? "input-wrapper input-wrapper-active"
             : "input-wrapper"
         }
@@ -204,18 +117,28 @@ function Pesquisar() {
           type="text"
           placeholder="Pesquise uma Palavra"
           value={busca}
-          onChange={(e) => setBusca(e.target.value)}
+          onChange={(e) => {
+            setBusca(e.target.value);
+            setDropdownVisible(true);
+          }}
           maxLength={50}
+          onKeyDown={handleInputKeyDown}
+          ref={inputRef}
         />
         {busca && (
-          <span className="clear-btn" onClick={limparBusca}>
+          <span className="clear-btn" onClick={() => { setBusca(""); setDropdownVisible(false); }}>
             ×
           </span>
         )}
-        {busca && resultadosFiltrados.length > 0 && (
+        {busca && resultadosFiltrados.length > 0 && dropdownVisible && (
           <div className="search-dropdown">
             {resultadosFiltrados.map((palavra, id) => (
-              <div className="dropdown-item" key={id}>
+              <div
+                className="dropdown-item"
+                key={id}
+                onClick={() => handleDropdownItemClick(palavra)}
+                style={{ cursor: "pointer" }}
+              >
                 <span>{palavra.DesPalavra}</span>
                 <span
                   style={{
@@ -231,23 +154,22 @@ function Pesquisar() {
           </div>
         )}
       </div>
-      {/* done for now  */}
       <div className="grid-resultados">
         {busca && resultadosFiltrados.length === 0 ? (
           <div className="nenhum-resultado">
             <p>Nenhum resultado encontrado para "{busca}".</p>
             <button
               className="solicitar-video-btn"
-              onClick={() => alert("Solicitação de vídeo enviada!")}
+              onClick={() => handlePalavraSolicitacao(busca, 1, usuario)}
             >
               Solicitar vídeo para esta palavra
             </button>
           </div>
+        ) : loading ? (
+          <Loading open={loading} />
         ) : (
-          loading ? (
-            <Loading open={loading} />
-          ) : (
-            resultadosFiltrados.map((item, id) => (
+          resultadosFiltrados.map((item, id) => {
+            return (
               <div className="card" key={id}>
                 <div className="card-header">
                   <div>
@@ -256,53 +178,46 @@ function Pesquisar() {
                   </div>
                 </div>
                 <div className="video-grid">
-                  {/* Render videos with load/error handlers */}
-                  {item.videos && item.videos.length === 0 ? (
+                  {item.SituacaoId === 5 ? (
                     <div className="nenhum-resultado">
                       <li className="pi pi-clock"></li>
-                      <span>A palavra está em processo de gravação</span>
+                      <span>A palavra está in processo de gravação</span>
                     </div>
-                  ) : item.videos && item.videos.length === 1 ? (
+                  ) :  item.videos.length === 1 ? (
                     <Video
-                      src={item.videos[0]}
+                      src={item.videos[0].videoUrl}
                       classNameVideo={"video-thumb single"}
                       index={0}
-                      onLoadedData={handleVideoLoaded}
-                      onError={handleVideoLoaded}
                     />
                   ) : item.videos && item.videos.length === 2 ? (
                     <>
                       <Video
-                        src={item.videos[0]}
+                        src={item.videos[0].videoUrl}
                         classNameVideo={"video-thumb double double-top"}
                         index={0}
-                        onLoadedData={handleVideoLoaded}
-                        onError={handleVideoLoaded}
+                        
                       />
                       <Video
-                        src={item.videos[1]}
+                        src={item.videos[1].videoUrl}
                         classNameVideo={"video-thumb double double-bottom"}
                         index={1}
-                        onLoadedData={handleVideoLoaded}
-                        onError={handleVideoLoaded}
+                        
                       />
                     </>
                   ) : item.videos && item.videos.length > 2 ? (
                     <>
-                      {item.videos.slice(0, 3).map((src, idx) => (
+                      {item.videos.slice(0, 3).map((video, idx) => (
                         <Video
                           key={idx}
-                          src={src}
+                          src={video.videoUrl}
                           classNameVideo={"video-thumb"}
                           index={idx}
-                          onLoadedData={handleVideoLoaded}
-                          onError={handleVideoLoaded}
                         />
                       ))}
                       {item.videos.length > 3 && (
                         <div
                           className="video-thumb mais"
-                          onClick={() => abrirModalVideos(item.videos)}
+                          onClick={() => abrirModalVideos(item.videos.map(v => v.videoUrl))}
                         >
                           + {item.videos.length - 3}
                         </div>
@@ -311,8 +226,9 @@ function Pesquisar() {
                   ) : null}
                 </div>
               </div>
-            ))
-          ))}
+            );
+          })
+        )}
       </div>
 
       {/* done for now */}
@@ -329,13 +245,21 @@ function Pesquisar() {
                   src={src}
                   classNameVideo={"video-thumb"}
                   index={id}
-                  onLoadedData={handleVideoLoaded}
-                  onError={handleVideoLoaded}
                 />
               ))}
             </div>
           </div>
         </div>
+      )}
+      {showMessage && (
+        <ConfirmPopUp
+          open={showMessage}
+          title={""}
+          message={messageText}
+          showOnlyMessage={true}
+          onConfirm={() => setShowMessage(false)}
+          onCancel={() => setShowMessage(false)}
+        />
       )}
     </div>
   );

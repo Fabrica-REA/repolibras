@@ -1,10 +1,10 @@
 .enviar-container {
   display: flex;
   height: auto;
+  overflow: visible;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.28);
-  overflow: hidden;
   margin: 40px auto;
   width: 80vw;
 }
@@ -38,6 +38,7 @@
   display: flex;
   flex-direction: column;
   padding: 32px 24px;
+  overflow: visible;
 }
 
 .enviar-col-right-link {
@@ -63,7 +64,7 @@
   display: flex;
   justify-content: start;
   gap: 2rem;
-  margin: 0 0 8px 24px;
+  margin-bottom: 8px;
   font-weight: bold;
   font-size: large;
 }
@@ -71,8 +72,7 @@
 .enviar-col-right .enviar-forms .enviar-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 24px;
+  gap: 4px;
 }
 
 .enviar-col-right .form-group {
@@ -102,11 +102,10 @@
 
 .enviar-col-right textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 25px;
 }
 
 .enviar-col-right .submit-button {
-  margin-top: 12px;
   padding: 12px 0;
   border: 1px solid var(--secondary-color);
   color: #fff;
@@ -116,12 +115,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
-  max-width: 80px;
+  max-width: 60px;
 }
 
 .enviar-col-right .submit-button img {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   transition: filter 0.2s;
 }
 
@@ -131,4 +130,116 @@
 
 .enviar-col-right .submit-button:hover img {
   filter: brightness(0) invert(1);
+}
+
+
+/* Desktop: 1920×1080 (Full HD) */
+@media (min-width: 1920px) {
+  .enviar-container {
+    width: 70vw;
+    margin: 50px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: larger;
+  }
+}
+
+/* Desktop: 1366×768 */
+@media (min-width: 1366px) and (max-width: 1919px) {
+  .enviar-container {
+    width: 75vw;
+    margin: 40px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: large;
+  }
+}
+
+/* Desktop: 1536×864 */
+@media (min-width: 1536px) and (max-width: 1919px) {
+  .enviar-container {
+    width: 72vw;
+    margin: 45px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: large;
+  }
+}
+
+/* Desktop: 1280×720 */
+@media (min-width: 1280px) and (max-width: 1365px) {
+  .enviar-container {
+    width: 80vw;
+    margin: 35px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: medium;
+  }
+}
+
+/* Desktop: 1440×900 */
+@media (min-width: 1440px) and (max-width: 1535px) {
+  .enviar-container {
+    width: 78vw;
+    margin: 38px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: medium;
+  }
+}
+
+@media (max-width: 414px) {
+  .enviar-container {
+    flex-direction: column;
+    margin: 0 auto;
+    width: 95vw;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .enviar-container {
+    flex-direction: column;
+    margin: 20px auto;
+    width: 90vw;
+    overflow: visible;
+  }
+
+  .enviar-col {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .enviar-col-right {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 1024px) {
+  .enviar-container {
+    margin: 35px auto;
+    width: 85vw;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .enviar-container {
+    overflow: visible;
+  }
+
+  .enviar-col-right {
+    overflow: visible;
+  }
 }

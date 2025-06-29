@@ -4,12 +4,15 @@
     gap: 30px;
     justify-content: center;
     align-items: center;
-    margin: 3rem 0 0 0;
+    padding: 40px 20px; 
+    box-sizing: border-box;
 }
 
 .opcoes {
     display: flex;
     gap: 30px;
+    flex-wrap: wrap; 
+    justify-content: center; 
 }
 
 .opcoes img {
@@ -21,6 +24,8 @@
     text-align: center;
     margin-top: 20px;
     padding: 20px;
+    width: 100%; 
+    box-sizing: border-box;
 }
 
 .sobre h1 {
@@ -34,4 +39,26 @@
     color: var(--secondary-color);
     line-height: 1.5;
     margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .sobre h1 {
+        font-size: 1.5rem;
+    }
+
+    .sobre p {
+        font-size: 1rem;
+    }
+
+    .opcoes img {
+        height: 40px;
+        width: 40px;
+    }
+}
+
+@media (max-width: 414px) {
+    .opcoes img {
+        height: 35px;
+        width: 35px;
+    }
 }

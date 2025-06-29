@@ -18,26 +18,29 @@ const Enviar = () => {
 
   const upload = async (e) => {
     e.preventDefault();
-    if (!file) {
+    const fileOrLink = activeTab === "Link" ? link : file;
+    console.log(fileOrLink, contextoSelecionado, usuario, palavra, observacoes);
+    if (activeTab === "Link" && !link) {
+      alert("Digite o link para enviar.");
+      setFile(null);
+      return;
+    } else if (activeTab === "Arquivo" && !file) {
       alert("Selecione um arquivo para enviar.");
+      setLink("");
       return;
     }
     setLoading(true);
-    try {
-      // Optionally, you can send other form data as well
-      const response = await postArquivo(file, contextoSelecionado, usuario, palavra);
-      console.log("Resposta do servidor:", response);
-
-      setFile(null);
-      setPalavra("");
-      setLink("");
-      setContextoSelecionado("");
-      setObservacoes("");
-    } catch (error) {
-      alert("Erro ao enviar arquivo.");
-    } finally {
-      setLoading(false);
-    }
+    await postArquivo(fileOrLink, contextoSelecionado, usuario, palavra, observacoes)
+      .then(res => console.log(res))
+      .catch(e => console.error("Erro ao enviar arquivo:", e))
+      .finally(() => {
+        setLoading(false)
+        setFile(null);
+        setPalavra("");
+        setLink("");
+        setContextoSelecionado("");
+        setObservacoes("");
+      });
   };
 
   useEffect(() => {
@@ -45,7 +48,7 @@ const Enviar = () => {
       .then(res => setContextos(res))
       .catch(e => {
         console.error('Erro ao carregar contextos:', e);
-        // setLoading(false);
+        setLoading(false);
       });
   }, [])
 
@@ -57,7 +60,7 @@ const Enviar = () => {
             <UploadFile
               classNameFile={"upload-container disabled"}
               width={80}
-              onFileChange={setFile} // <-- pass handler
+              onFileChange={(File) => setFile(File)} 
             />
           </div>
         </div>
