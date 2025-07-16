@@ -1,9 +1,15 @@
 import axios from "axios";
 
-export const getContextos = async () => {
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+
+// Busca contextos
+export const getContextos = async (token) => {
     try {
-        const response = await axios.get('http://localhost:5002/librasapi/contextos', {
-            headers: { 'Content-Type': 'application/json' }
+        const response = await axios.get(`${API_URL}/librasapi/contextos`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data
     } catch (e) {
@@ -11,7 +17,8 @@ export const getContextos = async () => {
     }
 }
 
-export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, observacao) => {
+// Envia arquivo ou link
+export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, observacao, linguagem, token) => {
     try {    
         const formData = new FormData();
         if (videoFileOrLink instanceof File) {
@@ -20,13 +27,15 @@ export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, o
             formData.append('link', videoFileOrLink);
         }
         formData.append('usuarioid', usuario.id);
-        formData.append('contexto', contexto.descricao);
         formData.append('contextoid', contexto.id);
         formData.append('palavra', palavra);
         formData.append('observacao', observacao);
+        formData.append('linguagem', linguagem);
 
-        const response = await axios.post('http://localhost:5002/librasapi/upload', formData, {
-            // Add progress monitoring (optional)
+        const response = await axios.post(`${API_URL}/librasapi/upload`, formData, {
+            headers: {
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
             onUploadProgress: (progressEvent) => {
                 const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 console.log(`Upload Progress: ${percentCompleted}%`);

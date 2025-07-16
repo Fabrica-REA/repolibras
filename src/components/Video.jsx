@@ -1,25 +1,26 @@
 import { useState } from "react";
+import '../assets/css/utilidades.css';
 
+// Verifica se o link é do YouTube
 const isYouTubeLink = (url) => {
     if (!url) return false;
     return url.includes("youtube.com") || url.includes("youtu.be");
 };
 
+// Gera a URL de embed do YouTube
 const getYouTubeEmbedUrl = (url) => {
     if (!url) return "";
-    // Convert youtu.be/VIDEO_ID to youtube.com/embed/VIDEO_ID
+    // Converte youtu.be/VIDEO_ID para youtube.com/embed/VIDEO_ID
     const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]+)/);
     if (ytMatch && ytMatch[1]) {
-        // Add vq=hd1080 for better quality
-        return `https://www.youtube.com/embed/${ytMatch[1]}?vq=hd760`;
+        return `https://www.youtube.com/embed/${ytMatch[1]}?vq=hd760&showinfo=0`;
     }
     return url;
 };
 
+// Componente de vídeo, exibe vídeo local ou YouTube
 const Video = ({ src, index, classNameVideo }) => {
     const [hoveredIndex, setHoveredIndex] = useState(null);
-
-    // if (!src) return <div className={classNameVideo}>No video source provided</div>;
 
     if (isYouTubeLink(src)) {
         return (

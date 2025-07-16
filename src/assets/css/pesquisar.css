@@ -97,17 +97,20 @@
 
 .search-dropdown .dropdown-item:hover {
   background: #f1f3f4;
+  color: var(--primary-color);
 }
 
 /* End of Dropdown for search results */
 
 .grid-resultados {
   display: grid;
-  grid-template-columns: repeat(4, minmax(320px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   width: 100%;
   align-items: stretch;
   box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .card {
@@ -119,7 +122,9 @@
   flex-direction: column;
   height: 100%;
   min-height: 320px;
+  min-width: 0;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .card-header {
@@ -153,7 +158,6 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   min-height: 180px;
-  position: relative;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -272,6 +276,7 @@
 .nenhum-resultado {
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
@@ -280,7 +285,6 @@
   height: 100%;
   width: 100%;
   grid-column: 1 / -1;
-  min-height: 120px;
   margin: auto;
 }
 

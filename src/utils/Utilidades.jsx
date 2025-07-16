@@ -1,6 +1,7 @@
 import "../assets/css/utilidades.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
+// Página 404 padrão
 export const Pagina404 = () => {
   return (
     <div className="container-404">
@@ -13,6 +14,7 @@ export const Pagina404 = () => {
   );
 };
 
+// Componente de loading (carregamento)
 export const Loading = ({ open, message }) => {
   if (!open) return null;
   return (
@@ -31,6 +33,7 @@ export const Loading = ({ open, message }) => {
   );
 };
 
+// Popup de confirmação genérico
 export const ConfirmPopUp = ({
   open,
   title,
@@ -75,6 +78,7 @@ export const ConfirmPopUp = ({
   );
 };
 
+// Popup para recusa ou observação
 export const DeclinePopUp = ({
   open,
   title,
@@ -83,7 +87,7 @@ export const DeclinePopUp = ({
   onCancel,
   loading,
   showOnlyMessage,
-  observationMode, // <-- new prop to toggle observation mode
+  observationMode,
 }) => {
   const [reason, setReason] = useState("");
 
@@ -152,6 +156,7 @@ export const DeclinePopUp = ({
   );
 };
 
+// Popup para envio (usado em algumas ações)
 const SendPopUp = ({ open, message, loading, showOnlyMessage, onSend }) => {
   if (open && !loading && !showOnlyMessage) {
     onSend();
@@ -182,6 +187,7 @@ const SendPopUp = ({ open, message, loading, showOnlyMessage, onSend }) => {
   );
 };
 
+// Botão de ação genérico com popup e feedback
 export const ActionButton = ({
   icon,
   type,
@@ -191,55 +197,84 @@ export const ActionButton = ({
   children,
   action,
   endMessage,
-  observationMode, // <-- allow passing this prop
+  observationMode,
+  disabled,
 }) => {
+  // Estados internos para controlar popup, loading e mensagens
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
   const [showOnlyMessage, setShowOnlyMessage] = useState(false);
 
+  // Abre popup e executa ação se necessário
   const handleRemove = () => {
     setOpen(true);
     setResult("");
     setShowOnlyMessage(false);
+    if (type === "message" && typeof action === "function") {
+      Promise.resolve(action())
+        .then((res) => {
+          if (res === false) {
+            setOpen(false);
+          }
+        })
+        .catch(() => {
+          setOpen(false);
+        });
+    }
   };
 
-  // Remove handleConfirm's argumentless version and allow passing a value (reason)
+  // Confirma ação e mostra feedback
   const handleConfirm = (value) => {
     setLoading(true);
     setShowOnlyMessage(false);
-    setTimeout(() => {
-      setLoading(false);
-      if (type === "accept") {
-        setResult(endMessage || "O video foi aprovado!");
-      } else if (type === "send") {
-        setResult(endMessage || "Enviado com sucesso!");
-      } else if (type === "confirm") {
-        setResult(endMessage || "Item removido com sucesso");
-      } else {
-        setResult(endMessage || "Item removido com sucesso");
-      }
-      setShowOnlyMessage(true);
-      if (typeof action === "function") {
-        action(value);
-      }
-      setTimeout(() => {
+    Promise.resolve(typeof action === "function" ? action(value) : undefined)
+      .then((res) => {
+        setLoading(false);
+        if (res === false) {
+          setOpen(false);
+          setResult("");
+          setShowOnlyMessage(false);
+          return;
+        }
+        if (type === "accept") {
+          setResult(endMessage || "O video foi aprovado!");
+        } else if (type === "send") {
+          setResult(endMessage || "Enviado com sucesso!");
+        } else {
+          setResult(endMessage || "Item removido com sucesso");
+        }
+        setShowOnlyMessage(true);        
+        setTimeout(() => {
+          setOpen(false);
+          setResult("");
+          setShowOnlyMessage(false);
+        }, 800);
+      })
+      .catch(() => {
+        setLoading(false);
         setOpen(false);
         setResult("");
         setShowOnlyMessage(false);
-      }, 800);
-    }, 1000);
+      });
   };
 
+  // Cancela popup
   const handleCancel = () => {
     setOpen(false);
     setResult("");
     setShowOnlyMessage(false);
   };
 
+  // Renderiza botão e popup conforme o tipo
   return (
     <>
-      <button className={className} onClick={handleRemove} type="button">
+      <button
+        className={className}
+        onClick={handleRemove}
+        type="button"
+        disabled={disabled ? disabled : false}
+      >
         {icon ? <i className={`pi ${icon}`}></i> : children}
       </button>
       {(() => {
@@ -311,8 +346,74 @@ export const ActionButton = ({
                 onCancel={!loading && !result ? handleCancel : undefined}
               />
             );
+          case "message":
+            return (
+              <ConfirmPopUp
+                open={open}
+                title={title || ""}
+                message={result || message}
+                showOnlyMessage={true}
+              />
+            );
         }
       })()}
     </>
   );
 };
+
+// Componente de mensagem de erro com barra de progresso para auto-fechamento
+export const ErrorMessage = ({ error, onClose, duration = 3000 }) => {
+  const [progress, setProgress] = useState(100);
+  const timerRef = useRef();
+
+  useEffect(() => {
+    if (!error) return;
+    setProgress(100);
+
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    timerRef.current = setInterval(() => {
+      setProgress((prev) => {
+        if (prev <= 0) {
+          clearInterval(timerRef.current);
+          setTimeout(() => {
+            if (onClose) onClose();
+          }, 0);
+          return 0;
+        }
+        return prev - 100 / (duration / 50);
+      });
+    }, 50);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [error, onClose, duration]);
+
+  if (!error) return null;
+  return (
+    <div className="error-message">
+      <span>{error}</span>
+      <div className="error-message-progress-bar-bg">
+        <div
+          className="error-message-progress-bar"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      {onClose && (
+        <li className="pi pi-times error-message-close" onClick={onClose}></li>
+      )}
+    </div>
+  );
+};
+
+// Funções utilitárias para validação de email e senha
+export function validarEmail(email) {
+  const emailRegex = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  return emailRegex.test(email);
+}
+
+export function validarSenha(senha) {
+  const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return senhaRegex.test(senha);
+}

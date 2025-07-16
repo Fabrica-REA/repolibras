@@ -1,32 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import '../assets/css/uploadFile.css';
 
-const UploadFile = ({ classNameFile, width, onFileChange, rowId = null }) => {
-    const [file, setFile] = useState(null);
+// Componente de upload de arquivo
+const UploadFile = ({ classNameFile, width, onFileChange, rowId = null, file: fileProp }) => {
+    const isControlled = fileProp !== undefined;
+    const [internalFile, setInternalFile] = useState(null);
     const [selected, setSelectedStatus] = useState(false);
 
+    useEffect(() => {
+        if (isControlled) {
+            setSelectedStatus(!!fileProp);
+        }
+    }, [fileProp, isControlled]);
+
+    const file = isControlled ? fileProp : internalFile;
+
+    // Lida com a seleção de arquivo
     const handleFileChange = (e) => {
         const selectedFile = e.target.files ? e.target.files[0] : null;
         if (selectedFile) {
-            setFile(selectedFile);
+            if (!isControlled) setInternalFile(selectedFile);
             setSelectedStatus(true);
             if (onFileChange) {
-                onFileChange(rowId || selectedFile); 
+                isControlled ? onFileChange(rowId, selectedFile) : onFileChange(selectedFile);
             }
         }
     };
 
+    // Remove o arquivo selecionado
     const handleRemove = () => {
-        setFile(null);
+        if (!isControlled) setInternalFile(null);
         setSelectedStatus(false);
         if (onFileChange) {
-            onFileChange(rowId || null); 
+            isControlled ? onFileChange(rowId, null) : onFileChange(null);
         }
     };
 
     return (
-        <div
-            className={classNameFile ? classNameFile : "upload-container"}>
+        <div className={classNameFile ? classNameFile : "upload-container"}>
             {!file ? (
                 <label htmlFor={`dropzone-file${rowId ? `-${rowId}` : ""}`} className="upload-content" >
                     <div className="upload-wrapper" >

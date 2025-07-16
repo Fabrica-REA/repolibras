@@ -1,10 +1,9 @@
 .profile-layout {
   display: flex;
   background: #f9f9f9;
-  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   overflow: hidden;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 
 .options-container {
@@ -63,7 +62,6 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--primary-color);
-  margin-bottom: 10px;
 }
 
 .dropdown-menu {
@@ -80,7 +78,7 @@
   width: 200px;
 }
 
-.dropdown-item {
+.dropdown-item-perfil {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -102,13 +100,13 @@
   color: var(--primary-color);
 }
 
-.dropdown-item.selected {
+.dropdown-item-perfil.selected {
   background: #dadfeb;
   color: var(--tertiary-color);
   font-weight: bold;
 }
 
-.dropdown-item.selected .dropdown-item-icon {
+.dropdown-item-perfil.selected .dropdown-item-icon {
   color: var(--secondary-color);
 }
 

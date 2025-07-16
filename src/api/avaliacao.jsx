@@ -1,22 +1,30 @@
 import axios from "axios";
 
-export const getAvaliacoes = async () => {
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+
+export const getAvaliacoes = async (token) => {
     try {
-        // 1. Fetch all avaliações
-        const avaliacoesResponse = await axios.get('http://localhost:5002/librasapi/avaliacoes', {
-            headers: { 'Content-Type': 'application/json' }
+        const avaliacoesResponse = await axios.get(`${API_URL}/librasapi/avaliacoes`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         const avaliacoes = avaliacoesResponse.data;
 
-        // 2. For each avaliação, fetch its video as a blob and create an object URL
         const avaliacoesComVideo = await Promise.all(
             avaliacoes.map(async (avaliacao) => {
                 const { Pasta, NomeArquivo } = avaliacao;
                 let videoUrl = null;
                 try {
                     const videoResponse = await axios.get(
-                        `http://localhost:5002/librasapi/download/${Pasta}/${NomeArquivo}`,
-                        { responseType: "blob" }
+                        `${API_URL}/librasapi/download/${Pasta}/${NomeArquivo}`,
+                        {
+                            responseType: "blob",
+                            headers: {
+                                ...(token ? { Authorization: `Bearer ${token}` } : {})
+                            }
+                        }
                     );
                     videoUrl = URL.createObjectURL(videoResponse.data);
                 } catch (e) {
@@ -33,22 +41,28 @@ export const getAvaliacoes = async () => {
     }
 }
 
-export const recusarAvaliacao = async (id, usuario_id, quemRecusou, motivo) => {
+export const recusarAvaliacao = async (id, usuario_id, quemRecusou, motivo, token) => {
     try {
-        const response = await axios.post(`http://localhost:5002/librasapi/desaprovacao/${id}`, { usuario_id, quemRecusou, motivo }, {
-            headers: { 'Content-Type': 'application/json' }
+        const response = await axios.post(`${API_URL}/librasapi/desaprovacao/${id}`, { usuario_id, quemRecusou, motivo }, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data;
     } catch (error) {
-        console.error('Erro ao recusar a avaliação:', error);
+        console.error('Erro ao recusar a avaliação:', error, id, usuario_id, quemRecusou, motivo, token);
         throw error;
     }
 }
 
-export const aceitarAvaliacao = async (id, usuario_id, quemAprovou) => {
+export const aceitarAvaliacao = async (id, usuario_id, quemAprovou, token) => {
     try {
-        const response = await axios.post(`http://localhost:5002/librasapi/aprovacao/${id}`, { usuario_id, quemAprovou }, {
-            headers: { 'Content-Type': 'application/json' }
+        const response = await axios.post(`${API_URL}/librasapi/aprovacao/${id}`, { usuario_id, quemAprovou }, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data;
     } catch (error) {

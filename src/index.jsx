@@ -6,7 +6,6 @@ import ErrorBoundary from "./utils/ErrorBoundary.jsx";
 import { UsuarioProvider } from "./context/usuarioContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <BrowserRouter>
       <ErrorBoundary>
         <UsuarioProvider>
@@ -14,5 +13,4 @@ createRoot(document.getElementById("root")).render(
         </UsuarioProvider>
       </ErrorBoundary>
     </BrowserRouter>
-  </StrictMode>
 );

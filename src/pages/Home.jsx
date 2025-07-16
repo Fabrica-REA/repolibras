@@ -1,18 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import '../assets/css/home.css';
 
+// Página inicial
 const Home = () => {
     const navigate = useNavigate()
 
     return (
         <div className='container'>
             <div className='opcoes'>
-                <button className='btn btn-Terena' onClick={() => navigate('/pesquisar')}>
-                    <img src='/img/icon.svg' alt='Terena Flag' />
+                <button className='btn btn-Terena' onClick={() => navigate('/pesquisar', { state: { linguagem: "terena" } })}>
+                    <img src='/img/language.svg' alt='Terena Flag' />
                     <h1>Terena</h1>
                 </button>
-                <button className='btn btn-portugues' onClick={() => navigate('/pesquisar')}>
-                    <img src='/img/icon.svg' alt='Portuguese Flag' />
+                <button className='btn btn-portugues' onClick={() => navigate('/pesquisar', { state: { linguagem: "portugues" } })}>
+                    <img src='/img/language.svg' alt='Portuguese Flag' />
                     <h1>Português</h1>
                 </button>
             </div>

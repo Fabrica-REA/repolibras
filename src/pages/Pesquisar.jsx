@@ -2,40 +2,47 @@ import { useEffect, useState, useRef } from "react";
 import "../assets/css/pesquisar.css";
 import "../assets/css/utilidades.css";
 import Video from "../components/Video";
-import getresultadosFiltrados from "../api/Pesquisar";
+import { getPalavras,  postBuscaPalavra } from "../api/Pesquisar";
 import { ConfirmPopUp, Loading } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 import { postSolicitacao } from "../api/Solicitacoes";
+import { useLocation } from "react-router-dom";
 
+// Página de pesquisa de palavras e vídeos
 function Pesquisar() {
   const [modalAberto, setModalAberto] = useState(false);
   const [modalVideos, setModalVideos] = useState([]);
   const [busca, setBusca] = useState("");
   const [resultadosFiltrados, setresultadosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { usuario } = useUsuario();
+  const { usuario, token } = useUsuario();
   const [showMessage, setShowMessage] = useState(false);
   const [messageText, setMessageText] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const inputRef = useRef(null);
+  const location = useLocation();
+  const { state } = location;
+  const typingTimeoutRef = useRef(null); 
 
+  console.log(typingTimeoutRef.current);
+  
+
+  // Abre modal de vídeos
   const abrirModalVideos = (videos) => {
     setModalVideos(videos);
     setModalAberto(true);
   };
 
+  // Fecha modal de vídeos
   const fecharModalVideos = () => {
     setModalAberto(false);
     setModalVideos([]);
   };
 
-  console.log(resultadosFiltrados);
-  
-
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      getresultadosFiltrados(busca)
+      getPalavras(busca, state.linguagem)
         .then((res) => {
           setresultadosFiltrados(res);
           setLoading(false);
@@ -46,11 +53,30 @@ function Pesquisar() {
           setLoading(false);
         });
     }, 0);
-  }, [busca]);
+  }, [busca, state.linguagem]);
 
+  // Lida com mudança no campo de busca
+  const handleBuscaChange = (value) => {
+    setBusca(value);
+    setDropdownVisible(true);
+
+    // Clear previous timeout if user is still typing
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // Set a new timeout to send `postBuscaPalavra` after 1.5 second of inactivity
+    typingTimeoutRef.current = setTimeout(() => {
+      if (value.trim()) {
+        postBuscaPalavra(value, usuario?.id, state.linguagem);
+      }
+    }, 1500);
+  };
+
+  // Lida com solicitação de palavra
   const handlePalavraSolicitacao = async (palavra, contexto, usuario) => {
     try {
-      const res = await postSolicitacao(palavra, contexto, usuario);
+      const res = await postSolicitacao(palavra, contexto, usuario, state.linguagem, token);
       if (res && res.message) {
         setMessageText(res.message);
       } else if (typeof res === "string") {
@@ -61,7 +87,7 @@ function Pesquisar() {
       setShowMessage(true);
       setTimeout(() => {
         setShowMessage(false);
-        setBusca(""); 
+        setBusca("");
       }, 800);
     } catch (e) {
       setMessageText("Erro ao enviar solicitação.");
@@ -73,14 +99,14 @@ function Pesquisar() {
     }
   };
 
-  // Hide dropdown on Enter
+  // Lida com pressionamento de tecla no input
   const handleInputKeyDown = (e) => {
     if (e.key === "Enter") {
       setDropdownVisible(false);
     }
   };
 
-  // Autofill and hide dropdown on click
+  // Lida com clique em item do dropdown
   const handleDropdownItemClick = (palavra) => {
     setBusca(palavra.DesPalavra);
     setDropdownVisible(false);
@@ -88,7 +114,6 @@ function Pesquisar() {
       inputRef.current && inputRef.current.blur();
     }, 0);
   };
-  
 
   return (
     <div className="pesquisar-container">
@@ -117,10 +142,7 @@ function Pesquisar() {
           type="text"
           placeholder="Pesquise uma Palavra"
           value={busca}
-          onChange={(e) => {
-            setBusca(e.target.value);
-            setDropdownVisible(true);
-          }}
+          onChange={(e) => handleBuscaChange(e.target.value)}
           maxLength={50}
           onKeyDown={handleInputKeyDown}
           ref={inputRef}
@@ -183,25 +205,30 @@ function Pesquisar() {
                       <li className="pi pi-clock"></li>
                       <span>A palavra está in processo de gravação</span>
                     </div>
-                  ) :  item.videos.length === 1 ? (
+                  ) : item.SituacaoId === 0 ? (
+                    <div className="nenhum-resultado">
+                      <li className="pi pi-check-circle"></li>
+                      <span>A palavra foi solicitada</span>
+                    </div>
+                  ) : item.videos.length === 1 ? (
                     <Video
-                      src={item.videos[0].videoUrl}
+                      src={item.videos[0].videoUrl || item.videos[0].nome}
                       classNameVideo={"video-thumb single"}
                       index={0}
                     />
                   ) : item.videos && item.videos.length === 2 ? (
                     <>
                       <Video
-                        src={item.videos[0].videoUrl}
+                        src={item.videos[0].videoUrl || item.videos[0].nome}
                         classNameVideo={"video-thumb double double-top"}
                         index={0}
-                        
+
                       />
                       <Video
-                        src={item.videos[1].videoUrl}
+                        src={item.videos[1].videoUrl || item.videos[1].nome}
                         classNameVideo={"video-thumb double double-bottom"}
                         index={1}
-                        
+
                       />
                     </>
                   ) : item.videos && item.videos.length > 2 ? (
@@ -209,7 +236,7 @@ function Pesquisar() {
                       {item.videos.slice(0, 3).map((video, idx) => (
                         <Video
                           key={idx}
-                          src={video.videoUrl}
+                          src={video.videoUrl || item.videos.nome}
                           classNameVideo={"video-thumb"}
                           index={idx}
                         />

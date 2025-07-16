@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
 import "../assets/css/solicitacoes.css";
 import UploadFile from "../components/UploadFile";
-import { ActionButton, Loading } from "../utils/Utilidades";
+import { ActionButton, Loading, ErrorMessage } from "../utils/Utilidades";
 import { deleteSolicitacao, getSolicitacoes, sendSolicitacao } from "../api/Solicitacoes";
 import { useUsuario } from "../context/usuarioContext";
 import { getContextos } from "../api/Enviar";
 
+// Página de solicitações
 const Solicitacoes = () => {
   const [solicitacoes, setSolicitacoes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [contextos, setContextos] = useState([]);
-  const { usuario } = useUsuario();
+  const { usuario, token } = useUsuario();
   const [rowState, setRowState] = useState({});
-
-  console.log("Solicitacoes", solicitacoes, rowState);
-
+  const [error, setError] = useState(""); 
 
   useEffect(() => {
-    Promise.all([getSolicitacoes(), getContextos()])
+    Promise.all([getSolicitacoes(token), getContextos(token)])
       .then(([solicitacoesRes, contextosRes]) => {
         setSolicitacoes(solicitacoesRes);
         setContextos(contextosRes);
@@ -26,7 +25,6 @@ const Solicitacoes = () => {
           initialRowState[solicitacao.PalavraId] = {
             contextoSelecionado: solicitacao.ContextoId,
             file: null,
-            observacoes: ""
           };
         });
         setRowState(initialRowState);
@@ -38,21 +36,33 @@ const Solicitacoes = () => {
       });
   }, []);
 
+  // Remove solicitação
   const handleRemove = async (id) => {
     setLoading(true);
-    await deleteSolicitacao(id)
+    await deleteSolicitacao(id, token)
       .then((res) => console.log(res), setLoading(false))
       .catch(() => setLoading(false))
       .finally(() => window.location.reload());
   };
 
-  const handleSend = async (id, file, contextoSelecionado, usuario, palavra, observacoes) => {
-    await sendSolicitacao(id, file, contextoSelecionado, usuario, palavra, observacoes)
-      .then((res) => console.log(res), setLoading(false))
-      .catch((e) => console.log(e))
-      .finally(() => window.location.reload());
+  // Envia solicitação
+  const handleSend = async (id, file, contextoSelecionado, usuarioId, palavra, observacao) => {
+    if (!file) {
+      setError("Selecione um arquivo de vídeo para enviar.");
+      return false;
+    }
+    setError("");
+    setLoading(false);
+    await sendSolicitacao(id, file, contextoSelecionado, usuarioId, palavra, observacao, token)
+      .then((res) => console.log("response : ", res))
+      .catch((e) => {
+        setError("Erro ao enviar solicitação.");
+        console.log(e);
+      })
+      .finally(() => setLoading(false), window.location.reload());
   };
 
+  // Lida com mudança de contexto
   const handleContextChange = (id, value) => {
     setRowState(prev => ({
       ...prev,
@@ -63,8 +73,8 @@ const Solicitacoes = () => {
     }));
   };
 
+  // Lida com mudança de arquivo
   const handleFileChange = (id, file) => {
-    console.log(`Updating row ${id} with file:`, file); // Debug log
     setRowState(prev => ({
       ...prev,
       [id]: {
@@ -78,6 +88,9 @@ const Solicitacoes = () => {
     <div className="solicitacoes-container">
       <div className="title">
         <h1>Solicitações</h1>
+      </div>
+      <div className="error-message-container">
+        <ErrorMessage error={error} onClose={() => setError("")} />
       </div>
       {loading ? (
         <Loading open={loading} />
@@ -114,7 +127,7 @@ const Solicitacoes = () => {
                   <UploadFile
                     rowId={solicitacao.PalavraId}
                     file={rowState[solicitacao.PalavraId].file}
-                    onFileChange={handleFileChange} 
+                    onFileChange={handleFileChange}
                   />
                 </td>
                 <td>
@@ -134,16 +147,20 @@ const Solicitacoes = () => {
                       message={"Deseja enviar esta solicitação? Adicione uma observação se necessário."}
                       endMessage={"A Solicitação foi enviada!"}
                       observationMode={true}
-                      action={(observacoes) =>
-                        handleSend(
+                      action={(observacao) => {
+                        if (!rowState[solicitacao.PalavraId].file) {
+                          setError("É obrigatório um arquivo de vídeo para enviar.");
+                          return false;
+                        }
+                        return handleSend(
                           solicitacao.PalavraId,
                           rowState[solicitacao.PalavraId].file,
                           rowState[solicitacao.PalavraId].contextoSelecionado,
-                          usuario,
+                          usuario.id,
                           solicitacao.DesPalavra,
-                          observacoes
-                        )
-                      }
+                          observacao
+                        );
+                      }}
                     />
                   </div>
                 </td>

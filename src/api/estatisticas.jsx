@@ -1,7 +1,12 @@
-export const getusuarios = async () => {
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+
+export const getusuarios = async (token) => {
      try {
-        const response = await axios.get('http://localhost:5002/librasapi/*', {
-            headers: { 'Content-Type': 'application/json' }
+        const response = await axios.get(`${API_URL}/librasapi/usuarios`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data
     } catch (e) {
@@ -9,10 +14,13 @@ export const getusuarios = async () => {
     }
 }
 
-export const putUsuario = async (id, acesso) => {
+export const putUsuario = async (id, acesso, token) => {
     try {
-        const response = await axios.put(`http://localhost:5002/librasapi/usuarios/${id}`, { acesso }, {
-            headers: { 'Content-Type': 'application/json' }
+        const response = await axios.put(`${API_URL}/librasapi/usuarios/${id}`, { acesso }, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data;
     } catch (e) {

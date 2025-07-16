@@ -1,65 +1,57 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import imgPerfil from "../assets/images/profile_icon.svg";
-import { ActionButton } from "../utils/Utilidades";
+import { ActionButton, Loading } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 import { editarCredenciais } from "../api/Usuario";
 
 const Perfil = () => {
-  const { usuario } = useUsuario();
-  const [avatar] = useState(usuario.avatar || imgPerfil);
-  const [username, setUsername] = useState(usuario.nome);
-  const [email, setEmail] = useState(usuario.email);
-  const [password, setPassword] = useState(usuario.senha);
-  const [ConfirmPassword, setConfirmPassword] = useState(usuario.senha);
-
+  const { usuario, token } = useUsuario();
+  const [avatar] = useState(imgPerfil);
+  const [username, setUsername] = useState(usuario?.nome || "");
+  const [email, setEmail] = useState(usuario?.email || "");
+  const [password, setPassword] = useState(usuario?.senha || "");
+  const [ConfirmPassword, setConfirmPassword] = useState(usuario?.senha || "");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleEdit = (usuario, username, email, password, avatarParam) => {
-    // Convert base64 to Blob if needed for MySQL BLOB storage
-    let avatarToSend = avatarParam ? avatarParam : avatar;
-    if (avatarToSend && avatarToSend.startsWith("data:image")) {
-      // Convert base64 to Blob
-      const byteString = atob(avatarToSend.split(',')[1]);
-      const mimeString = avatarToSend.split(',')[0].split(':')[1].split(';')[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-      avatarToSend = new Blob([ab], { type: mimeString });
+  const initialValues = useRef({
+    avatar: usuario?.avatar || "",
+    username: usuario?.nome || "",
+    email: usuario?.email || "",
+    password: usuario?.senha || "",
+    ConfirmPassword: usuario?.senha || "",
+  });
+
+  useEffect(() => {
+    if (usuario) {
+      setUsername(usuario.nome || "");
+      setEmail(usuario.email || "");
+      setPassword(usuario.senha || "");
+      setConfirmPassword(usuario.senha || "");
+      initialValues.current = {
+        avatar: usuario.avatar || "",
+        username: usuario.nome || "",
+        email: usuario.email || "",
+        password: usuario.senha || "",
+        ConfirmPassword: usuario.senha || "",
+      };
     }
+  }, [usuario]);
+
+  if (!usuario) {
+    return <Loading open={true} />;
+  }
+
+  const handleEdit = (usuario, username, email, password) => {
     editarCredenciais(
       usuario.id,
       username,
       email,
       password,
-      avatarToSend
-    )
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e));
-    // setTimeout(() => window.location.reload(), 800);
+      token
+    ).then((res) => console.log(res)).catch((e) => console.log(e))
+    setTimeout(() => window.location.reload(), 800);
   };
-
-  // const handleAvatarChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (ev) => {
-  //       setAvatar(ev.target.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // Store initial values in refs so they don't change on re-render
-  const initialValues = useRef({
-    avatar: usuario.avatar,
-    username: usuario.nome,
-    email: usuario.email,
-    password: usuario.senha,
-    ConfirmPassword: usuario.senha,
-  });
 
   const isChanged =
     avatar !== initialValues.current.avatar ||
@@ -74,19 +66,6 @@ const Perfil = () => {
         <div className="avatar editable-avatar">
           <label htmlFor="avatar-upload" className="avatar-label">
             <img src={avatar} alt="Avatar" className="avatar-img" />
-            {/* <input
-              id="avatar-upload"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleAvatarChange}
-            />
-            <span
-              className="edit-avatar-text"
-              onClick={() => document.getElementById("avatar-upload").click()}
-            >
-              <i className="pi pi-pencil" />
-            </span> */}
           </label>
         </div>
       </div>

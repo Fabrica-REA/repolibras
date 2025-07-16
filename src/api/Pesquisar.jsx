@@ -1,27 +1,30 @@
 import axios from "axios";
 
-const getPalavras = async (q) => {
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+
+// Busca palavras e vídeos relacionados
+export const getPalavras = async (q, linguagem) => {
     if (q === undefined) {
         return [];
     } else {
         try {
-            const response = await axios.get(`http://localhost:5002/librasapi/palavras?descricao=${encodeURIComponent(q)}`, {
+            const response = await axios.get(`${API_URL}/palavras?descricao=${encodeURIComponent(q)}&linguagem=${linguagem}`, {
                 headers: { 'Content-Type': 'application/json' }
             });
 
             const pesquisas = response.data;
 
-            // For each pesquisa, if it has a videos array, fetch videoUrl for each video
+            // Para cada pesquisa, se tiver vídeos, busca a URL do vídeo
             const videosPesquisa = await Promise.all(
                 pesquisas.map(async (pesquisa) => {
                     if (Array.isArray(pesquisa.videos) && pesquisa.videos.length > 0) {
                         const videosWithUrl = await Promise.all(
                             pesquisa.videos.map(async (video) => {
-                                const { nome, pasta } = video;     
+                                const { nome, pasta } = video;
                                 let videoUrl = null;
                                 try {
                                     const videoResponse = await axios.get(
-                                        `http://localhost:5002/librasapi/download/${pasta}/${nome}`,
+                                        `${API_URL}/librasapi/download/${pasta}/${nome}`,
                                         { responseType: "blob" }
                                     );
                                     videoUrl = URL.createObjectURL(videoResponse.data);
@@ -32,7 +35,8 @@ const getPalavras = async (q) => {
                             })
                         );
                         return { ...pesquisa, videos: videosWithUrl };
-                }})
+                    }
+                })
             );
             return videosPesquisa;
         } catch (error) {
@@ -42,4 +46,24 @@ const getPalavras = async (q) => {
     }
 }
 
-export default getPalavras;
+// Registra busca de palavra
+export const postBuscaPalavra = async (desPalavra, usuarioId, linguagem) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/buscapalavra`,
+            {
+                desPalavra,
+                usuarioId: usuarioId || "visitante",
+                data: new Date().toISOString().slice(0, 19).replace('T', ' '), // Formata para DATETIME do MySQL
+                linguagem
+            },
+            {
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+        return response.data;
+    } catch (e) {
+        console.error("Erro ao registrar busca:", e);
+        return null;
+    }
+};

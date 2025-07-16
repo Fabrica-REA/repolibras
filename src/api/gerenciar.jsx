@@ -1,13 +1,19 @@
 import axios from "axios";
 
-export const getAllVideos = async () => {
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+
+// Busca todos os vídeos para gerenciamento
+export const getAllVideos = async (token) => {
     try {
-        const response = await axios.get('http://localhost:5002/librasapi/gerenciar/video', {
-            headers: { 'Content-Type': 'application/json' }
+        const response = await axios.get(`${API_URL}/librasapi/gerenciar/video`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         const { videos = [], status = [] } = response.data || {};
 
-        // For each video, fetch its video file as a blob and create an object URL
+        // Para cada vídeo, busca o arquivo como blob e cria URL
         const videosWithUrl = await Promise.all(
             videos.map(async (video) => {
                 const { Pasta, NomeArquivo } = video;
@@ -15,8 +21,13 @@ export const getAllVideos = async () => {
                 if (Pasta && NomeArquivo) {
                     try {
                         const videoResponse = await axios.get(
-                            `http://localhost:5002/librasapi/download/${Pasta}/${NomeArquivo}`,
-                            { responseType: "blob" }
+                            `${API_URL}/librasapi/download/${Pasta}/${NomeArquivo}`,
+                            {
+                                responseType: "blob",
+                                headers: {
+                                    ...(token ? { Authorization: `Bearer ${token}` } : {})
+                                }
+                            }
                         );
                         videoUrl = URL.createObjectURL(videoResponse.data);
                     } catch (e) {
@@ -34,14 +45,18 @@ export const getAllVideos = async () => {
     }
 }
 
-export const editVideo = async (id, descricao, contextoId, situacaoId) => {
+// Edita vídeo
+export const editVideo = async (id, descricao, contextoId, situacaoId, token) => {
     try {
-        const response = await axios.put(`http://localhost:5002/librasapi/gerenciar/video/${id}`, {
+        const response = await axios.put(`${API_URL}/librasapi/gerenciar/video/${id}`, {
             descricao,
             contextoId,
             situacaoId
         }, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data;
     } catch (e) {
@@ -50,12 +65,16 @@ export const editVideo = async (id, descricao, contextoId, situacaoId) => {
     }
 }
 
-export const editUsuarioAcesso = async (id, acesso) => {
+// Edita acesso do usuário
+export const editUsuarioAcesso = async (id, acesso, token) => {
     try {
-        const response = await axios.put(`http://localhost:5002/librasapi/gerenciar/usuario/${id}`, {
+        const response = await axios.put(`${API_URL}/librasapi/gerenciar/usuario/${id}`, {
             acesso
         }, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
         return response.data;
     } catch (e) {

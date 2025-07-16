@@ -3,7 +3,7 @@ import { Link, Routes, Route, Navigate } from "react-router-dom";
 import home from "../assets/images/home_icon.svg";
 import enviar from "../assets/images/send_icon.svg";
 import avaliar from "../assets/images/clipboard_icon.svg";
-import solicitacoes from "../assets/images/request_icon.svg";
+import solicitacoes from "../assets/images/solicitation_icon.svg";
 import conta from "../assets/images/profile_icon.svg";
 import estatisticas from "../assets/images/statistics_icon.svg";
 import Home from "../pages/Home";
@@ -20,6 +20,7 @@ import { Pagina404 } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 import { useState, useEffect } from "react";
 
+// Rota protegida: só permite acesso se o usuário estiver autenticado e tiver o papel permitido
 const ProtectedRoute = ({ allowedRoles, element }) => {
   const { usuario } = useUsuario();
 
@@ -76,7 +77,7 @@ const Header = () => {
                     <div className="dropdown-menu">
                       <Link
                         to="/"
-                        className="dropdown-item"
+                        className="dropdown-item-header"
                         onClick={toggleDropdown}
                       >
                         <img src={home} alt="Home" className="dropdown-icon" />
@@ -85,7 +86,7 @@ const Header = () => {
                       {(isCadastrado || isProfessor || isAdministrador) && (
                         <Link
                           to="/enviar"
-                          className="dropdown-item"
+                          className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
                           <img
@@ -99,7 +100,7 @@ const Header = () => {
                       {(isProfessor || isAdministrador || isGestor) && (
                         <Link
                           to="/solicitacoes"
-                          className="dropdown-item"
+                          className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
                           <img
@@ -113,7 +114,7 @@ const Header = () => {
                       {(isProfessor || isAdministrador) && (
                         <Link
                           to="/avaliar"
-                          className="dropdown-item"
+                          className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
                           <img
@@ -127,7 +128,7 @@ const Header = () => {
                       {(isAdministrador || isGestor || isProfessor) && (
                         <Link
                           to="/estatistica"
-                          className="dropdown-item"
+                          className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
                           <img
@@ -140,7 +141,7 @@ const Header = () => {
                       )}
                       <Link
                         to="/conta"
-                        className="dropdown-item"
+                        className="dropdown-item-header"
                         onClick={toggleDropdown}
                       >
                         <img
@@ -197,14 +198,9 @@ const Header = () => {
               )}
             </>
           ) : (
-            <>
-              <Link to="/login" className="login-btn">
-                Login
-              </Link>
-              <Link to="/cadastro" className="register-btn">
-                Cadastro
-              </Link>
-            </>
+            <Link to="/login" className="login-btn">
+              Login
+            </Link>
           )}
         </nav>
       </header>

@@ -3,13 +3,14 @@ import { editUsuarioAcesso } from "../api/gerenciar";
 import "../assets/css/gerenciar.css";
 import { useEffect, useState } from "react";
 import { Loading } from "../utils/Utilidades";
+import { useUsuario } from "../context/usuarioContext";
 
-
-
+// Página de gerenciamento de usuários
 const GerenciarUsuarios = () => {
     const [users, setUsers] = useState([]);
     const [editing, setEditing] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { token } = useUsuario();
     const acessoOptions = ["professor", "administrador", "gestor", "cadastrado"];
 
     const handleEdit = (id) => {
@@ -20,8 +21,10 @@ const GerenciarUsuarios = () => {
         const updated = users.map(u =>
             u.Id === userId ? { ...u, Login: value } : u
         );
+        console.log("hello");
+        
         try {
-            await editUsuarioAcesso(userId, value);
+            await editUsuarioAcesso(userId, value, token);
             setUsers(updated);
         } catch (e) {
             console.error(e);
@@ -39,13 +42,11 @@ const GerenciarUsuarios = () => {
     };
 
     useEffect(() => {
-        getUsuarios()
+        getUsuarios(token)
             .then((res) => setUsers(res.data))
             .catch(e => console.log(e))
             .finally(() => setLoading(false));
     }, [])
-
-    console.log(users);
 
     return (
         <div className="gerenciar-container" onClick={handleBlur}>
@@ -55,13 +56,9 @@ const GerenciarUsuarios = () => {
             {loading ? (
                 <Loading open={loading} />
             ) : (
-                <table
-                    className="gerenciar-table"
-                    onClick={(e) => e.stopPropagation()}
-                >
+                <table className="gerenciar-table" onClick={(e) => e.stopPropagation()} >
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Acesso</th>
@@ -71,7 +68,6 @@ const GerenciarUsuarios = () => {
                     <tbody>
                         {users.map((user) => (
                             <tr key={user.Id}>
-                                <td>{user.Id}</td>
                                 <td>{user.Nome}</td>
                                 <td>{user.email}</td>
                                 <td>

@@ -132,7 +132,6 @@
   filter: brightness(0) invert(1);
 }
 
-
 /* Desktop: 1920×1080 (Full HD) */
 @media (min-width: 1920px) {
   .enviar-container {

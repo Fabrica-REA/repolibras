@@ -1,5 +1,5 @@
 <br />
-<div align="center">
+<div align="center" id="readme-top">
   <a href="https://github.com/Fabrica-REA/repolibras">
     <img src="/public/img/logo.jpeg" alt="Logo" width="80" height="80">
   </a>
@@ -45,10 +45,9 @@
 
 ## Sobre o Projeto
 
-![Product Name Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png)
-<!-- [![Product Name Screen Shot][home-screenshot]](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png) -->
+![Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png)
+<!-- [Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png) -->
 
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Construído com
 
@@ -62,8 +61,6 @@
 - **Express:** Framework backend para construção da API e gerenciamento de dados.
 - **MySql:** Banco de dados utilizado para armazenar os dados do usuário e os vídeos dos sinais de Libras.
 - **Git/GitHub:** Para controle de versão e colaboração no desenvolvimento do projeto.
-
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Pré-Requisitos
 
@@ -109,7 +106,6 @@
    npm -v && node -v && git -v
    ```
 
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ### Instalação
 
@@ -124,7 +120,6 @@ Passo a passo para instalar o repositório de Libras localmente
    npm install && npm run dev
    ```
 
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Roadmap
 
@@ -147,12 +142,8 @@ Passo a passo para instalar o repositório de Libras localmente
 
 Veja as [issues abertas](https://github.com/Fabrica-REA/repolibras/issues) para uma lista completa de recursos propostos (e problemas conhecidos).
 
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
 ## Contribuir
-
-Contribuições são o que tornam a comunidade de código aberto um lugar incrível para aprender, inspirar e criar. Qualquer contribuição que você fizer será **muito apreciada**.
-
 Se você tiver uma sugestão para melhorar este projeto, faça um fork do repositório e crie um pull request. Você também pode abrir uma issue com a tag "enhancement".
 Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
 
@@ -162,24 +153,18 @@ Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
 4. Faça push para a branch (`git push origin feature/SuaFeature`)
 5. Abra um Pull Request
 
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
 
-## Contribuidores
+## Contribuidores 
 
-Todos os voluntários e contribuidores que ajudaram no desenvolvimento e aperfeiçoamento do projeto.
+Todos os voluntários e contribuidores que ajudaram no desenvolvimento e aperfeiçoamento do projeto. Muito Obrigado a todos.
 
 <a href="https://github.com/Fabrica-REA/repolibras/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Fabrica-REA/repolibras" />
 </a>
 
-Feito com [contrib.rocks](https://contrib.rocks).
-
-<p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
-
 ## Contato
 
-Seu Nome - [@seu_twitter](https://twitter.com/seu_usuario) - email@exemplo.com
+Celso Yoshikazu Ishida [linkdin](https://twitter.com/seu_usuario) - [email](https://twitter.com/seu_usuario)
 
-Link do Projeto: [https://github.com/Fabrica-REA/repolibras](https://github.com/Fabrica-REA/repolibras)
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>

@@ -4,21 +4,31 @@ import Video from "../components/Video";
 import { getAllVideos, editVideo } from "../api/gerenciar";
 import { Loading } from "../utils/Utilidades";
 import { getContextos } from "../api/Enviar";
+import { useUsuario } from "../context/usuarioContext";
 
+// Página de gerenciamento de vídeos
 const Gerenciar = () => {
-  const [rows, setRows] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [contextos, setContextos] = useState([]);
   const [statusList, setStatusList] = useState([]);
-  const [editing, setEditing] = useState({ row: null, field: null });
   const [loading, setLoading] = useState(true);
+  const { token } = useUsuario();
+  const [editting, setEditting] = useState({ palavra: [], contexto: [], status: [] });
+  const [originalValues, setOriginalValues] = useState({ palavra: {}, contexto: {}, status: {} });
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([getAllVideos(), getContextos()])
+    Promise.all([getAllVideos(token), getContextos(token)])
       .then(([videoData, ctxs]) => {
-        setRows(videoData.videos);
+        setVideos(videoData.videos);
         setStatusList(videoData.status);
         setContextos(ctxs);
+        setEditting({
+          id: videoData.videos.map((v) => v.PalavraId),
+          palavra: videoData.videos.map(() => false),
+          contexto: videoData.videos.map(() => false),
+          status: videoData.videos.map(() => false),
+        });
       })
       .catch((e) => {
         console.error("Erro ao carregar dados:", e);
@@ -26,57 +36,44 @@ const Gerenciar = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // Create a map for status Id -> Descricao for O(1) lookup
-  const statusMap = statusList.reduce((acc, status) => {
-    acc[status.Id] = status.Descricao;
-    return acc;
-  }, {});
-
-  const handleInputChange = (id, field, value) => {
-    const updatedRows = [...rows];
-    const rowIndex = updatedRows.findIndex(r => r.PalavraId === id);
-    if (rowIndex === -1) return;
-
-    if (field === "palavra") updatedRows[rowIndex].DesPalavra = value;
-    else if (field === "contexto") {
-      updatedRows[rowIndex].ContextoId = value;
-      const contextoObj = contextos.find(ctx => String(ctx.id) === String(value));
-      updatedRows[rowIndex].DesContexto = contextoObj ? contextoObj.descricao : "";
+  const handleEdit = async (id, field, value) => {
+    setVideos((prev) =>
+      prev.map((video) =>
+        video.PalavraId === id ? { ...video, [field]: value } : video
+      )
+    );
+    const updated = { ...videos.find((v) => v.PalavraId === id), [field]: value };
+    setLoading(true);
+    try {
+      await editVideo(id, updated.DesPalavra, updated.ContextoId, updated.SituacaoId, token);
+    } catch (e) {
+      console.error("Erro ao editar vídeo:", e);
     }
-    else if (field === "status") {
-      updatedRows[rowIndex].SituacaoId = value;
-      // Use the statusMap for fast lookup
-      updatedRows[rowIndex].DesSituacao = statusMap[value] || value;
-    }
-    setRows(updatedRows);
+    setLoading(false);
   };
 
-  const handleEdit = (id, field) => {
-    setEditing({ row: id, field });
+  // Função auxiliar para entrar no modo de edição e armazenar valor original
+  const startEditing = (idx, field, value) => {
+    setEditting((prev) => ({
+      ...prev,
+      [field]: prev[field].map((val, i) => (i === idx ? true : val)),
+    }));
+    setOriginalValues((prev) => ({
+      ...prev,
+      [field]: { ...prev[field], [idx]: value },
+    }));
   };
 
-  const handleBlur = async () => {
-    if (editing.row !== null && editing.field !== null) {
-      const row = rows.find(r => r.PalavraId === editing.row);
-      setLoading(true);
-      try {
-        await editVideo(row.PalavraId, row.DesPalavra, row.ContextoId, row.SituacaoId);
-      } catch (e) {
-        console.error("Erro ao editar vídeo:", e);
-      }
-      setLoading(false);
-    }
-    setEditing({ row: null, field: null });
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleBlur();
-    }
+  // Função auxiliar para sair do modo de edição
+  const stopEditing = (idx, field) => {
+    setEditting((prev) => ({
+      ...prev,
+      [field]: prev[field].map((val, i) => (i === idx ? false : val)),
+    }));
   };
 
   return (
-    <div className="gerenciar-container" onClick={handleBlur}>
+    <div className="gerenciar-container">
       <div className="title">
         <h1>Gerenciar Vídeos</h1>
       </div>
@@ -84,10 +81,7 @@ const Gerenciar = () => {
         <Loading open={loading} />
       ) : (
         <div className="gerenciar-table-wrapper">
-          <table
-            className="gerenciar-table"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <table className="gerenciar-table">
             <thead>
               <tr>
                 <th>Palavra</th>
@@ -98,41 +92,110 @@ const Gerenciar = () => {
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
-                <tr key={row.PalavraId}>
-                  <td data-label="Palavra">
-                    {editing.row === row.PalavraId && editing.field === "palavra" ? (
+              {videos.map((video, idx) => (
+                <tr key={video.PalavraId}>
+                  {/* Coluna Palavra */}
+                  <td
+                    data-label="Palavra"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && editting.palavra[idx]) {
+                        const input = e.target.value.trim();
+                        const prevValue = originalValues.palavra[idx]?.trim() || videos[idx].DesPalavra?.trim();
+                        if (input !== prevValue) {
+                          handleEdit(video.PalavraId, "DesPalavra", input);
+                        }
+                        stopEditing(idx, "palavra");
+                      }
+                      if (e.key === "Escape" && editting.palavra[idx]) {
+                        stopEditing(idx, "palavra");
+                        // Reverter para o valor original
+                        setVideos((prev) =>
+                          prev.map((v) =>
+                            v.PalavraId === video.PalavraId
+                              ? { ...v, DesPalavra: originalValues.palavra[idx] || v.DesPalavra }
+                              : v
+                          )
+                        );
+                      }
+                    }}
+                  >
+                    {editting.palavra[idx] ? (
                       <input
                         type="text"
-                        value={row.DesPalavra}
-                        onChange={(e) =>
-                          handleInputChange(row.PalavraId, "palavra", e.target.value)
-                        }
-                        onKeyDown={handleKeyPress}
-                        onBlur={handleBlur}
+                        value={video.DesPalavra}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setVideos((prev) =>
+                            prev.map((v) =>
+                              v.PalavraId === video.PalavraId ? { ...v, DesPalavra: value } : v
+                            )
+                          );
+                        }}
+                        onBlur={(e) => {
+                          const input = e.target.value.trim();
+                          const prevValue = originalValues.palavra[idx]?.trim() || videos[idx].DesPalavra?.trim();
+                          if (input !== prevValue) {
+                            handleEdit(video.PalavraId, "DesPalavra", input);
+                          }
+                          stopEditing(idx, "palavra");
+                        }}
                         className="editable-input"
                         autoFocus
                       />
                     ) : (
                       <div className="edit-row">
-                        <span className="editable-text">{row.DesPalavra}</span>
+                        <span>{video.DesPalavra}</span>
                         <i
                           className="pi pi-pen-to-square icon-btn"
-                          onClick={() => handleEdit(row.PalavraId, "palavra")}
+                          onClick={() => startEditing(idx, "palavra", video.DesPalavra)}
                         />
                       </div>
                     )}
                   </td>
-                  <td data-label="Contexto">
-                    {editing.row === row.PalavraId && editing.field === "contexto" ? (
-                      <select
-                        value={row.ContextoId}
-                        onChange={(e) =>
-                          handleInputChange(row.PalavraId, "contexto", e.target.value)
+                  {/* Coluna Contexto */}
+                  <td
+                    data-label="Contexto"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && editting.contexto[idx]) {
+                        const input = e.target.value;
+                        const prevValue = originalValues.contexto[idx] || video.ContextoId;
+                        if (input !== prevValue) {
+                          handleEdit(video.PalavraId, "ContextoId", input);
                         }
-                        onKeyDown={handleKeyPress}
-                        onBlur={handleBlur}
+                        stopEditing(idx, "contexto");
+                      }
+                      if (e.key === "Escape" && editting.contexto[idx]) {
+                        stopEditing(idx, "contexto");
+                        setVideos((prev) =>
+                          prev.map((v) =>
+                            v.PalavraId === video.PalavraId
+                              ? { ...v, ContextoId: originalValues.contexto[idx] || v.ContextoId }
+                              : v
+                          )
+                        );
+                      }
+                    }}
+                  >
+                    {editting.contexto[idx] ? (
+                      <select
+                        value={video.ContextoId}
                         className="editable-select"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setVideos((prev) =>
+                            prev.map((v) =>
+                              v.PalavraId === video.PalavraId ? { ...v, ContextoId: value } : v
+                            )
+                          );
+                        }}
+                        onBlur={(e) => {
+                          const input = e.target.value;
+                          const prevValue = originalValues.contexto[idx] || video.ContextoId;
+                          if (input !== prevValue) {
+                            handleEdit(video.PalavraId, "ContextoId", input);
+                          }
+                          stopEditing(idx, "contexto");
+                        }}
                         autoFocus
                       >
                         {contextos.map((contexto) => (
@@ -143,29 +206,78 @@ const Gerenciar = () => {
                       </select>
                     ) : (
                       <div className="edit-row">
-                        <span className="editable-text">{row.DesContexto}</span>
+                        <span>
+                          {contextos.find((c) => c.id === video.ContextoId)?.descricao || ""}
+                        </span>
                         <i
                           className="pi pi-pen-to-square icon-btn"
-                          onClick={() => handleEdit(row.PalavraId, "contexto")}
+                          onClick={() => startEditing(idx, "contexto", video.ContextoId)}
                         />
                       </div>
                     )}
                   </td>
+                  {/* Coluna Video */}
                   <td data-label="Video">
-                    <Video src={row.videoUrl} index={row.PalavraId} classNameVideo={"video-player"} />
-                  </td>
-                  <td data-label="Data de Envio">{row.DataHora}</td>
-                  <td data-label="Status">
-                    {editing.row === row.PalavraId && editing.field === "status" ? (
-                      <select
-                        value={row.SituacaoId}
-                        onChange={(e) =>
-                          handleInputChange(row.PalavraId, "status", e.target.value)
+                    <div className="video-block-gerenciar">
+                      <Video
+                        src={
+                          video.NomeArquivo &&
+                          (video.NomeArquivo.includes("youtube.com") || video.NomeArquivo.includes("youtu.be"))
+                            ? video.NomeArquivo
+                            : video.videoUrl
                         }
-                        onKeyDown={handleKeyPress}
-                        onBlur={handleBlur}
-                        autoFocus
+                        index={video.PalavraId}
+                        classNameVideo={"video-player"}
+                      />
+                    </div>
+                  </td>
+                  {/* Coluna Data de Envio */}
+                  <td data-label="Data de Envio">{video.DataHora}</td>
+                  {/* Coluna Status */}
+                  <td
+                    data-label="Status"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && editting.status[idx]) {
+                        const input = e.target.value;
+                        const prevValue = originalValues.status[idx] || video.SituacaoId;
+                        if (input !== prevValue) {
+                          handleEdit(video.PalavraId, "SituacaoId", input);
+                        }
+                        stopEditing(idx, "status");
+                      }
+                      if (e.key === "Escape" && editting.status[idx]) {
+                        stopEditing(idx, "status");
+                        setVideos((prev) =>
+                          prev.map((v) =>
+                            v.PalavraId === video.PalavraId
+                              ? { ...v, SituacaoId: originalValues.status[idx] || v.SituacaoId }
+                              : v
+                          )
+                        );
+                      }
+                    }}
+                  >
+                    {editting.status[idx] ? (
+                      <select
+                        value={video.SituacaoId}
                         className="editable-select"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setVideos((prev) =>
+                            prev.map((v) =>
+                              v.PalavraId === video.PalavraId ? { ...v, SituacaoId: value } : v
+                            )
+                          );
+                        }}
+                        onBlur={(e) => {
+                          const input = e.target.value;
+                          const prevValue = originalValues.status[idx] || video.SituacaoId;
+                          if (input !== prevValue) {
+                            handleEdit(video.PalavraId, "SituacaoId", input);
+                          }
+                          stopEditing(idx, "status");
+                        }}
+                        autoFocus
                       >
                         {statusList.map((status) => (
                           <option key={status.Id} value={status.Id}>
@@ -175,12 +287,12 @@ const Gerenciar = () => {
                       </select>
                     ) : (
                       <div className="edit-row">
-                        <span className="editable-text">
-                          {statusMap[row.SituacaoId] || row.DesSituacao}
+                        <span>
+                          {statusList.find((s) => s.Id === video.SituacaoId)?.Descricao || ""}
                         </span>
                         <i
                           className="pi pi-pen-to-square icon-btn"
-                          onClick={() => handleEdit(row.PalavraId, "status")}
+                          onClick={() => startEditing(idx, "status", video.SituacaoId)}
                         />
                       </div>
                     )}

@@ -2,28 +2,28 @@ import "../assets/css/estatistica.css";
 import { useState } from "react";
 import GerenciarUsuarios from "./GerenciarUsuarios";
 import Gerenciar from "./Gerenciar";
+import Dashboard from "./Dashboard";
 
+// Define as páginas do dashboard
 const pages = {
-  dashboard: (
-    <div className="dashboard-content">
-      <h2 style={{ marginBottom: 24 }}>Visão Geral</h2>
-    </div>
-  ),
+  dashboard: <div className="dashboard-content"><Dashboard /></div>,
   usuários: <div className="dashboard-content"><GerenciarUsuarios /></div>,
   videos: <div className="dashboard-content"><Gerenciar /></div>,
-  // relatórios: <div className="dashboard-content">Reports & Analytics</div>,
-  // configurações: <div className="dashboard-content">Settings</div>,
+  // relatórios: <div className="dashboard-content">Relatórios & Analytics</div>,
+  // configurações: <div className="dashboard-content">Configurações</div>,
 };
 
 const Estatistica = () => {
-  const [selectedPage, setSelectedPage] = useState("usuários");
+  // Estado para controlar página selecionada e dropdown
+  const [selectedPage, setSelectedPage] = useState("dashboard");
   const [openDropdown, setOpenDropdown] = useState(null);
 
+  // Menu lateral do dashboard
   const menu = [
-    // {
-    //   icon: "pi pi-chart-line",
-    //   label: "Dashboard",
-    // },
+    {
+      icon: "pi pi-chart-pie",
+      label: "dashboard",
+    },
     {
       icon: "pi pi-users",
       label: "usuários",
