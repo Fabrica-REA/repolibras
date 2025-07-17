@@ -5,7 +5,7 @@
   </a>
   <h3 align="center">Repositório de Libras</h3>
   <p align="center">
-   Repositório de Libras para os professores de Libras na UFPR, onde os usuários podem pesquisar, visualizar e contribuir com vídeos de sinais de Libras.
+    Plataforma colaborativa para pesquisa, visualização e contribuição de vídeos de sinais em Libras, desenvolvida para promover inclusão, ensino e divulgação na UFPR e comunidade.
   </p>
 </div>
 <br>
@@ -45,8 +45,20 @@
 
 ## Sobre o Projeto
 
-![Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png)
-<!-- [Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png) -->
+O Repositório de Libras é uma plataforma colaborativa desenvolvida para apoiar professores, alunos e pesquisadores da Universidade Federal do Paraná (UFPR) e comunidade em geral no ensino, aprendizagem e divulgação da Língua Brasileira de Sinais (Libras) e também da língua Terena. O sistema permite que usuários pesquisem palavras, visualizem vídeos de sinais, contribuam com novos conteúdos e participem do processo de validação dos materiais.
+
+A plataforma foi criada para suprir a necessidade de um ambiente centralizado, seguro e acessível para o compartilhamento de sinais em Libras, promovendo inclusão, diversidade linguística e democratização do conhecimento. O sistema oferece funcionalidades como pesquisa contextualizada, envio de vídeos ou links, gerenciamento de solicitações, avaliação colaborativa, dashboard de estatísticas e níveis de acesso diferenciados para usuários e administradores.
+
+### Missão
+
+Promover o acesso, a colaboração e a disseminação da Língua Brasileira de Sinais e da língua Terena, fortalecendo a inclusão e a diversidade linguística por meio de uma plataforma digital aberta, segura e de fácil utilização.
+
+### Visão
+
+Ser referência nacional em repositórios digitais de Libras e línguas indígenas, contribuindo para a formação de uma sociedade mais inclusiva, acessível e conectada, onde o conhecimento sobre línguas de sinais seja amplamente compartilhado, validado e aprimorado por toda a comunidade.
+
+<!-- ![Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png) -->
+[Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png)
 
 
 ## Construído com
@@ -120,7 +132,6 @@ Passo a passo para instalar o repositório de Libras localmente
    npm install && npm run dev
    ```
 
-
 ## Roadmap
 
 ### v1.0 (Finalizado)
@@ -135,13 +146,11 @@ Passo a passo para instalar o repositório de Libras localmente
 - [x] Melhorar responsividade e experiência do usuário (UX)
 - [x] Implementar cadastro e login aprimorados com autenticação
 - [x] Adicionar níveis de acesso de usuário
-- [x] Criar página de gerenciamento de vídeos e administração
-- [ ] Desenvolver página de estatísticas com KPIs
-
-<!-- ### v3.0 (Planejado) -->
+- [x] Criar página de perfil, gerenciamento de vídeos e administração
+- [x] Desenvolver página de estatísticas com KPIs
+- [x] Adicionar linguagem Terena
 
 Veja as [issues abertas](https://github.com/Fabrica-REA/repolibras/issues) para uma lista completa de recursos propostos (e problemas conhecidos).
-
 
 ## Contribuir
 Se você tiver uma sugestão para melhorar este projeto, faça um fork do repositório e crie um pull request. Você também pode abrir uma issue com a tag "enhancement".
@@ -164,7 +173,6 @@ Todos os voluntários e contribuidores que ajudaram no desenvolvimento e aperfei
 
 ## Contato
 
-Celso Yoshikazu Ishida [linkdin](https://twitter.com/seu_usuario) - [email](https://twitter.com/seu_usuario)
-
+Celso Yoshikazu Ishida [linkdin](https://www.linkedin.com/in/celsoishida/) - [email](celsoishida@gmail.com)
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
