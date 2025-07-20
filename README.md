@@ -49,6 +49,8 @@ O Repositório de Libras é uma plataforma colaborativa desenvolvida para apoiar
 
 A plataforma foi criada para suprir a necessidade de um ambiente centralizado, seguro e acessível para o compartilhamento de sinais em Libras, promovendo inclusão, diversidade linguística e democratização do conhecimento. O sistema oferece funcionalidades como pesquisa contextualizada, envio de vídeos ou links, gerenciamento de solicitações, avaliação colaborativa, dashboard de estatísticas e níveis de acesso diferenciados para usuários e administradores.
 
+> **⭐ Dê uma estrela no repositório para receber notificações de grandes atualizações e ajudar a promover o projeto!**
+
 ### Missão
 
 Promover o acesso, a colaboração e a disseminação da Língua Brasileira de Sinais e da língua Terena, fortalecendo a inclusão e a diversidade linguística por meio de uma plataforma digital aberta, segura e de fácil utilização.
@@ -154,7 +156,7 @@ Veja as [issues abertas](https://github.com/Fabrica-REA/repolibras/issues) para 
 
 ## Contribuir
 Se você tiver uma sugestão para melhorar este projeto, faça um fork do repositório e crie um pull request. Você também pode abrir uma issue com a tag "enhancement".
-Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
+Não se esqueça de dar uma estrela ao projeto para ser notificado de grandes mudanças e ajudar a promover o repositório! Obrigado novamente!
 
 1. Faça um fork do projeto
 2. Crie sua branch de feature (`git checkout -b feature/SuaFeature`)
@@ -165,7 +167,7 @@ Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
 
 ## Contribuidores 
 
-Todos os voluntários e contribuidores que ajudaram no desenvolvimento e aperfeiçoamento do projeto. Muito Obrigado a todos.
+Todos os voluntários e contribuidores que ajudaram no desenvolvimento e aperfeiçoamento do projeto. Muito Obrigado a todos. ❤️
 
 <a href="https://github.com/Fabrica-REA/repolibras/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Fabrica-REA/repolibras" />
