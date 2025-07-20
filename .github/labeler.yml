@@ -1,0 +1,87 @@
+# Labeler configuration for repolibras
+# Automatically assigns labels based on file changes in pull requests.
+
+# Features & Fixes
+"feature":
+  - "src/features/**"
+  - "src/modules/**"
+  - "src/components/**"
+"bug":
+  - "src/**"
+  - "public/**"
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.css"
+  - "**/*.scss"
+
+# Tech Stack
+"javascript":
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.ts"
+  - "**/*.tsx"
+"css":
+  - "**/*.css"
+  - "**/*.scss"
+"html":
+  - "**/*.html"
+
+# Documentation & Communication
+"documentation":
+  - "CODE_OF_CONDUCT.md"
+  - "SECURITY.md"
+  - "README.md"
+  - "docs/**"
+  - "**/*.md"
+"translation":
+  - "locales/**"
+  - "src/i18n/**"
+  - "**/*.json"
+
+# Configuration & Build
+"config":
+  - ".github/**"
+  - "package.json"
+  - "package-lock.json"
+  - "yarn.lock"
+  - "webpack.config.js"
+  - "babel.config.js"
+  - "tsconfig.json"
+  - ".env*"
+
+# Testing
+"test":
+  - "tests/**"
+  - "**/*.test.js"
+  - "**/*.spec.js"
+  - "**/*.test.jsx"
+  - "**/*.spec.jsx"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+
+# Assets
+"assets":
+  - "assets/**"
+  - "static/**"
+  - "public/assets/**"
+  - "**/*.{png,jpg,jpeg,gif,svg,ico,webp,mp4,mp3}"
+
+# Dependency Updates
+"dependencies":
+  - "package-lock.json"
+  - "yarn.lock"
+
+# Miscellaneous
+"ci":
+  - ".github/workflows/**"
+"chore":
+  - ".husky/**"
+  - ".eslint*"
+  - ".prettier*"
+  - ".stylelint*"
+  - ".nvmrc"
+  - ".editorconfig"
+
+# Add, remove, or adjust labels/patterns to fit your repository needs.
