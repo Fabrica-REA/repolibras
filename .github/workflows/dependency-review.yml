@@ -1,18 +1,18 @@
-# Dependency Review Action
+# Ação de Revisão de Dependências
 #
-# This Action will scan dependency manifest files that change as part of a Pull Request,
-# surfacing known-vulnerable versions of the packages declared or updated in the PR.
-# Once installed, if the workflow run is marked as required, PRs introducing known-vulnerable
-# packages will be blocked from merging.
+# Esta ação irá escanear arquivos de manifesto de dependências que mudam como parte de um Pull Request,
+# mostrando versões conhecidas como vulneráveis dos pacotes declarados ou atualizados no PR.
+# Uma vez instalada, se a execução do workflow for marcada como obrigatória, PRs que introduzem pacotes vulneráveis
+# conhecidos serão bloqueados de serem mesclados.
 #
-# Source repository: https://github.com/actions/dependency-review-action
-# Public documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#dependency-review-enforcement
-name: 'Dependency review'
+# Repositório fonte: https://github.com/actions/dependency-review-action
+# Documentação pública: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#dependency-review-enforcement
+name: 'Revisão de dependências'
 on:
   pull_request:
     branches: [ "main", "desenvolvimento", "testes" ]
 
-# If using a dependency submission action in this workflow this permission will need to be set to:
+# Se estiver usando uma ação de submissão de dependências neste workflow, esta permissão precisará ser definida como:
 #
 # permissions:
 #   contents: write
@@ -20,18 +20,18 @@ on:
 # https://docs.github.com/en/enterprise-cloud@latest/code-security/supply-chain-security/understanding-your-software-supply-chain/using-the-dependency-submission-api
 permissions:
   contents: read
-  # Write permissions for pull-requests are required for using the `comment-summary-in-pr` option, comment out if you aren't using this option
+  # Permissões de escrita para pull-requests são necessárias para usar a opção `comment-summary-in-pr`, comente se não estiver usando esta opção
   pull-requests: write
 
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout repository'
+      - name: 'Fazer checkout do repositório'
         uses: actions/checkout@v4
-      - name: 'Dependency Review'
+      - name: 'Revisão de dependências'
         uses: actions/dependency-review-action@v4
-        # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options for all available options.
+        # Opções comumente habilitadas, veja https://github.com/actions/dependency-review-action#configuration-options para todas as opções disponíveis.
         with:
           comment-summary-in-pr: always
         #   fail-on-severity: moderate

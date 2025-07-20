@@ -1,11 +1,11 @@
-# This workflow will triage pull requests and apply a label based on the
-# paths that are modified in the pull request.
+# Este workflow irá triar pull requests e aplicar um rótulo baseado nos
+# caminhos que foram modificados no pull request.
 #
-# To use this workflow, you will need to set up a .github/labeler.yml
-# file with configuration.  For more information, see:
+# Para usar este workflow, você precisará configurar um arquivo .github/labeler.yml
+# com a configuração. Para mais informações, veja:
 # https://github.com/actions/labeler
 
-name: Labeler
+name: Rotulador
 on: [pull_request_target]
 
 jobs:

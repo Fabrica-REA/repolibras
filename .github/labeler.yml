@@ -1,7 +1,7 @@
-# Labeler configuration for repolibras
-# Automatically assigns labels based on file changes in pull requests.
+# Configuração do Rotulador para repolibras
+# Atribui automaticamente rótulos com base nas alterações de arquivos em pull requests.
 
-# Features & Fixes
+# Funcionalidades & Correções
 "feature":
   - "src/features/**"
   - "src/modules/**"
@@ -14,7 +14,7 @@
   - "**/*.css"
   - "**/*.scss"
 
-# Tech Stack
+# Stack Tecnológico
 "javascript":
   - "**/*.js"
   - "**/*.jsx"
@@ -26,7 +26,7 @@
 "html":
   - "**/*.html"
 
-# Documentation & Communication
+# Documentação & Comunicação
 "documentation":
   - "CODE_OF_CONDUCT.md"
   - "SECURITY.md"
@@ -38,7 +38,7 @@
   - "src/i18n/**"
   - "**/*.json"
 
-# Configuration & Build
+# Configuração & Build
 "config":
   - ".github/**"
   - "package.json"
@@ -49,7 +49,7 @@
   - "tsconfig.json"
   - ".env*"
 
-# Testing
+# Testes
 "test":
   - "tests/**"
   - "**/*.test.js"
@@ -68,12 +68,12 @@
   - "public/assets/**"
   - "**/*.{png,jpg,jpeg,gif,svg,ico,webp,mp4,mp3}"
 
-# Dependency Updates
+# Atualizações de Dependências
 "dependencies":
   - "package-lock.json"
   - "yarn.lock"
 
-# Miscellaneous
+# Diversos
 "ci":
   - ".github/workflows/**"
 "chore":
@@ -84,4 +84,4 @@
   - ".nvmrc"
   - ".editorconfig"
 
-# Add, remove, or adjust labels/patterns to fit your repository needs.
+# Adicione, remova ou ajuste rótulos/padrões conforme necessário para o seu repositório.
