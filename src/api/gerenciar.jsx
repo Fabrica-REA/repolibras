@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 // Busca todos os vídeos para gerenciamento
 export const getAllVideos = async (token) => {
     try {
-        const response = await axios.get(`${API_URL}/librasapi/gerenciar/video`, {
+        const response = await axios.get(`${API_URL}/librasapi/gerenciar/videos`, {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})

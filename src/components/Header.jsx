@@ -24,9 +24,6 @@ import { useState, useEffect } from "react";
 const ProtectedRoute = ({ allowedRoles, element }) => {
   const { usuario } = useUsuario();
 
-  if (!usuario) {
-    return <Navigate to="/login" replace />;
-  }
   if (!allowedRoles.includes(usuario.acesso)) {
     return <Navigate to="/" replace />;
   }

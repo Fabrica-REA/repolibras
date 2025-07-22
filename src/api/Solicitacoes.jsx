@@ -19,7 +19,7 @@ export const getSolicitacoes = async (token) => {
 
 export const postSolicitacao = async (palavra, contexto, usuario, linguagem, token) => {
     try {
-        const response = await axios.post(`${API_URL}/librasapi/palavrai`, { palavra, contexto, usuario: usuario.id, linguagem }, {
+        const response = await axios.post(`${API_URL}/librasapi/solicitacao`, { palavra, contexto, usuario: usuario.id, linguagem }, {
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             }

@@ -135,8 +135,9 @@ Passo a passo para instalar o repositório de Libras localmente
    ```
 
 ## Roadmap
+Abaixo estão os principais marcos e funcionalidades implementadas no Repositório de Libras:
 
-### v1.0 (Finalizado)
+### v1.0 
 - [x] Pesquisa de Palavras em Libras pelo Contexto
 - [x] Envio de Sinais com Significado e Contexto
 - [x] Visualização de Solicitações
@@ -144,7 +145,7 @@ Passo a passo para instalar o repositório de Libras localmente
 - [x] Cadastro e autenticação de usuários
 - [x] Avaliação de Solicitações
 
-### v2.0 (Finalizado)
+### v2.0 
 - [x] Melhorar responsividade e experiência do usuário (UX)
 - [x] Implementar cadastro e login aprimorados com autenticação
 - [x] Adicionar níveis de acesso de usuário

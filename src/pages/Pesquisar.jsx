@@ -23,10 +23,7 @@ function Pesquisar() {
   const location = useLocation();
   const { state } = location;
   const typingTimeoutRef = useRef(null); 
-
-  console.log(typingTimeoutRef.current);
   
-
   // Abre modal de vídeos
   const abrirModalVideos = (videos) => {
     setModalVideos(videos);
@@ -60,12 +57,12 @@ function Pesquisar() {
     setBusca(value);
     setDropdownVisible(true);
 
-    // Clear previous timeout if user is still typing
+    // Limpa o timeout anterior se o usuário ainda estiver digitando
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
 
-    // Set a new timeout to send `postBuscaPalavra` after 1.5 second of inactivity
+    // Define um novo timeout para enviar `postBuscaPalavra` após 1.5 segundo de inatividade
     typingTimeoutRef.current = setTimeout(() => {
       if (value.trim()) {
         postBuscaPalavra(value, usuario?.id, state.linguagem);
