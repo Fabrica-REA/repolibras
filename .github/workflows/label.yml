@@ -1,0 +1,22 @@
+# Este workflow irá triar pull requests e aplicar um rótulo baseado nos
+# caminhos que foram modificados no pull request.
+#
+# Para usar este workflow, você precisará configurar um arquivo .github/labeler.yml
+# com a configuração. Para mais informações, veja:
+# https://github.com/actions/labeler
+
+name: Rotulador
+on: [pull_request_target]
+
+jobs:
+  label:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - uses: actions/labeler@v4
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"

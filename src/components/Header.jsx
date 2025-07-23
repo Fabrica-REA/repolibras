@@ -35,6 +35,8 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  console.log(usuario);
+
   const isCadastrado = usuario?.acesso === "cadastrado";
   const isProfessor = usuario?.acesso === "professor";
   const isAdministrador = usuario?.acesso === "administrador";

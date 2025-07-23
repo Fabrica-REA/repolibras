@@ -101,8 +101,8 @@ export const UsuarioProvider = ({ children }) => {
     clearSessionTimeout();
   };
 
-  // Fornece fallback para usuario para evitar erros nulos nos consumidores (ex: Header.jsx)
-  const safeUsuario = usuario || usuarioRef.current || {};
+  // Fornece fallback para usuario para evitar erros nulos nos consumidores
+  const safeUsuario = usuario || usuarioRef.current || null;
 
   return (
     <UsuarioContext.Provider value={{ usuario: safeUsuario, token, login, cadastro, logout, usuarioRef }}>

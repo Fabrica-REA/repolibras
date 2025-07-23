@@ -1,0 +1,87 @@
+# Configuração do Rotulador para repolibras
+# Atribui automaticamente rótulos com base nas alterações de arquivos em pull requests.
+
+# Funcionalidades & Correções
+"feature":
+  - "src/features/**"
+  - "src/modules/**"
+  - "src/components/**"
+"bug":
+  - "src/**"
+  - "public/**"
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.css"
+  - "**/*.scss"
+
+# Stack Tecnológico
+"javascript":
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.ts"
+  - "**/*.tsx"
+"css":
+  - "**/*.css"
+  - "**/*.scss"
+"html":
+  - "**/*.html"
+
+# Documentação & Comunicação
+"documentation":
+  - "CODE_OF_CONDUCT.md"
+  - "SECURITY.md"
+  - "README.md"
+  - "docs/**"
+  - "**/*.md"
+"translation":
+  - "locales/**"
+  - "src/i18n/**"
+  - "**/*.json"
+
+# Configuração & Build
+"config":
+  - ".github/**"
+  - "package.json"
+  - "package-lock.json"
+  - "yarn.lock"
+  - "webpack.config.js"
+  - "babel.config.js"
+  - "tsconfig.json"
+  - ".env*"
+
+# Testes
+"test":
+  - "tests/**"
+  - "**/*.test.js"
+  - "**/*.spec.js"
+  - "**/*.test.jsx"
+  - "**/*.spec.jsx"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+
+# Assets
+"assets":
+  - "assets/**"
+  - "static/**"
+  - "public/assets/**"
+  - "**/*.{png,jpg,jpeg,gif,svg,ico,webp,mp4,mp3}"
+
+# Atualizações de Dependências
+"dependencies":
+  - "package-lock.json"
+  - "yarn.lock"
+
+# Diversos
+"ci":
+  - ".github/workflows/**"
+"chore":
+  - ".husky/**"
+  - ".eslint*"
+  - ".prettier*"
+  - ".stylelint*"
+  - ".nvmrc"
+  - ".editorconfig"
+
+# Adicione, remova ou ajuste rótulos/padrões conforme necessário para o seu repositório.
