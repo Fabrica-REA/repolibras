@@ -21,12 +21,10 @@ const Avaliar = () => {
         console.error("Erro ao carregar as avaliações:", e);
         setLoading(false);
       });
-  }, []);
+  }, [token]);
 
   const handleDesaprovacao = async (palavraId, usuarioId, quemRecusou, motivo) => {
-    console.log("Dados para recusa:", palavraId, usuarioId, quemRecusou, motivo, token);
-    await recusarAvaliacao(palavraId, usuarioId, quemRecusou, motivo, token).then((res) => {
-      console.log(res);
+    await recusarAvaliacao(palavraId, usuarioId, quemRecusou, motivo, token).then(() => {
     }).catch((e) => {
       console.error("Erro ao recusar a avaliação:", e);
     })
@@ -34,10 +32,7 @@ const Avaliar = () => {
   }
 
   const handleAprovacao = async (palavraId, usuarioId, quemAprovou) => { 
-    console.log("Dados para aprovação:", palavraId, usuarioId, quemAprovou, token);
-    
-    await aceitarAvaliacao(palavraId, usuarioId, quemAprovou, token).then((res) => {
-      console.log("Avaliação aprovada com sucesso!", res);
+    await aceitarAvaliacao(palavraId, usuarioId, quemAprovou, token).then(() => {
     }).catch((e) => {
       console.error("Erro ao aprovar a avaliação:", e);
     })
@@ -51,6 +46,12 @@ const Avaliar = () => {
       </div>
       {loading ? (
         <Loading open={loading} />
+      ) : avaliacoes.length === 0 ? (
+        <div className="empty-state">
+          <i className="pi pi-inbox empty-state-icon"></i>
+          <h2>Nenhuma avaliação pendente</h2>
+          <p>Não há vídeos para avaliar no momento.</p>
+        </div>
       ) : (
         <div className="grid-container">
           {avaliacoes.map((avaliacao, id) => {

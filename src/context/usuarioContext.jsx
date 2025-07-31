@@ -1,23 +1,27 @@
-import axios from "axios";
 import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { logout as apiLogout, getSession } from "../api/Usuario";
+
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 // Cria contexto do usuário
 const UsuarioContext = createContext({
   usuario: null,
   token: null,
-  login: (data, token) => UsuarioProvider.login(data, token),
-  cadastro: (data, token) => UsuarioProvider.cadastro(data, token),
-  logout: () => UsuarioProvider.logout(),
+  login: () => { },
+  cadastro: () => { },
+  logout: () => { },
 });
 
 // Provider do contexto do usuário
 export const UsuarioProvider = ({ children }) => {
-  const [usuario, setUsuario] = useState(null);
-  const [token, setToken] = useState(null);
-  const usuarioRef = useRef(null); 
-  const sessionTimeoutRef = useRef(null); 
-
-  console.log(usuarioRef.current);
+  const [usuario, setUsuario] = useState(() => {
+    const storedUser = localStorage.getItem("usuario");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [loading, setLoading] = useState(true);
+  const usuarioRef = useRef(null);
+  const sessionTimeoutRef = useRef(null);
 
   // Mantém usuarioRef sincronizado com o estado usuario
   useEffect(() => {
@@ -26,15 +30,15 @@ export const UsuarioProvider = ({ children }) => {
 
   // Busca sessão do usuário ao montar o componente
   useEffect(() => {
-    axios.get("http://localhost:5002/librasapi/session", {
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    })
+    setLoading(true); // Inicia o carregamento antes da chamada da API
+    getSession()
       .then((res) => {
         if (res.data) {
           setUsuario(res.data.user);
           setToken(res.data.token);
           usuarioRef.current = res.data.user;
+          localStorage.setItem("usuario", JSON.stringify(res.data.user));
+          localStorage.setItem("token", res.data.token);
           if (res.data.expiration) startSessionTimeout(res.data.expiration);
         } else {
           clearSession();
@@ -42,6 +46,9 @@ export const UsuarioProvider = ({ children }) => {
       })
       .catch(() => {
         clearSession();
+      })
+      .finally(() => {
+        setLoading(false); // Encerra o carregamento após a chamada da API
       });
 
     return () => {
@@ -75,6 +82,8 @@ export const UsuarioProvider = ({ children }) => {
     setUsuario(null);
     setToken(null);
     usuarioRef.current = null;
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
   };
 
   // Função de login
@@ -83,6 +92,8 @@ export const UsuarioProvider = ({ children }) => {
     setUsuario(data);
     setToken(tokenParam);
     usuarioRef.current = data;
+    localStorage.setItem("usuario", JSON.stringify(data));
+    localStorage.setItem("token", tokenParam);
     if (expiration) startSessionTimeout(expiration);
   };
 
@@ -92,20 +103,27 @@ export const UsuarioProvider = ({ children }) => {
     setUsuario(data);
     setToken(tokenParam);
     usuarioRef.current = data;
+    localStorage.setItem("usuario", JSON.stringify(data));
+    localStorage.setItem("token", tokenParam);
     if (expiration) startSessionTimeout(expiration);
   };
 
   // Função de logout
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await apiLogout(token);
+    } catch (e) {
+      console.error("Erro ao fazer logout:", e);
+    }
     clearSession();
     clearSessionTimeout();
   };
 
   // Fornece fallback para usuario para evitar erros nulos nos consumidores
-  const safeUsuario = usuario || usuarioRef.current || null;
+  const safeUsuario = loading ? {} : (usuario || usuarioRef.current);
 
   return (
-    <UsuarioContext.Provider value={{ usuario: safeUsuario, token, login, cadastro, logout, usuarioRef }}>
+    <UsuarioContext.Provider value={{ usuario: safeUsuario, token, login, cadastro, logout, usuarioRef, loading }}>
       {children}
     </UsuarioContext.Provider>
   );

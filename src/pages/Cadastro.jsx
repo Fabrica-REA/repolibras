@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import '../assets/css/cadastro.css';
-import { cadastro } from '../api/Usuario';
+import { cadastro, getSession } from '../api/Usuario';
 import { useUsuario } from '../context/usuarioContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { ErrorMessage, validarEmail, validarSenha } from '../utils/Utilidades';
-import axios from 'axios';
+import { base, ErrorMessage, validarEmail, validarSenha } from '../utils/Utilidades';
 
 // Componente de Cadastro
 const Cadastro = () => {
-    // Estados para controlar os campos do formulário e feedbacks
+    const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -43,10 +42,7 @@ const Cadastro = () => {
         // Realiza cadastro e busca sessão do usuário
         cadastro(username, email, password)
             .then(() => {
-                return axios.get("http://localhost:5002/librasapi/session", {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                });
+                return getSession();
             })
             .then((sessionRes) => {
                 // Atualiza contexto com dados do usuário
@@ -54,7 +50,7 @@ const Cadastro = () => {
                 enviarInfo(user);
                 setLoading(false);
                 setError("");
-                navigate("/");
+                navigate(`${base}`);
             })
             .catch((e) => {
                 console.log(e);
@@ -70,6 +66,7 @@ const Cadastro = () => {
                 <ErrorMessage error={error} onClose={() => setError("")} />
                 <i className='pi pi-user'>
                     <input
+                        id="cadastro-username"
                         type="text"
                         placeholder="Nome"
                         value={username}
@@ -82,6 +79,7 @@ const Cadastro = () => {
                 </i>
                 <i className='pi pi-envelope'>
                     <input
+                        id="cadastro-email"
                         type="email"
                         placeholder="Email"
                         value={email}
@@ -96,6 +94,7 @@ const Cadastro = () => {
                 </i>
                 <i className='pi pi-lock'>
                     <input
+                        id="cadastro-password"
                         type="password"
                         placeholder="Senha"
                         value={password}
@@ -110,6 +109,7 @@ const Cadastro = () => {
                 </i>
                 <i className='pi pi-lock'>
                     <input
+                        id="cadastro-confirm-password"
                         type="password"
                         placeholder="Confirme a Senha"
                         value={confirmPassword}
@@ -127,7 +127,7 @@ const Cadastro = () => {
                 </button>
                 <div className="cadastro-redirect-text">
                     <span>Já tem uma conta? </span>
-                    <Link to="/login" className="cadastro-redirect-link">
+                    <Link to={`${base}login`} className="cadastro-redirect-link">
                         Entrar
                     </Link>
                 </div>

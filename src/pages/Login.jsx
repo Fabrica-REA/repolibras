@@ -1,10 +1,9 @@
 import { useState } from "react";
 import "../assets/css/login.css";
-import { login } from "../api/Usuario";
+import { login, getSession } from "../api/Usuario";
 import { useUsuario } from "../context/usuarioContext";
 import { useNavigate, Link } from "react-router-dom";
-import { ErrorMessage, validarEmail, validarSenha } from "../utils/Utilidades"; 
-import axios from "axios";
+import { base, ErrorMessage, validarEmail, validarSenha } from "../utils/Utilidades";
 
 // Componente de Login
 function Login() {
@@ -12,9 +11,9 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
   const { login: enviarInfo } = useUsuario();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Função para lidar com o login do usuário
   const handleLogin = (e) => {
@@ -35,10 +34,7 @@ function Login() {
     // Realiza o login e busca a sessão do usuário
     login(email, password)
       .then(() => {
-        return axios.get("http://localhost:5002/librasapi/session", {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
+        return getSession();
       })
       .then((sessionRes) => {
         // Atualiza o contexto com os dados do usuário e token
@@ -47,7 +43,7 @@ function Login() {
         enviarInfo(user, token);
         setLoading(false);
         setError("");
-        navigate("/");
+        navigate(`${base}`);
       })
       .catch((e) => {
         console.log(e);
@@ -69,6 +65,7 @@ function Login() {
         <ErrorMessage error={error} onClose={() => setError("")} />
         <i className="pi pi-envelope">
           <input
+            id="login-email"
             type="email"
             placeholder="Email"
             value={email}
@@ -81,6 +78,7 @@ function Login() {
         </i>
         <i className="pi pi-lock">
           <input
+            id="login-password"
             type="password"
             placeholder="Senha"
             value={password}
@@ -98,7 +96,7 @@ function Login() {
         </button>
         <div className="login-redirect-text">
           <span>Não tem uma conta? </span>
-          <Link to="/cadastro" className="login-redirect-link">
+          <Link to={`${base}cadastro`} className="login-redirect-link">
             Cadastre-se
           </Link>
         </div>

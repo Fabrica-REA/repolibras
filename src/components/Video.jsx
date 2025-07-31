@@ -27,7 +27,6 @@ const Video = ({ src, index, classNameVideo }) => {
             <iframe
                 src={getYouTubeEmbedUrl(src)}
                 className={classNameVideo}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 title={`youtube-video-${index}`}
             ></iframe>
@@ -39,8 +38,8 @@ const Video = ({ src, index, classNameVideo }) => {
             src={src}
             controls={hoveredIndex === index}
             className={classNameVideo}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
+            onPointerEnter={() => setHoveredIndex(index)}
+            onPointerLeave={() => setHoveredIndex(null)}
             playsInline
         ></video>
     );

@@ -6,26 +6,37 @@ import avaliar from "../assets/images/clipboard_icon.svg";
 import solicitacoes from "../assets/images/solicitation_icon.svg";
 import conta from "../assets/images/profile_icon.svg";
 import estatisticas from "../assets/images/statistics_icon.svg";
-import Home from "../pages/Home";
-import Enviar from "../pages/Enviar";
-import Solicitacoes from "../pages/Solicitacoes";
-import Avaliar from "../pages/Avaliar";
-import Gerenciar from "../pages/Gerenciar";
-import Login from "../pages/Login";
-import Cadastro from "../pages/Cadastro";
-import Estatistica from "../pages/Estatistica";
-import Pesquisar from "../pages/Pesquisar";
-import Conta from "../pages/Conta";
-import { Pagina404 } from "../utils/Utilidades";
+import { Suspense, lazy, useState, useEffect } from "react";
+import { base, Pagina404 } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
-import { useState, useEffect } from "react";
+
+// Carregamento dinâmico (lazy load) das páginas
+const Home = lazy(() => import("../pages/Home"));
+const Enviar = lazy(() => import("../pages/Enviar"));
+const Solicitacoes = lazy(() => import("../pages/Solicitacoes"));
+const Avaliar = lazy(() => import("../pages/Avaliar"));
+const Gerenciar = lazy(() => import("../pages/Gerenciar"));
+const Login = lazy(() => import("../pages/Login"));
+const Cadastro = lazy(() => import("../pages/Cadastro"));
+const Estatistica = lazy(() => import("../pages/Estatistica"));
+const Pesquisar = lazy(() => import("../pages/Pesquisar"));
+const Conta = lazy(() => import("../pages/Conta"));
+const BASE_URL = import.meta.env.BASE_URL; 
 
 // Rota protegida: só permite acesso se o usuário estiver autenticado e tiver o papel permitido
 const ProtectedRoute = ({ allowedRoles, element }) => {
   const { usuario } = useUsuario();
+  // Tenta pegar o usuario do localStorage se não estiver presente no contexto
+  const effectiveUsuario =
+    usuario && usuario.acesso
+      ? usuario
+      : (() => {
+          const storedUser = localStorage.getItem("usuario");
+          return storedUser ? JSON.parse(storedUser) : {};
+        })();
 
-  if (!allowedRoles.includes(usuario.acesso)) {
-    return <Navigate to="/" replace />;
+  if (!allowedRoles.includes(effectiveUsuario.acesso)) {
+    return <Navigate to={`${base}`} replace />;
   }
   return element;
 };
@@ -34,8 +45,6 @@ const Header = () => {
   const { usuario } = useUsuario();
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  console.log(usuario);
 
   const isCadastrado = usuario?.acesso === "cadastrado";
   const isProfessor = usuario?.acesso === "professor";
@@ -55,11 +64,14 @@ const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Helper to prefix base to all routes
+  const withBase = (path) => (BASE_URL.endsWith("/") && path.startsWith("/") ? BASE_URL.slice(0, -1) + path : BASE_URL + path);
+
   return (
     <>
       <header className="header">
         <div className="header-logo">
-          <Link to="/">Repositório de Libras</Link>
+          <Link to={withBase("/")}>Repositório de Libras</Link>
         </div>
         <nav className="header-nav">
           {usuario ? (
@@ -75,7 +87,7 @@ const Header = () => {
                   {showDropdown && (
                     <div className="dropdown-menu">
                       <Link
-                        to="/"
+                        to={withBase("/")}
                         className="dropdown-item-header"
                         onClick={toggleDropdown}
                       >
@@ -84,7 +96,7 @@ const Header = () => {
                       </Link>
                       {(isCadastrado || isProfessor || isAdministrador) && (
                         <Link
-                          to="/enviar"
+                          to={withBase("/enviar")}
                           className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
@@ -98,7 +110,7 @@ const Header = () => {
                       )}
                       {(isProfessor || isAdministrador || isGestor) && (
                         <Link
-                          to="/solicitacoes"
+                          to={withBase("/solicitacoes")}
                           className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
@@ -112,7 +124,7 @@ const Header = () => {
                       )}
                       {(isProfessor || isAdministrador) && (
                         <Link
-                          to="/avaliar"
+                          to={withBase("/avaliar")}
                           className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
@@ -126,7 +138,7 @@ const Header = () => {
                       )}
                       {(isAdministrador || isGestor || isProfessor) && (
                         <Link
-                          to="/estatistica"
+                          to={withBase("/estatistica")}
                           className="dropdown-item-header"
                           onClick={toggleDropdown}
                         >
@@ -138,129 +150,143 @@ const Header = () => {
                           Estatísticas
                         </Link>
                       )}
-                      <Link
-                        to="/conta"
-                        className="dropdown-item-header"
-                        onClick={toggleDropdown}
-                      >
-                        <img
-                          src={conta}
-                          alt="Conta"
-                          className="dropdown-icon"
-                        />
-                        Conta
-                      </Link>
+                      {(isCadastrado || isProfessor || isAdministrador || isGestor) && (
+                        <Link
+                          to={withBase("/conta")}
+                          className="dropdown-item-header"
+                          onClick={toggleDropdown}
+                        >
+                          <img
+                            src={conta}
+                            alt="Conta"
+                            className="dropdown-icon"
+                          />
+                          Conta
+                        </Link>
+                      )}
                     </div>
                   )}
                 </>
               ) : (
                 <>
-                  <Link to="/" className="nav-button">
+                  <Link to={withBase("/")} className="nav-button">
                     <button className="nav-button-circle">
                       <img src={home} alt="Home" />
                     </button>
                   </Link>
                   {(isCadastrado || isProfessor || isAdministrador) && (
-                    <Link to="/enviar" className="nav-button">
+                    <Link to={withBase("/enviar")} className="nav-button">
                       <button className="nav-button-circle">
                         <img src={enviar} alt="Enviar" />
                       </button>
                     </Link>
                   )}
                   {(isProfessor || isAdministrador || isGestor) && (
-                    <Link to="/solicitacoes" className="nav-button">
+                    <Link to={withBase("/solicitacoes")} className="nav-button">
                       <button className="nav-button-circle">
                         <img src={solicitacoes} alt="Solicitações" />
                       </button>
                     </Link>
                   )}
                   {(isProfessor || isAdministrador) && (
-                    <Link to="/avaliar" className="nav-button">
+                    <Link to={withBase("/avaliar")} className="nav-button">
                       <button className="nav-button-circle">
                         <img src={avaliar} alt="Avaliar" />
                       </button>
                     </Link>
                   )}
                   {(isAdministrador || isGestor || isProfessor) && (
-                    <Link to="/estatistica" className="nav-button">
+                    <Link to={withBase("/estatistica")} className="nav-button">
                       <button className="nav-button-circle">
                         <img src={estatisticas} alt="Estatísticas" />
                       </button>
                     </Link>
                   )}
-                  <Link to="/conta" className="nav-button">
-                    <button className="nav-button-circle">
-                      <img src={conta} alt="Conta" />
-                    </button>
-                  </Link>
+                  {(isCadastrado || isProfessor || isAdministrador || isGestor) && (
+                    <Link to={withBase("/conta")} className="nav-button">
+                      <button className="nav-button-circle">
+                        <img src={conta} alt="Conta" />
+                      </button>
+                    </Link>
+                  )}
                 </>
               )}
             </>
           ) : (
-            <Link to="/login" className="login-btn">
+            <Link to={withBase("/login")} className="login-btn">
               Login
             </Link>
           )}
         </nav>
       </header>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/enviar"
-          element={
-            <ProtectedRoute
-              allowedRoles={[
-                "cadastrado",
-                "professor",
-                "administrador",
-                "gestor",
-              ]}
-              element={<Enviar />}
-            />
-          }
-        />
-        <Route
-          path="/avaliar"
-          element={
-            <ProtectedRoute
-              allowedRoles={["professor", "administrador"]}
-              element={<Avaliar />}
-            />
-          }
-        />
-        <Route
-          path="/gerenciar"
-          element={
-            <ProtectedRoute
-              allowedRoles={["professor", "administrador", "gestor"]}
-              element={<Gerenciar />}
-            />
-          }
-        />
-        <Route
-          path="/solicitacoes"
-          element={
-            <ProtectedRoute
-              allowedRoles={["professor", "administrador", "gestor"]}
-              element={<Solicitacoes />}
-            />
-          }
-        />
-        <Route
-          path="/estatistica"
-          element={
-            <ProtectedRoute
-              allowedRoles={["administrador", "gestor"]}
-              element={<Estatistica />}
-            />
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/pesquisar" element={<Pesquisar />} />
-        <Route path="/conta" element={<Conta />} />
-        <Route path="*" element={<Pagina404 />} />
-      </Routes>
+      <Suspense fallback={<div>Carregando...</div>}>
+        <Routes>
+          <Route path={BASE_URL} element={<Home />} />
+          <Route
+            path={withBase("/enviar")}
+            element={
+              <ProtectedRoute
+                allowedRoles={[
+                  "cadastrado",
+                  "professor",
+                  "administrador",
+                  "gestor",
+                ]}
+                element={<Enviar />}
+              />
+            }
+          />
+          <Route
+            path={withBase("/avaliar")}
+            element={
+              <ProtectedRoute
+                allowedRoles={["professor", "administrador"]}
+                element={<Avaliar />}
+              />
+            }
+          />
+          <Route
+            path={withBase("/gerenciar")}
+            element={
+              <ProtectedRoute
+                allowedRoles={["professor", "administrador", "gestor"]}
+                element={<Gerenciar />}
+              />
+            }
+          />
+          <Route
+            path={withBase("/solicitacoes")}
+            element={
+              <ProtectedRoute
+                allowedRoles={["professor", "administrador", "gestor"]}
+                element={<Solicitacoes />}
+              />
+            }
+          />
+          <Route
+            path={withBase("/estatistica")}
+            element={
+              <ProtectedRoute
+                allowedRoles={["administrador", "gestor"]}
+                element={<Estatistica />}
+              />
+            }
+          />
+          <Route
+            path={withBase("/conta")}
+            element={
+              <ProtectedRoute
+                allowedRoles={["administrador", "gestor", "professor", "cadastrado"]}
+                element={<Conta />}
+              />
+            }
+          />
+          <Route path={withBase("/login")} element={<Login />} />
+          <Route path={withBase("/cadastro")} element={<Cadastro />} />
+          <Route path={withBase("/pesquisar")} element={<Pesquisar />} />
+          <Route path="*" element={<Pagina404 />} />
+        </Routes>
+      </Suspense>
     </>
   );
 };

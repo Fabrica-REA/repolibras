@@ -7,7 +7,7 @@ export const Pagina404 = () => {
     <div className="container-404">
       <h1>404 - Página não encontrada</h1>
       <p>Desculpe, a página que você está procurando não existe.</p>
-      <a href="/" className="home-button">
+      <a href={`${base}`} className="home-button">
         Voltar para a página inicial
       </a>
     </div>
@@ -34,15 +34,7 @@ export const Loading = ({ open, message }) => {
 };
 
 // Popup de confirmação genérico
-export const ConfirmPopUp = ({
-  open,
-  title,
-  message,
-  onConfirm,
-  onCancel,
-  loading,
-  showOnlyMessage,
-}) => {
+export const ConfirmPopUp = ({ open, title, message, onConfirm, onCancel, loading, showOnlyMessage, }) => {
   if (!open) return null;
   return (
     <div className="modal-overlay">
@@ -79,16 +71,7 @@ export const ConfirmPopUp = ({
 };
 
 // Popup para recusa ou observação
-export const DeclinePopUp = ({
-  open,
-  title,
-  message,
-  onConfirm,
-  onCancel,
-  loading,
-  showOnlyMessage,
-  observationMode,
-}) => {
+export const DeclinePopUp = ({ open, title, message, onConfirm, onCancel, loading, showOnlyMessage, observationMode, }) => {
   const [reason, setReason] = useState("");
 
   if (!open) return null;
@@ -188,18 +171,7 @@ const SendPopUp = ({ open, message, loading, showOnlyMessage, onSend }) => {
 };
 
 // Botão de ação genérico com popup e feedback
-export const ActionButton = ({
-  icon,
-  type,
-  class: className,
-  title,
-  message,
-  children,
-  action,
-  endMessage,
-  observationMode,
-  disabled,
-}) => {
+export const ActionButton = ({ icon, type, class: className, title, message, children, action, endMessage, observationMode, disabled, }) => {
   // Estados internos para controlar popup, loading e mensagens
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -244,7 +216,7 @@ export const ActionButton = ({
         } else {
           setResult(endMessage || "Item removido com sucesso");
         }
-        setShowOnlyMessage(true);        
+        setShowOnlyMessage(true);
         setTimeout(() => {
           setOpen(false);
           setResult("");
@@ -417,3 +389,6 @@ export function validarSenha(senha) {
   const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   return senhaRegex.test(senha);
 }
+
+//Variável da base da URL do projeto
+export const base = import.meta.env.BASE_URL;

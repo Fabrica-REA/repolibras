@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const getusuarios = async (token) => {
-     try {
+    try {
         const response = await axios.get(`${API_URL}/librasapi/usuarios`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -28,5 +28,5 @@ export const putUsuario = async (id, acesso, token) => {
     }
 }
 
-export const getChavesDesempenho = async () => {}
+export const getChavesDesempenho = async () => { }
 

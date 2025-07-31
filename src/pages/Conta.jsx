@@ -1,10 +1,14 @@
 import "../assets/css/perfil.css";
 import { useState, useEffect } from "react";
 import Perfil from "../components/Perfil";
+import { useUsuario } from "../context/usuarioContext";
+import { useNavigate } from "react-router-dom";
+import { base } from "../utils/Utilidades";
 
 // Opções do menu lateral do perfil
 const options = [
-  { key: "perfil", label: "Perfil", icon: "pi-user" }
+  { key: "perfil", label: "Perfil", icon: "pi-user" },
+  { key: "logout", label: "Logout", icon: "pi-sign-out" },
 ];
 
 // Renderiza o conteúdo de acordo com a opção selecionada
@@ -47,10 +51,18 @@ const Conta = () => {
   const [selected, setSelected] = useState("perfil");
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const { logout } = useUsuario();
+  const navigate = useNavigate();
 
   // Alterna dropdown no mobile/tablet
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
+  };
+
+  // Lógica de logout
+  const handleLogout = () => {
+    logout();
+    navigate(base);
   };
 
   useEffect(() => {
@@ -81,8 +93,12 @@ const Conta = () => {
                       selected === opt.key ? " selected" : ""
                     }`}
                     onClick={() => {
+                      if (opt.key === "logout") {
+                        handleLogout();
+                        return;
+                      }
                       setSelected(opt.key);
-                      setShowDropdown(false); // Fecha dropdown após seleção
+                      setShowDropdown(false);
                     }}
                   >
                     <i className={`pi ${opt.icon} dropdown-item-icon`} />
@@ -97,8 +113,16 @@ const Conta = () => {
             {options.map((opt) => (
               <div
                 key={opt.key}
-                className={`option-item${selected === opt.key ? " selected" : ""}`}
-                onClick={() => setSelected(opt.key)}
+                className={`option-item${
+                  selected === opt.key ? " selected" : ""
+                }`}
+                onClick={() => {
+                  if (opt.key === "logout") {
+                    handleLogout();
+                    return;
+                  }
+                  setSelected(opt.key);
+                }}
               >
                 <div className="option-icon">
                   <i className={`pi ${opt.icon}`} />

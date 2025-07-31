@@ -41,9 +41,12 @@ export const login = async (email, senha) => {
 }
 
 export const logout = async (token) => {
+    // Asegura que os dados do usuário sejam removidos do armazenamento local
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
     try {
         const response = await axios.post(
-            `${API_URL}/librasapi/logout`,
+            `${API_URL}/librasapi/usuario/logout`,
             {},
             {
                 headers: {
@@ -56,7 +59,7 @@ export const logout = async (token) => {
         return { data: response.data };
     } catch (e) {
         console.error('Erro ao fazer logout:', e);
-        throw e;
+        return { data: null };
     }
 }
 
@@ -95,6 +98,22 @@ export const getUsuarios = async (token) => {
         return { data: response.data };
     } catch (e) {
         console.error('Erro ao obter usuários:', e);
+        throw e;
+    }
+}
+
+export const getSession = async () => {
+    try {
+        const response = await axios.get(
+            `${API_URL}/librasapi/session`,
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            }
+        );
+        return { data: response.data };
+    } catch (e) {
+        console.error('Erro ao obter sessão:', e);
         throw e;
     }
 }

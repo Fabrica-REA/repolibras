@@ -125,10 +125,13 @@
 }
 
 .modal-content .button-group {
+    display: flex !important;
+    flex-direction: row !important;
     justify-content: center;
     align-items: center;
     gap: 1rem;
     margin: 0;
+    width: 100%;
 }
 
 .modal-content .button-group button {

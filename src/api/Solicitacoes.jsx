@@ -17,9 +17,9 @@ export const getSolicitacoes = async (token) => {
     }
 }
 
-export const postSolicitacao = async (palavra, contexto, usuario, linguagem, token) => {
+export const postSolicitacao = async (palavra, contexto, usuarioId, linguagem, token) => {
     try {
-        const response = await axios.post(`${API_URL}/librasapi/solicitacao`, { palavra, contexto, usuario: usuario.id, linguagem }, {
+        const response = await axios.post(`${API_URL}/librasapi/solicitacao`, { palavra, contexto, usuario: usuarioId, linguagem }, {
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             }
@@ -34,10 +34,11 @@ export const sendSolicitacao = async (id, videoFile, contexto, usuario, palavra,
     try {
         const formData = new FormData();
         formData.append('file', videoFile);
-        formData.append('usuarioid', usuario.id);
+        formData.append('usuario', usuario.id);
         formData.append('contextoId', contexto);
         formData.append('palavra', palavra);
         formData.append('observacao', observacao);
+        
 
         const response = await axios.post(`${API_URL}/librasapi/solicitacao/${id}`, formData, {
             headers: {

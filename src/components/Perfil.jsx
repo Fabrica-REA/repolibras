@@ -64,13 +64,14 @@ const Perfil = () => {
     <div className="option-container">
       <div className="profile">
         <div className="avatar editable-avatar">
+          <input type="file" id="avatar-upload" style={{ display: "none" }} />
           <label htmlFor="avatar-upload" className="avatar-label">
             <img src={avatar} alt="Avatar" className="avatar-img" />
           </label>
         </div>
       </div>
       <form className="profile-form">
-        <label htmlFor="nomeCompleto">Nome Completo:</label>
+        <label id="nome-completo-label" htmlFor="nomeCompleto">Nome Completo:</label>
         <input
           id="nomeCompleto"
           type="text"
@@ -88,7 +89,7 @@ const Perfil = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="profile-input"
         />
-        <label htmlFor="senha">Senha:</label>
+        <label id="senha-label" htmlFor="senha">Senha:</label>
         <div style={{ position: "relative" }}>
           <input
             id="senha"
@@ -113,7 +114,7 @@ const Perfil = () => {
             <i className={`pi ${showPassword ? "pi-eye-slash" : "pi-eye"}`} />
           </span>
         </div>
-        <label htmlFor="confirmeSenha">Confirme sua Senha:</label>
+        <label id="confirme-senha-label" htmlFor="confirmeSenha">Confirme sua Senha:</label>
         <div style={{ position: "relative" }}>
           <input
             id="confirmeSenha"

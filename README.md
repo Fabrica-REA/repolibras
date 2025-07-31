@@ -33,8 +33,8 @@
     </li>
     <li><a href="#roadmap">Roadmap</a>
       <ul>
-        <li><a href="#v1.0">v1.0</a></li>
-        <li><a href="#v2.0">v2.0</a></li>
+        <li><a href="#v10">v1.0</a></li>
+        <li><a href="#v20">v2.0</a></li>
       </ul>
     </li>
     <li><a href="#contribuir">Contribuir</a></li>
@@ -59,7 +59,6 @@ Promover o acesso, a colaboração e a disseminação da Língua Brasileira de S
 
 Ser referência nacional em repositórios digitais de Libras e línguas indígenas, contribuindo para a formação de uma sociedade mais inclusiva, acessível e conectada, onde o conhecimento sobre línguas de sinais seja amplamente compartilhado, validado e aprimorado por toda a comunidade.
 
-<!-- ![Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/desenvolvimento/docs/home.png) -->
 [Página Home - Screen Shot](https://github.com/Fabrica-REA/repolibras/blob/main/docs/home.png)
 
 

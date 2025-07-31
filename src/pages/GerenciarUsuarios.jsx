@@ -21,7 +21,6 @@ const GerenciarUsuarios = () => {
         const updated = users.map(u =>
             u.Id === userId ? { ...u, Login: value } : u
         );
-        console.log("hello");
         
         try {
             await editUsuarioAcesso(userId, value, token);
@@ -46,7 +45,7 @@ const GerenciarUsuarios = () => {
             .then((res) => setUsers(res.data))
             .catch(e => console.log(e))
             .finally(() => setLoading(false));
-    }, [])
+    }, [token])
 
     return (
         <div className="gerenciar-container" onClick={handleBlur}>

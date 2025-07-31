@@ -17,25 +17,6 @@ const Dashboard = () => {
     const [contribuicoesMensais, setContribuicoesMensais] = useState([]);
     const [palavrasMaisBuscadas, setPalavrasMaisBuscadas] = useState([]);
 
-    console.log(palavrasMaisBuscadas);
-    
-
-    // Static test data for palavras mais buscadas
-    function getStaticPalavrasMaisBuscadas() {
-        return [
-            { DesPalavra: "Inclusão", total: 38 },
-            { DesPalavra: "Educação", total: 28 },
-            { DesPalavra: "Acessibilidade", total: 25 },
-            { DesPalavra: "Comunicação", total: 20 },
-            { DesPalavra: "Libras", total: 18 },
-            { DesPalavra: "Cultura", total: 15 },
-            { DesPalavra: "Diversidade", total: 12 },
-            { DesPalavra: "Sinal", total: 10 },
-            { DesPalavra: "Aprender", total: 8 },
-            { DesPalavra: "Professor", total: 7 },
-        ];
-    }
-
     useEffect(() => {
         setLoading(true);
         Promise.all([
@@ -47,7 +28,7 @@ const Dashboard = () => {
         ])
             .then(([usuarios, totalVideos, novos, verificados, contriMes]) => {
                 setTotalUsuarios(usuarios?.total ?? 0);
-                setTotalVideos(totalVideos?.total ?? 0); 
+                setTotalVideos(totalVideos?.total ?? 0);
                 setNovosVideos(novos?.total ?? 0);
                 setPorcentagemVerificados(verificados?.porcentagem ?? 0);
                 setContribuicoesMensais(contriMes ?? []);
@@ -143,7 +124,47 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
-                    </div>
+                        {/* Desenvolvimento para proxima versão :)*/}
+                        {/* <div className="alert-container">
+                            <div className="chart-title">Alertas e Moderacao</div>
+                            <div className="alert-item">
+                                <div className="alert-icon alert-warning">
+                                    <i className="pi pi-exclamation-triangle"></i>
+                                </div>
+                                <div className="alert-content">
+                                    <div className="alert-title">Vídeos para revisão</div>
+                                    <div className="alert-description">5 novos vídeos precisam de verificação</div>
+                                </div>
+                            </div>
+                            <div className="alert-item">
+                                <div className="alert-icon alert-danger">
+                                    <i className="pi pi-times-circle"></i>
+                                </div>
+                                <div className="alert-content">
+                                    <div className="alert-title">Sinais conflitantes</div>
+                                    <div className="alert-description">3 sinais com variações regionais detectadas</div>
+                                </div>
+                            </div>
+                            <div className="alert-item">
+                                <div className="alert-icon alert-success">
+                                    <i className="pi pi-check-circle"></i>
+                                </div>
+                                <div className="alert-content">
+                                    <div className="alert-title">Nova versão disponível</div>
+                                    <div className="alert-description">Atualização de sistema concluída</div>
+                                </div>
+                            </div>
+                            <div className="alert-item">
+                                <div className="alert-icon alert-info">
+                                    <i className="pi pi-info-circle"></i>
+                                </div>
+                                <div className="alert-content">
+                                    <div className="alert-title">Evento próximo</div>
+                                    <div className="alert-description">Workshop de Libras dia 15/10</div>
+                                </div>
+                            </div>
+                        </div>*/}
+                    </div> 
 
                     <div className="dashboard-grid">
                         <div className="dashboard-chart-container">
@@ -156,6 +177,42 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
+                        {/* Desenvolvimento para proxima versão :)*/}
+                        {/* <div className="recent-contributions">
+                            <div className="chart-title">Últimas Contribuições</div>
+                            <div className="contribution-item">
+                                <div className="contribution-avatar">AM</div>
+                                <div className="contribution-details">
+                                    <div className="contribution-user">Ana Mendes</div>
+                                    <div className="contribution-action">Adicionou um novo vídeo para "Universidade"</div>
+                                    <div className="contribution-time">10 minutos atrás</div>
+                                </div>
+                            </div>
+                            <div className="contribution-item">
+                                <div className="contribution-avatar">CR</div>
+                                <div className="contribution-details">
+                                    <div className="contribution-user">Carlos Rocha</div>
+                                    <div className="contribution-action">Atualizou o vídeo para "Biblioteca"</div>
+                                    <div className="contribution-time">1 hora atrás</div>
+                                </div>
+                            </div>
+                            <div className="contribution-item">
+                                <div className="contribution-avatar">FM</div>
+                                <div className="contribution-details">
+                                    <div className="contribution-user">Fernanda Maia</div>
+                                    <div className="contribution-action">Verificou 5 sinais regionais</div>
+                                    <div className="contribution-time">3 horas atrás</div>
+                                </div>
+                            </div>
+                            <div className="contribution-item">
+                                <div className="contribution-avatar">LS</div>
+                                <div className="contribution-details">
+                                    <div className="contribution-user">Luiz Silva</div>
+                                    <div className="contribution-action">Adicionou categoria "Termos Acadêmicos"</div>
+                                    <div className="contribution-time">Ontem</div>
+                                </div>
+                            </div>
+                        </div> */}
                     </div>
                 </>
             )}

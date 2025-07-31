@@ -24,10 +24,10 @@ export const getPalavras = async (q, linguagem) => {
                                 let videoUrl = null;
                                 try {
                                     const videoResponse = await axios.get(
-                                        `${API_URL}/librasapi/download/${pasta}/${nome}`,
+                                        `${API_URL}/download/${pasta}/${nome}`,
                                         { responseType: "blob" }
                                     );
-                                    videoUrl = URL.createObjectURL(videoResponse.data);
+                                    videoUrl = URL.createObjectURL(videoResponse.data);   
                                 } catch (e) {
                                     console.error(`Erro ao capturar o vídeo para video.id ${video.id || ""}:`, e);
                                 }
@@ -53,7 +53,7 @@ export const postBuscaPalavra = async (desPalavra, usuarioId, linguagem) => {
             `${API_URL}/buscapalavra`,
             {
                 desPalavra,
-                usuarioId: usuarioId || "visitante",
+                usuarioId: usuarioId || -1,
                 data: new Date().toISOString().slice(0, 19).replace('T', ' '), // Formata para DATETIME do MySQL
                 linguagem
             },

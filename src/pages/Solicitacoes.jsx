@@ -34,7 +34,7 @@ const Solicitacoes = () => {
         console.error("Erro ao carregar solicitações ou contextos:", e);
         setLoading(false);
       });
-  }, []);
+  }, [token]);
 
   // Remove solicitação
   const handleRemove = async (id) => {
@@ -42,7 +42,7 @@ const Solicitacoes = () => {
     await deleteSolicitacao(id, token)
       .then((res) => console.log(res), setLoading(false))
       .catch(() => setLoading(false))
-      .finally(() => window.location.reload());
+      .finally(() => { setLoading(false); window.location.reload(); });
   };
 
   // Envia solicitação
@@ -59,7 +59,7 @@ const Solicitacoes = () => {
         setError("Erro ao enviar solicitação.");
         console.log(e);
       })
-      .finally(() => setLoading(false), window.location.reload());
+      .finally(() => { setLoading(false); window.location.reload(); });
   };
 
   // Lida com mudança de contexto
@@ -94,6 +94,12 @@ const Solicitacoes = () => {
       </div>
       {loading ? (
         <Loading open={loading} />
+      ) : solicitacoes.length === 0 ? (
+        <div className="empty-state">
+          <i className="pi pi-inbox empty-state-icon"></i>
+          <h2>Nenhuma solicitação encontrada</h2>
+          <p>Você não possui solicitações pendentes no momento.</p>
+        </div>
       ) : (
         <table className="solicitacoes-table">
           <thead>

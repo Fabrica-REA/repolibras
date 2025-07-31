@@ -19,7 +19,7 @@ export const getContextos = async (token) => {
 
 // Envia arquivo ou link
 export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, observacao, linguagem, token) => {
-    try {    
+    try {
         const formData = new FormData();
         if (videoFileOrLink instanceof File) {
             formData.append('file', videoFileOrLink);

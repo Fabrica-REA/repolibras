@@ -9,8 +9,6 @@ const pages = {
   dashboard: <div className="dashboard-content"><Dashboard /></div>,
   usuários: <div className="dashboard-content"><GerenciarUsuarios /></div>,
   videos: <div className="dashboard-content"><Gerenciar /></div>,
-  // relatórios: <div className="dashboard-content">Relatórios & Analytics</div>,
-  // configurações: <div className="dashboard-content">Configurações</div>,
 };
 
 const Estatistica = () => {
@@ -32,14 +30,6 @@ const Estatistica = () => {
       icon: "pi pi-video",
       label: "videos",
     },
-    // {
-    //   icon: "pi pi-clipboard",
-    //   label: "Relatórios",
-    // },
-    // {
-    //   icon: "pi pi-cog",
-    //   label: "Configurações",
-    // },
   ];
 
   return (

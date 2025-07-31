@@ -71,7 +71,7 @@ const Enviar = () => {
       setError("");
     } catch (e) {
       setLoading(false);
-      setError("Erro ao enviar arquivo.");
+      setError("Erro ao enviar arquivo.", e);
       return false;
     }
   };
@@ -84,7 +84,7 @@ const Enviar = () => {
         console.error('Erro ao carregar contextos:', e);
         setLoading(false);
       });
-  }, [])
+  }, [token])
 
   return (
     <>
@@ -114,6 +114,15 @@ const Enviar = () => {
           </div>
           <div className="enviar-forms">
             <form className="enviar-form">
+              {/* Campo de linguagem */}
+              <div className="form-group">
+                <label htmlFor="linguagem">Linguagem</label>
+                <select id="linguagem" required onChange={(e) => setLinguagem(e.target.value)} value={linguagem}>
+                  <option value="">Selecione a Linguagem</option>
+                  <option value="portugues">Português</option>
+                  <option value="terena">Terena</option>
+                </select>
+              </div>
               {/* Campo de contexto */}
               <div className="form-group">
                 <label htmlFor="contexto">Contexto</label>
@@ -148,15 +157,6 @@ const Enviar = () => {
                   />
                 </div>
               )}
-              {/* Campo de linguagem */}
-              <div className="form-group">
-                <label htmlFor="linguagem">Linguagem</label>
-                <select id="linguagem" required onChange={(e) => setLinguagem(e.target.value)} value={linguagem}>
-                  <option value="">Selecione a Linguagem</option>
-                  <option value="portugues">Português</option>
-                  <option value="terena">Terena</option>
-                </select>
-              </div>
               {/* Campo de palavra */}
               <div className="form-group">
                 <label htmlFor="palavra">Palavra</label>

@@ -34,7 +34,7 @@ const Gerenciar = () => {
         console.error("Erro ao carregar dados:", e);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [token]);
 
   const handleEdit = async (id, field, value) => {
     setVideos((prev) =>
@@ -207,7 +207,7 @@ const Gerenciar = () => {
                     ) : (
                       <div className="edit-row">
                         <span>
-                          {contextos.find((c) => c.id === video.ContextoId)?.descricao || ""}
+                          {contextos.find((c) => String(c.id) === String(video.ContextoId))?.descricao || ""}
                         </span>
                         <i
                           className="pi pi-pen-to-square icon-btn"
@@ -221,8 +221,7 @@ const Gerenciar = () => {
                     <div className="video-block-gerenciar">
                       <Video
                         src={
-                          video.NomeArquivo &&
-                          (video.NomeArquivo.includes("youtube.com") || video.NomeArquivo.includes("youtu.be"))
+                          video.NomeArquivo && (video.NomeArquivo.includes("youtube.com") || video.NomeArquivo.includes("youtu.be"))
                             ? video.NomeArquivo
                             : video.videoUrl
                         }
@@ -288,7 +287,7 @@ const Gerenciar = () => {
                     ) : (
                       <div className="edit-row">
                         <span>
-                          {statusList.find((s) => s.Id === video.SituacaoId)?.Descricao || ""}
+                          {statusList.find((s) => String(s.Id) === String(videos[idx].SituacaoId))?.Descricao || ""}
                         </span>
                         <i
                           className="pi pi-pen-to-square icon-btn"
