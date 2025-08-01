@@ -89,7 +89,7 @@ export const barChartOptions = {
             grid: { color: '#eee' },
             ticks: {
                 stepSize: 1, 
-                callback: function(value) {
+                callback: (value) => {
                     return Number.isInteger(value) ? value : null;
                 },
             },

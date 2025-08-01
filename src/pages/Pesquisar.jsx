@@ -37,20 +37,24 @@ function Pesquisar() {
     setModalVideos([]);
   };
 
+  const getVideoSrc = (video) => {
+    if (video.videoUrl) return video.videoUrl;
+    if (video.nome && (video.nome.includes("youtube.com") || video.nome.includes("youtu.be"))) return video.nome;
+    return "";
+  };
+
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      getPalavras(busca, state?.linguagem)
-        .then((res) => {
-          setresultadosFiltrados(res);
-          setLoading(false);
-          setDropdownVisible(busca && res.length > 0);
-        })
-        .catch((e) => {
-          console.error("Erro na busca dos videos:", e);
-          setLoading(false);
-        });
-    }, 0);
+    getPalavras(busca, state?.linguagem)
+      .then((res) => {
+        setresultadosFiltrados(res);
+        setLoading(false);
+        setDropdownVisible(!!busca && res.length > 0);
+      })
+      .catch((e) => {
+        console.error("Erro na busca dos videos:", e);
+        setLoading(false);
+      });
   }, [busca, state?.linguagem]);
 
   // Lida com mudança no campo de busca
@@ -210,46 +214,28 @@ function Pesquisar() {
                   {item.SituacaoId === 5 ? (
                     <div className="nenhum-resultado">
                       <li className="pi pi-clock"></li>
-                      <span>A palavra está in processo de gravação</span>
+                      <span>A palavra está em processo de gravação</span>
                     </div>
                   ) : item.SituacaoId === 0 ? (
                     <div className="nenhum-resultado">
                       <li className="pi pi-check-circle"></li>
                       <span>A palavra foi solicitada</span>
                     </div>
-                  ) : item.videos.length === 1 ? (
+                  ) : item.videos && item.videos.length === 1 ? (
                     <Video
-                      src={
-                        item.videos[0].videoUrl
-                          ? item.videos[0].videoUrl
-                          : (item.videos[0].nome && (item.videos[0].nome.includes("youtube.com") || item.videos[0].nome.includes("youtu.be")))
-                            ? item.videos[0].nome
-                            : ""
-                      }
+                      src={getVideoSrc(item.videos[0])}
                       classNameVideo={"video-thumb single"}
                       index={0}
                     />
                   ) : item.videos && item.videos.length === 2 ? (
                     <>
                       <Video
-                        src={
-                          item.videos[0].videoUrl
-                            ? item.videos[0].videoUrl
-                            : (item.videos[0].nome && (item.videos[0].nome.includes("youtube.com") || item.videos[0].nome.includes("youtu.be")))
-                              ? item.videos[0].nome
-                              : ""
-                        }
+                        src={getVideoSrc(item.videos[0])}
                         classNameVideo={"video-thumb double double-top"}
                         index={0}
                       />
                       <Video
-                        src={
-                          item.videos[1].videoUrl
-                            ? item.videos[1].videoUrl
-                            : (item.videos[1].nome && (item.videos[1].nome.includes("youtube.com") || item.videos[1].nome.includes("youtu.be")))
-                              ? item.videos[1].nome
-                              : ""
-                        }
+                        src={getVideoSrc(item.videos[1])}
                         classNameVideo={"video-thumb double double-bottom"}
                         index={1}
                       />
@@ -259,13 +245,7 @@ function Pesquisar() {
                       {item.videos.slice(0, 3).map((video, idx) => (
                         <Video
                           key={idx}
-                          src={
-                            video.videoUrl
-                              ? video.videoUrl
-                              : (video.nome && (video.nome.includes("youtube.com") || video.nome.includes("youtu.be")))
-                                ? video.nome
-                                : ""
-                          }
+                          src={getVideoSrc(video)}
                           classNameVideo={"video-thumb"}
                           index={idx}
                         />
@@ -273,7 +253,7 @@ function Pesquisar() {
                       {item.videos.length > 3 && (
                         <div
                           className="video-thumb mais"
-                          onClick={() => abrirModalVideos(item.videos.map(v => v.videoUrl ? v.videoUrl : (v.nome && (v.nome.includes("youtube.com") || v.nome.includes("youtu.be")) ? v.nome : "")))}
+                          onClick={() => abrirModalVideos(item.videos.map(v => getVideoSrc(v)))}
                         >
                           + {item.videos.length - 3}
                         </div>

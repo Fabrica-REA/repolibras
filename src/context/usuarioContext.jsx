@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { logout as apiLogout, getSession } from "../api/Usuario";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
-
 // Cria contexto do usuário
 const UsuarioContext = createContext({
   usuario: null,

@@ -7,7 +7,6 @@ import { base, ErrorMessage, validarEmail, validarSenha } from '../utils/Utilida
 
 // Componente de Cadastro
 const Cadastro = () => {
-    const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

@@ -40,7 +40,7 @@ const Solicitacoes = () => {
   const handleRemove = async (id) => {
     setLoading(true);
     await deleteSolicitacao(id, token)
-      .then((res) => console.log(res), setLoading(false))
+      .then((res) => console.log(res))
       .catch(() => setLoading(false))
       .finally(() => { setLoading(false); window.location.reload(); });
   };

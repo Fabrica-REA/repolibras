@@ -24,19 +24,23 @@ const Avaliar = () => {
   }, [token]);
 
   const handleDesaprovacao = async (palavraId, usuarioId, quemRecusou, motivo) => {
-    await recusarAvaliacao(palavraId, usuarioId, quemRecusou, motivo, token).then(() => {
-    }).catch((e) => {
-      console.error("Erro ao recusar a avaliação:", e);
-    })
-    .finally(() => window.location.reload());
+    await recusarAvaliacao(palavraId, usuarioId, quemRecusou, motivo, token)
+      .then(() => {
+        setAvaliacoes(avaliacoes.filter(a => a.PalavraId !== palavraId));
+      })
+      .catch((e) => {
+        console.error("Erro ao recusar a avaliação:", e);
+      });
   }
 
   const handleAprovacao = async (palavraId, usuarioId, quemAprovou) => { 
-    await aceitarAvaliacao(palavraId, usuarioId, quemAprovou, token).then(() => {
-    }).catch((e) => {
-      console.error("Erro ao aprovar a avaliação:", e);
-    })
-    .finally(() => window.location.reload())
+    await aceitarAvaliacao(palavraId, usuarioId, quemAprovou, token)
+      .then(() => {
+        setAvaliacoes(avaliacoes.filter(a => a.PalavraId !== palavraId));
+      })
+      .catch((e) => {
+        console.error("Erro ao aprovar a avaliação:", e);
+      });
   }
 
   return (
@@ -69,12 +73,12 @@ const Avaliar = () => {
                 <div className="video-row">
                   <h2>{avaliacao.DesContexto}</h2>
                   <div className="button-group">
-                    <ActionButton type={"accept"} icon={"pi-check"} class={"icon-btn accept-button"} action={() => handleAprovacao(avaliacao.PalavraId, avaliacao.usuarioId, usuario.id)}/>
+                    <ActionButton type={"accept"} icon={"pi-check"} class={"icon-btn accept-button"} action={() => usuario?.id && handleAprovacao(avaliacao.PalavraId, avaliacao.usuarioId, usuario.id)}/>
                     <ActionButton
                       type={"decline"}
                       icon={"pi-times"}
                       class={"icon-btn decline-button"}
-                      action={(motivo) => handleDesaprovacao(avaliacao.PalavraId, avaliacao.usuarioId, usuario.id, motivo)}
+                      action={(motivo) => usuario?.id && handleDesaprovacao(avaliacao.PalavraId, avaliacao.usuarioId, usuario.id, motivo)}
                     />
                   </div>
                 </div>

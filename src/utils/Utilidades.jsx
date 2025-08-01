@@ -7,7 +7,7 @@ export const Pagina404 = () => {
     <div className="container-404">
       <h1>404 - Página não encontrada</h1>
       <p>Desculpe, a página que você está procurando não existe.</p>
-      <a href={`${base}`} className="home-button">
+      <a href={base} className="home-button">
         Voltar para a página inicial
       </a>
     </div>

@@ -9,7 +9,7 @@ export default defineConfig(() => {
     plugins: [react()],
     base: process.env.BASE_URL,
     server: {
-      port: Number(process.env.VITE_SERVER_PORT),
+      port: Number(process.env.VITE_SERVER_PORT) || 3000,
     },
   };
 });

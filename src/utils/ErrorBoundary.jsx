@@ -34,7 +34,6 @@ class ErrorBoundary extends React.Component {
               <button className="btn exception-button"
                 onClick={() => {
                   this.props.navigate("/");
-                  setTimeout(() => window.location.reload(), 0);
                 }}
               >
                 Ir para a Home
