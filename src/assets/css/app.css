@@ -1,0 +1,261 @@
+@import "primeicons/primeicons.css";
+
+:root {
+    --primary-color: #001B48;
+    --secondary-color: #02457A;
+    --tertiary-color: #018ABE;
+    --quaternary-color: #97CAD8;
+    --text-color: white;
+    --accent: #e74c3c;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+    --success: #27ae60;
+    --warning: #f39c12;
+}
+
+/* --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+    --success: #27ae60;
+    --warning: #f39c12; */
+
+body {
+    background: #f7f8fa;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+section {
+    padding: 20px;
+    margin: 20px;
+    max-width: calc(100% - 40px);
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.title {
+    display: flex;
+    margin-bottom: 20px;
+    align-self: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+}
+
+.btn {
+    display: inline-flex;
+    gap: 10px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--secondary-color);
+    width: 270px;
+    transition: 0.2s ease-in-out;
+}
+
+.btn>span,
+.btn>h1 {
+    flex: 1;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0 0.8rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+}
+
+li {
+    font-size: 1rem;
+}
+
+.icon-btn:hover {
+    background: #e3e9f3;
+}
+
+.icon-btn i {
+    font-size: 1.5rem;
+}
+
+.icon-btn.accept-button {
+    background: #d4f5dd;
+}
+
+.icon-btn.decline-button {
+    background: #f5d4d4;
+}
+
+.accept-button {
+    color: green;
+    background: #d4f5dd;
+}
+
+.decline-button {
+    color: red;
+    background: #f5d4d4;
+}
+
+.accept-button,
+.decline-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: #f0f0f0;
+    transition: background 0.2s;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+    width: 55px;
+    height: 55px
+}
+
+.accept-button:hover,
+.decline-button:hover {
+    opacity: 0.8;
+}
+
+label {
+    font-size: large;
+    font-weight: bold;
+    margin: 8px 0 8px 0;
+}
+
+input {
+    padding: 5px;
+    border: 1px solid var(--primary-color);
+    background-color: none;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid var(--secondary-color);
+    box-shadow: none;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--tertiary-color);
+    padding: 20px;
+}
+
+select {
+    max-width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fafafa;
+    box-sizing: border-box;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.error-message-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 3;
+}
+
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    p {
+        font-size: 0.95rem;
+    }
+
+    section {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    section {
+        padding: 5px;
+    }
+
+    label {
+        font-size: medium;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .title {
+        margin: 20px 0;
+    }
+}
+
+@media (max-width: 414px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 0.8rem;
+    }
+
+    section {
+        padding: 2px;
+        margin: 5px;
+    }
+
+    label {
+        font-size: small;
+        font-weight: bold;
+        margin: 0;
+    }
+}

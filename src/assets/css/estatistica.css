@@ -1,0 +1,114 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 38px;
+    padding: 40px 20px 0 20px;
+    background-color: var(--primary-color);
+    min-width: 50px;
+    width: 80px;
+    transition: width 0.3s ease;
+}
+
+.sidebar-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.sidebar-icon.active {
+    border: 2px solid #fff;
+}
+
+.sidebar-icon:hover:not(.active) {
+    border: 2px solid #fff;
+}
+
+.sidebar-icon i {
+    font-size: 1.5rem;
+    transition: font-size 0.3s ease;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    width: 100%;
+    background-color: #fff;
+    margin: 25px;
+    padding: 40px;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    /* Esconde a barra de rolagem em navegadores modernos */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.dashboard-main::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+@media (max-width: 768px) {
+    .dashboard-sidebar {
+        width: 50px;
+    }
+
+    .sidebar-icon {
+        padding: 6px;
+    }
+
+    .sidebar-icon i {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-main {
+        padding: 0;
+        margin: 20px 0 0 0;
+    }
+}
+
+@media (max-width: 414px) {
+    .dashboard-sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0;
+        gap: 0;
+        z-index: 2;
+    }
+
+    .sidebar-icon {
+        padding: 8px;
+    }
+
+    .sidebar-icon i {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-main {
+        padding: 0;
+        margin: 20px 0 0 0;
+    }
+}

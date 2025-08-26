@@ -1,0 +1,244 @@
+.enviar-container {
+  display: flex;
+  height: auto;
+  overflow: visible;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.28);
+  margin: 40px auto;
+  width: 80vw;
+}
+
+.enviar-container-link {
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+.enviar-col {
+  display: flex;
+  padding: 32px;
+  box-sizing: border-box;
+  width: 50%;
+}
+
+.file-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+}
+
+.enviar-col-right {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 24px;
+  overflow: visible;
+}
+
+.enviar-col-right-link {
+  background: #fff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.28);
+  margin: 0 auto !important;
+}
+
+.enviar-col-right .enviar-forms {
+  width: 100%;
+}
+
+.enviar-col-right .forms-tabs .tab {
+  padding: 8px 0;
+}
+
+.enviar-col-right .forms-tabs .active {
+  border-bottom: 4px solid var(--tertiary-color);
+}
+
+.enviar-col-right .forms-tabs {
+  display: flex;
+  justify-content: start;
+  gap: 2rem;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: large;
+}
+
+.enviar-col-right .enviar-forms .enviar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.enviar-col-right .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.enviar-col-right input[type="url"],
+.enviar-col-right input[type="text"],
+.enviar-col-right textarea,
+.enviar-col-right select {
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafafa;
+}
+
+.enviar-col-right input[type="text"]:focus,
+.enviar-col-right textarea:focus,
+.enviar-col-right select:focus {
+  border-color: var(--tertiary-color);
+  outline: none;
+}
+
+.enviar-col-right textarea {
+  resize: vertical;
+  min-height: 25px;
+}
+
+.enviar-col-right .submit-button {
+  padding: 12px 0;
+  border: 1px solid var(--secondary-color);
+  color: #fff;
+  background-color: #fff;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  max-width: 60px;
+}
+
+.enviar-col-right .submit-button img {
+  width: 24px;
+  height: 24px;
+  transition: filter 0.2s;
+}
+
+.enviar-col-right .submit-button:hover {
+  background: var(--primary-color);
+}
+
+.enviar-col-right .submit-button:hover img {
+  filter: brightness(0) invert(1);
+}
+
+/* Desktop: 1920×1080 (Full HD) */
+@media (min-width: 1920px) {
+  .enviar-container {
+    width: 70vw;
+    margin: 50px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: larger;
+  }
+}
+
+/* Desktop: 1366×768 */
+@media (min-width: 1366px) and (max-width: 1919px) {
+  .enviar-container {
+    width: 75vw;
+    margin: 40px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: large;
+  }
+}
+
+/* Desktop: 1536×864 */
+@media (min-width: 1536px) and (max-width: 1919px) {
+  .enviar-container {
+    width: 72vw;
+    margin: 45px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: large;
+  }
+}
+
+/* Desktop: 1280×720 */
+@media (min-width: 1280px) and (max-width: 1365px) {
+  .enviar-container {
+    width: 80vw;
+    margin: 35px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: medium;
+  }
+}
+
+/* Desktop: 1440×900 */
+@media (min-width: 1440px) and (max-width: 1535px) {
+  .enviar-container {
+    width: 78vw;
+    margin: 38px auto;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: medium;
+  }
+}
+
+@media (max-width: 414px) {
+  .enviar-container {
+    flex-direction: column;
+    margin: 0 auto;
+    width: 95vw;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .enviar-container {
+    flex-direction: column;
+    margin: 20px auto;
+    width: 90vw;
+    overflow: visible;
+  }
+
+  .enviar-col {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .enviar-col-right {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 1024px) {
+  .enviar-container {
+    margin: 35px auto;
+    width: 85vw;
+  }
+
+  .enviar-col-right .forms-tabs {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .enviar-container {
+    overflow: visible;
+  }
+
+  .enviar-col-right {
+    overflow: visible;
+  }
+}

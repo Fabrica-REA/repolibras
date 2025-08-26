@@ -1,0 +1,181 @@
+.login-container {
+    min-width: 450px;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.login-container form {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.login-container i {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 80%;
+    padding: 4px 8px;
+    background-color: white;
+}
+
+.login-container i::before {
+    padding: 16px 24px 16px 16px;
+    margin: 4px;
+    border-right: 1px solid #333;
+   
+}
+
+.login-container input {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--primary-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.login-container label {
+    align-self: flex-start;
+    font-size: 1rem;
+    color: #333;
+    margin-left: 5px;
+}
+
+.login-container button {
+    width: 80%;
+    max-width: 400px;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+.login-container button:hover {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+/* Redirect Text and Link Styles */
+.login-redirect-text {
+    margin-top: 1.2rem;
+    text-align: center;
+    font-size: 1.05rem;
+}
+
+.login-redirect-link {
+    color: #1976d2;
+    text-decoration: underline;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 1.05rem;
+}
+
+/* Responsive Typography */
+@media (max-width: 1024px) {
+    .login-container h1 {
+        font-size: 1.9rem;
+    }
+
+    .login-container input {
+        font-size: 0.95rem;
+    }
+
+    .login-container button {
+        width: 78%;
+        padding: 11px;
+        font-size: 0.95rem;
+    }
+
+    .login-redirect-text,
+    .login-redirect-link {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        min-width: 0;
+        max-width: 95vw;
+        padding: 0 10px;
+    }
+
+    .login-container form {
+        max-width: 95vw;
+    }
+
+    .login-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .login-container input {
+        font-size: 0.9rem;
+    }
+
+    .login-container button {
+        width: 75%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .login-redirect-text,
+    .login-redirect-link {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 414px) {
+    .login-container {
+        min-width: 0;
+        max-width: 100vw;
+        padding: 0 4px;
+    }
+
+    .login-container form {
+        max-width: 100vw;
+        padding: 0;
+    }
+
+    .login-container h1 {
+        font-size: 1.6rem;
+    }
+
+    .login-container input {
+        font-size: 0.85rem;
+    }
+
+    .login-container button {
+        width: 70%;
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .login-redirect-text,
+    .login-redirect-link {
+        font-size: 0.9rem;
+    }
+}

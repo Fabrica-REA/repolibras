@@ -1,0 +1,228 @@
+.container-404 {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.container-404 h1 {
+    font-size: 6rem;
+    margin: 20px 0;
+    color: var(--primary-color);
+}
+
+.container-404 p {
+    font-size: 1.5rem;
+    margin: 20px 0;
+    color: var(--secondary-color);
+}
+
+.container-404 .home-button {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.container-404 .home-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/*End of the 404 page styles*/
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content h2,
+.modal-content p,
+.modal-content span,
+.modal-content li,
+.modal-content textarea {
+    box-sizing: border-box;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    color: var(--primary-color, #333);
+}
+
+.modal-content p {
+    margin-bottom: 2rem;
+    color: var(--secondary-color, #555);
+}
+
+.modal-overlay .modal-content button,
+.modal-overlay .modal-content button:last-child,
+.modal-overlay .modal-content button:hover {
+    margin: 0 0.5rem;
+    padding: 0.7rem 1.5rem !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    cursor: pointer;
+    background-color: var(--primary-color, #007bff) !important;
+    color: #fff !important;
+    transition: background 0.2s !important;
+}
+
+.modal-overlay .modal-content button:last-child {
+    background-color: var(--secondary-color, #6c757d) !important;
+}
+
+.modal-overlay .modal-content button:hover {
+    opacity: 0.85 !important;
+}
+
+.modal-content span {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.modal-content li {
+    font-size: 6rem;
+    color: orange;
+    margin-bottom: 10px;
+}
+
+.decline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    height: 100%;
+}
+
+.decline-textarea {
+    align-self: center;
+    margin: 20px 0;
+    height: auto;
+    font-size: large;
+    font-weight: 800;
+}
+
+.modal-content .button-group {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    width: 100%;
+}
+
+.modal-content .button-group button {
+    height: auto;
+    width: 100%;
+    margin: 0 !important;
+}
+
+.error-message {
+  color: #d32f2f;
+  background: #fff0f0;
+  border: 1px solid #e57373;
+  border-radius: 0.5rem;
+  padding: 0.5rem 2.2rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  min-height: 2.5rem;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.error-message-close {
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: center; 
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Progress bar for error message */
+.error-message-progress-bar-bg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: #ffd6d6;
+  border-radius: 0 0 0.5rem 0.5rem;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.error-message-progress-bar {
+  height: 100%;
+  background: #e57373;
+  transition: width 50ms linear;
+  z-index: 2;
+}
+
+@media (max-width: 1024px) {
+  .error-message {
+    font-size: 0.95rem;
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .error-message {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 414px) {
+    .container-404 {
+        margin-top: 20%;
+    }
+
+    .container-404 h1 {
+        font-size: 2rem;
+        margin: 10px 0;
+    }
+
+    .container-404 p {
+        font-size: 0.9rem;
+        margin: 10px 0;
+    }
+
+    .container-404 .home-button {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+        border-radius: 0.7rem;
+    }
+
+    .error-message {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.5rem;
+  }
+}
