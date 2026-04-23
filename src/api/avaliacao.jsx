@@ -8,7 +8,8 @@ export const getAvaliacoes = async (token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         const avaliacoes = avaliacoesResponse.data;
 
@@ -23,7 +24,8 @@ export const getAvaliacoes = async (token) => {
                             responseType: "blob",
                             headers: {
                                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-                            }
+                            },
+                            withCredentials: true
                         }
                     );
                     videoUrl = URL.createObjectURL(videoResponse.data);
@@ -47,7 +49,8 @@ export const recusarAvaliacao = async (id, usuario_id, quemRecusou, motivo, toke
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data;
     } catch (error) {
@@ -62,7 +65,8 @@ export const aceitarAvaliacao = async (id, usuario_id, quemAprovou, token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data;
     } catch (error) {

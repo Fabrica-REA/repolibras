@@ -21,18 +21,17 @@ const Home = () => {
                     onClick={() => navigate(`${base}pesquisar`, { state: { linguagem: "portugues" } })}
                 >
                     <img src={`${base}img/language.svg`} alt='Portuguese Flag' />
-                    <h1>Português</h1>
+                    <h1>Libras</h1>
                 </button>
             </div>
             <div className='sobre'>
                 <h1>Sobre</h1>
                 <p>
-                    O Repositório de Libras é uma plataforma dedicada a promover a inclusão e acessibilidade
-                    através da Língua Brasileira de Sinais (Libras). Ele oferece recursos educacionais para estudantes, professores e
-                    qualquer pessoa interessada em aprender Libras.
+                    O Repositório SignConverse é uma plataforma voltada para a promoção da acessibilidade linguística nas mais diversas línguas de sinais.
+                    Nosso objetivo é oferecer recursos educacionais ricos e de fácil acesso para estudantes, professores e todas as pessoas interessadas em aprender ou consultar vocábulos de línguas de sinais ao redor do mundo.
                 </p>
                 <p>
-                    Explore nosso conteúdo e contribua para a disseminação da cultura e linguagem de sinais!
+                    Explore nossos conteúdos, enriqueça seu conhecimento e colabore conosco para fortalecer e disseminar a cultura e a diversidade linguística das línguas de sinais
                 </p>
             </div>
         </div>

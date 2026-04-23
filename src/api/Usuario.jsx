@@ -41,9 +41,6 @@ export const login = async (email, senha) => {
 }
 
 export const logout = async (token) => {
-    // Asegura que os dados do usuário sejam removidos do armazenamento local
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("token");
     try {
         const response = await axios.post(
             `${API_URL}/librasapi/usuario/logout`,

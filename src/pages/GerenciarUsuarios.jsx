@@ -1,8 +1,8 @@
-import { getUsuarios } from "../api/Usuario";
-import { editUsuarioAcesso } from "../api/gerenciar";
+import { getUsuarios, logout } from "../api/Usuario";
+import { deleteUsuario, editUsuarioAcesso } from "../api/gerenciar";
 import "../assets/css/gerenciar.css";
 import { useEffect, useState } from "react";
-import { Loading } from "../utils/Utilidades";
+import { ActionButton, Loading } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 
 // Página de gerenciamento de usuários
@@ -21,7 +21,7 @@ const GerenciarUsuarios = () => {
         const updated = users.map(u =>
             u.Id === userId ? { ...u, Login: value } : u
         );
-        
+
         try {
             await editUsuarioAcesso(userId, value, token);
             setUsers(updated);
@@ -30,6 +30,19 @@ const GerenciarUsuarios = () => {
         }
         setEditing(null);
         setLoading(false);
+    };
+
+    const handleDelete = async (userId) => {
+        setLoading(true);
+        try {
+            await deleteUsuario(userId, token);
+            setUsers((prev) => prev.filter((user) => user.Id !== userId));
+        } catch (e) {
+            console.error(e);
+        } finally {
+            logout();
+            setLoading(false);
+        }
     };
 
     const handleBlur = () => {
@@ -62,6 +75,7 @@ const GerenciarUsuarios = () => {
                             <th>Email</th>
                             <th>Acesso</th>
                             <th>Data de Cadastro</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,6 +121,17 @@ const GerenciarUsuarios = () => {
                                     )}
                                 </td>
                                 <td>{user.DataCriacao}</td>
+                                <td>
+                                    <ActionButton
+                                        icon={"pi-trash"}
+                                        type={"confirm"}
+                                        class={"icon-btn"}
+                                        title={"Confirmar Exclusão"}
+                                        message={`Tem certeza que deseja excluir o usuário ${user.Nome}?`}
+                                        endMessage={"Usuário excluído com sucesso!"}
+                                        action={() => handleDelete(user.Id)}
+                                    />
+                                </td>
                             </tr>
                         ))}
                     </tbody>

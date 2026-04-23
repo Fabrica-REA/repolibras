@@ -3,7 +3,7 @@ import "../assets/css/login.css";
 import { login, getSession } from "../api/Usuario";
 import { useUsuario } from "../context/usuarioContext";
 import { useNavigate, Link } from "react-router-dom";
-import { base, ErrorMessage, validarEmail, validarSenha } from "../utils/Utilidades";
+import { base, ErrorMessage, Loading, validarEmail, validarSenha } from "../utils/Utilidades";
 
 // Componente de Login
 function Login() {
@@ -18,29 +18,31 @@ function Login() {
   // Função para lidar com o login do usuário
   const handleLogin = (e) => {
     e.preventDefault();
-    // Validação antes de enviar
-    // Verifica se o email é válido
     if (!validarEmail(email)) {
       setError("O email informado não é válido.");
       return;
     }
-    // Verifica se a senha atende aos requisitos
     if (!validarSenha(password)) {
       setError("A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.");
       return;
     }
     setLoading(true);
     setError("");
-    // Realiza o login e busca a sessão do usuário
     login(email, password)
       .then(() => {
         return getSession();
       })
       .then((sessionRes) => {
-        // Atualiza o contexto com os dados do usuário e token
-        const user = sessionRes.data.user || sessionRes.data;
-        const token = sessionRes.data.token;
-        enviarInfo(user, token);
+        if (!sessionRes.data?.authenticated || !sessionRes.data?.user) {
+          throw new Error("Sessão inválida após login.");
+        }
+
+        enviarInfo(
+          sessionRes.data.user,
+          null,
+          sessionRes.data.expiresAt,
+          sessionRes.data.maxAgeMs
+        );
         setLoading(false);
         setError("");
         navigate(`${base}`);
@@ -48,7 +50,6 @@ function Login() {
       .catch((e) => {
         console.log(e);
         setLoading(false);
-        // Tenta obter a mensagem de erro da resposta da API, senão usa padrão
         setError(
           e?.response?.data?.error ||
           e?.response?.data?.message ||
@@ -57,6 +58,10 @@ function Login() {
         );
       });
   };
+
+  if (loading) {
+    return <Loading open={true} />;
+  }
 
   return (
     <div className="login-container">
@@ -91,9 +96,7 @@ function Login() {
             required
           />
         </i>
-        <button>
-          {loading ? <li className="pi pi-spin pi-spinner"></li> : "Login"}
-        </button>
+        <button>Login</button>
         <div className="login-redirect-text">
           <span>Não tem uma conta? </span>
           <Link to={`${base}cadastro`} className="login-redirect-link">

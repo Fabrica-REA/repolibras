@@ -3,7 +3,7 @@ import '../assets/css/cadastro.css';
 import { cadastro, getSession } from '../api/Usuario';
 import { useUsuario } from '../context/usuarioContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { base, ErrorMessage, validarEmail, validarSenha } from '../utils/Utilidades';
+import { base, ErrorMessage, Loading, validarEmail, validarSenha } from '../utils/Utilidades';
 
 // Componente de Cadastro
 const Cadastro = () => {
@@ -20,17 +20,14 @@ const Cadastro = () => {
     // Função para lidar com o cadastro do usuário
     const handleRegister = (e) => {
         e.preventDefault();
-        // Verifica se as senhas coincidem
         if (password !== confirmPassword) {
             setPasswordError('As senhas não coincidem, verifique se as senhas estão corretas');
             return;
         }
-        // Valida email
         if (!validarEmail(email)) {
             setError("O email informado não é válido.");
             return;
         }
-        // Valida senha
         if (!validarSenha(password)) {
             setError("A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.");
             return;
@@ -38,15 +35,21 @@ const Cadastro = () => {
         setPasswordError('');
         setLoading(true);
         setError("");
-        // Realiza cadastro e busca sessão do usuário
         cadastro(username, email, password)
             .then(() => {
                 return getSession();
             })
             .then((sessionRes) => {
-                // Atualiza contexto com dados do usuário
-                const user = sessionRes.data.user || sessionRes.data;
-                enviarInfo(user);
+                if (!sessionRes.data?.authenticated || !sessionRes.data?.user) {
+                    throw new Error("Sessão inválida após cadastro.");
+                }
+
+                enviarInfo(
+                    sessionRes.data.user,
+                    null,
+                    sessionRes.data.expiresAt,
+                    sessionRes.data.maxAgeMs
+                );
                 setLoading(false);
                 setError("");
                 navigate(`${base}`);
@@ -57,6 +60,10 @@ const Cadastro = () => {
                 setError("Erro ao criar conta.");
             });
     };
+
+    if (loading) {
+        return <Loading open={true} />;
+    }
 
     return (
         <div className="cadastro-container">
@@ -121,8 +128,8 @@ const Cadastro = () => {
                 {passwordError && (
                     <span style={{ color: 'red', fontSize: '0.95rem' }}>{passwordError}</span>
                 )}
-                <button onClick={handleRegister} disabled={loading}>
-                    {loading ? <li className="pi pi-spin pi-spinner"></li> : "Criar Conta"}
+                <button onClick={handleRegister}>
+                    Criar Conta
                 </button>
                 <div className="cadastro-redirect-text">
                     <span>Já tem uma conta? </span>

@@ -7,7 +7,7 @@ import solicitacoes from "../assets/images/solicitation_icon.svg";
 import conta from "../assets/images/profile_icon.svg";
 import estatisticas from "../assets/images/statistics_icon.svg";
 import { Suspense, lazy, useState, useEffect } from "react";
-import { base, Pagina404 } from "../utils/Utilidades";
+import { base, Pagina404, Loading } from "../utils/Utilidades";
 import { useUsuario } from "../context/usuarioContext";
 
 // Carregamento dinâmico (lazy load) das páginas
@@ -24,25 +24,36 @@ const Conta = lazy(() => import("../pages/Conta"));
 const BASE_URL = import.meta.env.BASE_URL; 
 
 // Rota protegida: só permite acesso se o usuário estiver autenticado e tiver o papel permitido
-const ProtectedRoute = ({ allowedRoles, element }) => {
+const ProtectedRoute = ({ allowedRoles, element, loading }) => {
   const { usuario } = useUsuario();
-  // Tenta pegar o usuario do localStorage se não estiver presente no contexto
-  const effectiveUsuario =
-    usuario && usuario.acesso
-      ? usuario
-      : (() => {
-          const storedUser = localStorage.getItem("usuario");
-          return storedUser ? JSON.parse(storedUser) : {};
-        })();
 
-  if (!allowedRoles.includes(effectiveUsuario.acesso)) {
-    return <Navigate to={`${base}`} replace />;
+  if (loading) {
+    return <Loading open={true} />;
+  }
+
+  if (!usuario?.acesso || !allowedRoles.includes(usuario.acesso)) {
+    return <Navigate to={`${base}login`} replace />;
   }
   return element;
 };
 
-const Header = () => {
+//bloqueia login/cadastro quando o usuário já está autenticado
+const GuestRoute = ({ element, loading }) => {
   const { usuario } = useUsuario();
+
+  if (loading) {
+    return <Loading open={true} />;
+  }
+
+  if (usuario) {
+    return <Navigate to={base} replace />;
+  }
+
+  return element;
+};
+
+const Header = () => {
+  const { usuario, loading } = useUsuario();
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -71,7 +82,7 @@ const Header = () => {
     <>
       <header className="header">
         <div className="header-logo">
-          <Link to={withBase("/")}>Repositório de Libras</Link>
+          <Link to={withBase("/")}>SignConverse</Link>
         </div>
         <nav className="header-nav">
           {usuario ? (
@@ -219,13 +230,14 @@ const Header = () => {
           )}
         </nav>
       </header>
-      <Suspense fallback={<div>Carregando...</div>}>
+      <Suspense fallback={<Loading open={true} />}>
         <Routes>
           <Route path={BASE_URL} element={<Home />} />
           <Route
             path={withBase("/enviar")}
             element={
               <ProtectedRoute
+                loading={loading}
                 allowedRoles={[
                   "cadastrado",
                   "professor",
@@ -240,6 +252,7 @@ const Header = () => {
             path={withBase("/avaliar")}
             element={
               <ProtectedRoute
+                loading={loading}
                 allowedRoles={["professor", "administrador"]}
                 element={<Avaliar />}
               />
@@ -249,6 +262,7 @@ const Header = () => {
             path={withBase("/gerenciar")}
             element={
               <ProtectedRoute
+                loading={loading}
                 allowedRoles={["professor", "administrador", "gestor"]}
                 element={<Gerenciar />}
               />
@@ -258,6 +272,7 @@ const Header = () => {
             path={withBase("/solicitacoes")}
             element={
               <ProtectedRoute
+                loading={loading}
                 allowedRoles={["professor", "administrador", "gestor"]}
                 element={<Solicitacoes />}
               />
@@ -267,6 +282,7 @@ const Header = () => {
             path={withBase("/estatistica")}
             element={
               <ProtectedRoute
+                loading={loading}
                 allowedRoles={["administrador", "gestor"]}
                 element={<Estatistica />}
               />
@@ -276,13 +292,20 @@ const Header = () => {
             path={withBase("/conta")}
             element={
               <ProtectedRoute
+                loading={loading}
                 allowedRoles={["administrador", "gestor", "professor", "cadastrado"]}
                 element={<Conta />}
               />
             }
           />
-          <Route path={withBase("/login")} element={<Login />} />
-          <Route path={withBase("/cadastro")} element={<Cadastro />} />
+          <Route
+            path={withBase("/login")}
+            element={<GuestRoute loading={loading} element={<Login />} />}
+          />
+          <Route
+            path={withBase("/cadastro")}
+            element={<GuestRoute loading={loading} element={<Cadastro />} />}
+          />
           <Route path={withBase("/pesquisar")} element={<Pesquisar />} />
           <Route path="*" element={<Pagina404 />} />
         </Routes>

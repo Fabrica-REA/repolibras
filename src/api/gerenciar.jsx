@@ -9,7 +9,8 @@ export const getAllVideos = async (token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         const { videos = [], status = [] } = response.data || {};
 
@@ -26,7 +27,8 @@ export const getAllVideos = async (token) => {
                                 responseType: "blob",
                                 headers: {
                                     ...(token ? { Authorization: `Bearer ${token}` } : {})
-                                }
+                                },
+                                withCredentials: true
                             }
                         );
                         videoUrl = URL.createObjectURL(videoResponse.data);
@@ -56,7 +58,8 @@ export const editVideo = async (id, descricao, contextoId, situacaoId, token) =>
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data;
     } catch (e) {
@@ -74,11 +77,28 @@ export const editUsuarioAcesso = async (id, acesso, token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data;
     } catch (e) {
         console.error('Erro ao editar usuário:', e);
+        return null;
+    }
+}
+
+export const deleteUsuario = async (id, token) => {
+    try {
+        const response = await axios.delete(`${API_URL}/librasapi/gerenciar/usuario/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            withCredentials: true
+        });
+        return response.data;
+    } catch (e) {
+        console.error('Erro ao remover usuário:', e);
         return null;
     }
 }

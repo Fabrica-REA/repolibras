@@ -5,21 +5,56 @@ import { logout as apiLogout, getSession } from "../api/Usuario";
 const UsuarioContext = createContext({
   usuario: null,
   token: null,
-  login: () => { },
-  cadastro: () => { },
-  logout: () => { },
+  login: () => {},
+  cadastro: () => {},
+  logout: () => {},
 });
 
 // Provider do contexto do usuário
 export const UsuarioProvider = ({ children }) => {
-  const [usuario, setUsuario] = useState(() => {
-    const storedUser = localStorage.getItem("usuario");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [usuario, setUsuario] = useState(null);
+  const [token] = useState(null);
   const [loading, setLoading] = useState(true);
   const usuarioRef = useRef(null);
   const sessionTimeoutRef = useRef(null);
+
+  const startSessionTimeout = (expiresAt, maxAgeMs) => {
+    clearSessionTimeout();
+
+    let timeoutDuration = null;
+    if (expiresAt) {
+      timeoutDuration = new Date(expiresAt).getTime() - Date.now();
+    } else if (typeof maxAgeMs === "number") {
+      timeoutDuration = maxAgeMs;
+    }
+
+    if (typeof timeoutDuration !== "number") {
+      return;
+    }
+
+    if (timeoutDuration > 0) {
+      sessionTimeoutRef.current = setTimeout(() => {
+        clearSession();
+      }, timeoutDuration);
+    } else {
+      clearSession();
+    }
+  };
+
+  const applySessionPayload = (payload) => {
+    const isAuthenticated = payload?.authenticated ?? Boolean(payload?.user);
+    const sessionUser = payload?.user ?? null;
+
+    if (!isAuthenticated || !sessionUser) {
+      clearSession();
+      return false;
+    }
+
+    setUsuario(sessionUser);
+    usuarioRef.current = sessionUser;
+    startSessionTimeout(payload.expiresAt, payload.maxAgeMs);
+    return true;
+  };
 
   // Mantém usuarioRef sincronizado com o estado usuario
   useEffect(() => {
@@ -28,19 +63,10 @@ export const UsuarioProvider = ({ children }) => {
 
   // Busca sessão do usuário ao montar o componente
   useEffect(() => {
-    setLoading(true); // Inicia o carregamento antes da chamada da API
+    setLoading(true);
     getSession()
       .then((res) => {
-        if (res.data) {
-          setUsuario(res.data.user);
-          setToken(res.data.token);
-          usuarioRef.current = res.data.user;
-          localStorage.setItem("usuario", JSON.stringify(res.data.user));
-          localStorage.setItem("token", res.data.token);
-          if (res.data.expiration) startSessionTimeout(res.data.expiration);
-        } else {
-          clearSession();
-        }
+        applySessionPayload(res.data);
       })
       .catch(() => {
         clearSession();
@@ -54,19 +80,6 @@ export const UsuarioProvider = ({ children }) => {
     };
   }, []);
 
-  // Inicia timeout da sessão
-  const startSessionTimeout = (expiration) => {
-    clearSessionTimeout();
-    const timeoutDuration = new Date(expiration).getTime() - Date.now();
-    if (timeoutDuration > 0) {
-      sessionTimeoutRef.current = setTimeout(() => {
-        clearSession();
-      }, timeoutDuration);
-    } else {
-      clearSession();
-    }
-  };
-
   // Limpa timeout da sessão
   const clearSessionTimeout = () => {
     if (sessionTimeoutRef.current) {
@@ -78,32 +91,30 @@ export const UsuarioProvider = ({ children }) => {
   // Limpa sessão do usuário
   const clearSession = () => {
     setUsuario(null);
-    setToken(null);
     usuarioRef.current = null;
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("token");
+    clearSessionTimeout();
   };
 
   // Função de login
-  const login = (data, tokenParam, expiration) => {
-    if (!data) return;
+  const login = (data, _tokenParam, expiresAt, maxAgeMs) => {
+    if (!data) {
+      clearSession();
+      return;
+    }
     setUsuario(data);
-    setToken(tokenParam);
     usuarioRef.current = data;
-    localStorage.setItem("usuario", JSON.stringify(data));
-    localStorage.setItem("token", tokenParam);
-    if (expiration) startSessionTimeout(expiration);
+    startSessionTimeout(expiresAt, maxAgeMs);
   };
 
   // Função de cadastro
-  const cadastro = (data, tokenParam, expiration) => {
-    if (!data) return;
+  const cadastro = (data, _tokenParam, expiresAt, maxAgeMs) => {
+    if (!data) {
+      clearSession();
+      return;
+    }
     setUsuario(data);
-    setToken(tokenParam);
     usuarioRef.current = data;
-    localStorage.setItem("usuario", JSON.stringify(data));
-    localStorage.setItem("token", tokenParam);
-    if (expiration) startSessionTimeout(expiration);
+    startSessionTimeout(expiresAt, maxAgeMs);
   };
 
   // Função de logout
@@ -114,11 +125,9 @@ export const UsuarioProvider = ({ children }) => {
       console.error("Erro ao fazer logout:", e);
     }
     clearSession();
-    clearSessionTimeout();
   };
 
-  // Fornece fallback para usuario para evitar erros nulos nos consumidores
-  const safeUsuario = loading ? {} : (usuario || usuarioRef.current);
+  const safeUsuario = loading ? null : (usuario || usuarioRef.current);
 
   return (
     <UsuarioContext.Provider value={{ usuario: safeUsuario, token, login, cadastro, logout, usuarioRef, loading }}>

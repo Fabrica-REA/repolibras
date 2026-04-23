@@ -1,6 +1,6 @@
 import * as React from "react";
 import "../assets/css/errorBoundary.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // ErrorBoundary captura erros JavaScript na árvore de componentes filhos, registra-os e exibe uma UI de fallback.
 // Use para evitar que todo o app quebre devido a erros em partes da interface.
@@ -8,6 +8,16 @@ class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Clear the error UI after route changes so the destination page can render again.
+    if (
+      this.state.hasError &&
+      prevProps.location?.pathname !== this.props.location?.pathname
+    ) {
+      this.setState({ hasError: false });
+    }
   }
 
   static getDerivedStateFromError(error) {
@@ -33,7 +43,7 @@ class ErrorBoundary extends React.Component {
               <h3>Caso o erro persista, consulte o administrador do sistema.</h3>
               <button className="btn exception-button"
                 onClick={() => {
-                  this.props.navigate("/");
+                  this.props.navigate(this.props.homePath);
                 }}
               >
                 Ir para a Home
@@ -51,7 +61,17 @@ class ErrorBoundary extends React.Component {
 // Wrapper para injetar a prop navigate do useNavigate no ErrorBoundary
 function ErrorBoundaryWithNavigate(props) {
   const navigate = useNavigate();
-  return <ErrorBoundary {...props} navigate={navigate} />;
+  const location = useLocation();
+  const homePath = import.meta.env.BASE_URL;
+
+  return (
+    <ErrorBoundary
+      {...props}
+      homePath={homePath}
+      location={location}
+      navigate={navigate}
+    />
+  );
 }
 
 export default ErrorBoundaryWithNavigate;
