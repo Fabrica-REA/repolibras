@@ -8,7 +8,8 @@ export const getSolicitacoes = async (token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data
     } catch (e) {
@@ -22,7 +23,8 @@ export const postSolicitacao = async (palavra, contexto, usuarioId, linguagem, t
         const response = await axios.post(`${API_URL}/librasapi/solicitacao`, { palavra, contexto, usuario: usuarioId, linguagem }, {
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data
     } catch (e) {
@@ -43,7 +45,8 @@ export const sendSolicitacao = async (id, videoFile, contexto, usuario, palavra,
         const response = await axios.post(`${API_URL}/librasapi/solicitacao/${id}`, formData, {
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data
     } catch (e) {
@@ -57,7 +60,8 @@ export const deleteSolicitacao = async (id, token) => {
         const response = await axios.delete(`${API_URL}/librasapi/solicitacao/${id}`, {
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         })
         return response.data
     } catch (e) {

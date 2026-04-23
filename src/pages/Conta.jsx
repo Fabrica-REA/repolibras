@@ -60,8 +60,8 @@ const Conta = () => {
   };
 
   // Lógica de logout
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate(base);
   };
 

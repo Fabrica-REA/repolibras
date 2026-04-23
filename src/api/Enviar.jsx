@@ -9,7 +9,8 @@ export const getContextos = async (token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data
     } catch (e) {
@@ -36,6 +37,7 @@ export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, o
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             },
+            withCredentials: true,
             onUploadProgress: (progressEvent) => {
                 const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 console.log(`Upload Progress: ${percentCompleted}%`);

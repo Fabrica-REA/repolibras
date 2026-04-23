@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const getusuarios = async (token) => {
@@ -6,7 +8,8 @@ export const getusuarios = async (token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data
     } catch (e) {
@@ -20,7 +23,8 @@ export const putUsuario = async (id, acesso, token) => {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
-            }
+            },
+            withCredentials: true
         });
         return response.data;
     } catch (e) {

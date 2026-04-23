@@ -14,21 +14,16 @@ export const Pagina404 = () => {
   );
 };
 
-// Componente de loading (carregamento)
-export const Loading = ({ open, message }) => {
+// Componente global de loading
+export const Loading = ({ open }) => {
   if (!open) return null;
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className="loading-container">
-          <i className="pi pi-spin pi-spinner"></i>
-        </div>
-        {message && (
-          <div style={{ marginTop: "1rem" }}>
-            <span>{message}</span>
-          </div>
-        )}
-      </div>
+    <div className="loading-overlay" role="status" aria-live="polite" aria-label="Carregando">
+      <img
+        src={`${base}img/circles.svg`}
+        alt="Carregando"
+        className="global-loading-icon"
+      />
     </div>
   );
 };
@@ -47,9 +42,7 @@ export const ConfirmPopUp = ({ open, title, message, onConfirm, onCancel, loadin
         }
       >
         {loading ? (
-          <div className="loading-container">
-            <i className="pi pi-spin pi-spinner"></i>
-          </div>
+          <Loading open={loading} />
         ) : showOnlyMessage ? (
           <div style={{ padding: "2rem 2.5rem", minWidth: "320px" }}>
             <span>{message}</span>
@@ -87,9 +80,7 @@ export const DeclinePopUp = ({ open, title, message, onConfirm, onCancel, loadin
         }
       >
         {loading ? (
-          <div className="loading-container">
-            <i className="pi pi-spin pi-spinner"></i>
-          </div>
+          <Loading open={loading} />
         ) : showOnlyMessage ? (
           <div style={{ padding: "2rem 2.5rem", minWidth: "320px" }}>
             <span>{message}</span>
@@ -157,9 +148,7 @@ const SendPopUp = ({ open, message, loading, showOnlyMessage, onSend }) => {
         }
       >
         {loading ? (
-          <div className="loading-container">
-            <i className="pi pi-spin pi-spinner"></i>
-          </div>
+          <Loading open={loading} />
         ) : showOnlyMessage ? (
           <div style={{ padding: "2rem 2.5rem", minWidth: "320px" }}>
             <span>{message}</span>
