@@ -60,11 +60,18 @@ export const logout = async (token) => {
     }
 }
 
-export const editarCredenciais = async (id, nome, email, senha, token) => {
+export const editarCredenciais = async (id, nome, email, senha, token, acessibilidade) => {
     try {
+        const payload = {
+            nome,
+            email,
+            senha,
+            ...(acessibilidade ? { acessibilidade } : {})
+        };
+
         const response = await axios.put(
             `${API_URL}/librasapi/usuario/${id}`,
-            { nome, email, senha },
+            payload,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,5 +119,39 @@ export const getSession = async () => {
     } catch (e) {
         console.error('Erro ao obter sessão:', e);
         throw e;
+    }
+}
+
+export const atualizarAcessibilidade = async (id, acessibilidade, token) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+
+    try {
+        const response = await axios.put(
+            `${API_URL}/librasapi/usuario/${id}/acessibilidade`,
+            { acessibilidade },
+            {
+                headers,
+                withCredentials: true
+            }
+        );
+        return { data: response.data };
+    } catch {
+        try {
+            const fallbackResponse = await axios.put(
+                `${API_URL}/librasapi/usuario/${id}`,
+                { acessibilidade },
+                {
+                    headers,
+                    withCredentials: true
+                }
+            );
+            return { data: fallbackResponse.data };
+        } catch (fallbackError) {
+            console.error('Erro ao atualizar acessibilidade:', fallbackError);
+            throw fallbackError;
+        }
     }
 }

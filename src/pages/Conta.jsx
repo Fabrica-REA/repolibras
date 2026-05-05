@@ -4,10 +4,14 @@ import Perfil from "../components/Perfil";
 import { useUsuario } from "../context/usuarioContext";
 import { useNavigate } from "react-router-dom";
 import { base } from "../utils/Utilidades";
+import Acessibilidade from "../components/Acessibilidade";
+import SecurityPrivacy from "../components/SecurityPrivacy";
 
 // Opções do menu lateral do perfil
 const options = [
   { key: "perfil", label: "Perfil", icon: "pi-user" },
+  { key: "security-privacy", label: "Segurança e Privacidade", icon: "pi-shield"},
+  { key: "acessibilidade", label: "Acessibilidade", icon: "pi-eye" },
   { key: "logout", label: "Logout", icon: "pi-sign-out" },
 ];
 
@@ -16,6 +20,10 @@ const OptionContent = ({ selected }) => {
   switch (selected) {
     case "perfil":
       return <Perfil />;
+    case "acessibilidade":
+      return <Acessibilidade />;
+    case "security-privacy":
+      return <SecurityPrivacy />;
     case "config":
       return (
         <div className="option-section">

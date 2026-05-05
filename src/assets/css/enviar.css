@@ -116,6 +116,7 @@
   cursor: pointer;
   transition: background 0.2s;
   max-width: 60px;
+  place-items: center;
 }
 
 .enviar-col-right .submit-button img {
@@ -130,6 +131,146 @@
 
 .enviar-col-right .submit-button:hover img {
   filter: brightness(0) invert(1);
+}
+
+/* Terms of Service modal (Enviar) */
+.tos-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding: 20px;
+}
+
+.tos-modal {
+  width: min(640px, 100%);
+  max-height: min(88vh, 900px);
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.tos-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tos-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tos-modal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #eef6ff;
+  color: #1d4ed8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex: 0 0 auto;
+}
+
+.tos-modal-title-text h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.tos-modal-subtitle {
+  margin: 6px 0 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.tos-modal-close {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  color: #111827;
+}
+
+.tos-modal-body {
+  position: relative;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+
+.tos-modal-body-content {
+  width: min(100%, 520px);
+}
+
+.tos-modal .policy-structured-content,
+.tos-modal .policy-subsection {
+  width: 100%;
+  max-width: 100%;
+}
+
+.tos-modal .policy-subsection {
+  text-align: left;
+}
+
+.tos-modal-footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tos-modal-checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+}
+
+.tos-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.tos-btn {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.tos-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tos-btn-secondary {
+  background: #fff;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+.tos-btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
 }
 
 /* Desktop: 1920×1080 (Full HD) */

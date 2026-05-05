@@ -50,3 +50,34 @@ export const postArquivo = async (videoFileOrLink, contexto, usuario, palavra, o
         throw e;
     }
 }
+
+// Registra aceite do termo (requisição separada do upload)
+export const postTermoAceite = async (
+    { usuarioId, termoId, termoVersion, acceptedAt, tag },
+    token
+) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/librasapi/termos/aceite`,
+            {
+                usuarioid: usuarioId,
+                termo_id: termoId,
+                termo_version: termoVersion,
+                accepted_at: acceptedAt,
+                tag,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+                withCredentials: true,
+            }
+        );
+
+        return response.status;
+    } catch (e) {
+        console.error('Erro ao registrar aceite do termo:', e);
+        throw e;
+    }
+};

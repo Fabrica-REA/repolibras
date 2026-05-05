@@ -1,5 +1,65 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
-import { logout as apiLogout, getSession } from "../api/Usuario";
+import { logout as apiLogout, getSession, atualizarAcessibilidade as apiAtualizarAcessibilidade } from "../api/Usuario";
+import { applyAccessibilityPlugins, registerBuiltInAccessibilityPlugins } from "../utils/accessibilityPlugins";
+
+const DEFAULT_ACESSIBILIDADE = {
+  daltonismoAtivo: false,
+  daltonicoTipo: "normal",
+  textoFaladoAtivo: false,
+  pluginsTTS: [],
+};
+
+const DALTONISMO_VALIDOS = ["normal", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"];
+
+const getAccessibilityStorageKey = (userId) => `rlibras:acessibilidade:${userId}`;
+
+const readStoredAcessibilidade = (userId) => {
+  if (!userId || typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(getAccessibilityStorageKey(userId));
+    return rawValue ? JSON.parse(rawValue) : null;
+  } catch {
+    return null;
+  }
+};
+
+const writeStoredAcessibilidade = (userId, acessibilidade) => {
+  if (!userId || typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(getAccessibilityStorageKey(userId), JSON.stringify(acessibilidade));
+  } catch {
+    // localStorage can be unavailable or full; API persistence still applies.
+  }
+};
+
+const normalizeAcessibilidade = (rawAcessibilidade) => {
+  const base = { ...DEFAULT_ACESSIBILIDADE, ...(rawAcessibilidade || {}) };
+  return {
+    daltonismoAtivo: Boolean(base.daltonismoAtivo),
+    daltonicoTipo: DALTONISMO_VALIDOS.includes(base.daltonicoTipo) ? base.daltonicoTipo : "normal",
+    textoFaladoAtivo: Boolean(base.textoFaladoAtivo),
+    pluginsTTS: Array.isArray(base.pluginsTTS) ? base.pluginsTTS : [],
+  };
+};
+
+const mergeUsuarioAcessibilidade = (user) => {
+  if (!user) {
+    return null;
+  }
+
+  const storedAcessibilidade = readStoredAcessibilidade(user.id);
+
+  return {
+    ...user,
+    acessibilidade: normalizeAcessibilidade(user.acessibilidade || storedAcessibilidade),
+  };
+};
 
 // Cria contexto do usuário
 const UsuarioContext = createContext({
@@ -8,6 +68,7 @@ const UsuarioContext = createContext({
   login: () => {},
   cadastro: () => {},
   logout: () => {},
+  atualizarAcessibilidade: async () => ({}),
 });
 
 // Provider do contexto do usuário
@@ -17,6 +78,17 @@ export const UsuarioProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const usuarioRef = useRef(null);
   const sessionTimeoutRef = useRef(null);
+  const acessibilidadeMutationRef = useRef(0);
+
+  useEffect(() => {
+    if (usuario?.id && usuario?.acessibilidade) {
+      writeStoredAcessibilidade(usuario.id, usuario.acessibilidade);
+    }
+  }, [usuario]);
+
+  useEffect(() => {
+    registerBuiltInAccessibilityPlugins();
+  }, []);
 
   const startSessionTimeout = (expiresAt, maxAgeMs) => {
     clearSessionTimeout();
@@ -43,7 +115,7 @@ export const UsuarioProvider = ({ children }) => {
 
   const applySessionPayload = (payload) => {
     const isAuthenticated = payload?.authenticated ?? Boolean(payload?.user);
-    const sessionUser = payload?.user ?? null;
+    const sessionUser = mergeUsuarioAcessibilidade(payload?.user ?? null);
 
     if (!isAuthenticated || !sessionUser) {
       clearSession();
@@ -52,6 +124,8 @@ export const UsuarioProvider = ({ children }) => {
 
     setUsuario(sessionUser);
     usuarioRef.current = sessionUser;
+    writeStoredAcessibilidade(sessionUser.id, sessionUser.acessibilidade);
+    applyAccessibilityPlugins(sessionUser.acessibilidade).catch(() => {});
     startSessionTimeout(payload.expiresAt, payload.maxAgeMs);
     return true;
   };
@@ -101,8 +175,11 @@ export const UsuarioProvider = ({ children }) => {
       clearSession();
       return;
     }
-    setUsuario(data);
-    usuarioRef.current = data;
+    const normalizedUser = mergeUsuarioAcessibilidade(data);
+    setUsuario(normalizedUser);
+    usuarioRef.current = normalizedUser;
+    writeStoredAcessibilidade(normalizedUser.id, normalizedUser.acessibilidade);
+    applyAccessibilityPlugins(normalizedUser.acessibilidade).catch(() => {});
     startSessionTimeout(expiresAt, maxAgeMs);
   };
 
@@ -112,8 +189,11 @@ export const UsuarioProvider = ({ children }) => {
       clearSession();
       return;
     }
-    setUsuario(data);
-    usuarioRef.current = data;
+    const normalizedUser = mergeUsuarioAcessibilidade(data);
+    setUsuario(normalizedUser);
+    usuarioRef.current = normalizedUser;
+    writeStoredAcessibilidade(normalizedUser.id, normalizedUser.acessibilidade);
+    applyAccessibilityPlugins(normalizedUser.acessibilidade).catch(() => {});
     startSessionTimeout(expiresAt, maxAgeMs);
   };
 
@@ -127,10 +207,65 @@ export const UsuarioProvider = ({ children }) => {
     clearSession();
   };
 
+  const atualizarAcessibilidade = async (acessibilidadeParcial) => {
+    const currentUser = usuarioRef.current;
+
+    if (!currentUser?.id) {
+      throw new Error("Usuario nao autenticado para atualizar acessibilidade.");
+    }
+
+    const acessibilidadeAtualizada = normalizeAcessibilidade({
+      ...currentUser.acessibilidade,
+      ...acessibilidadeParcial,
+    });
+
+    const previousUser = currentUser;
+    const mutationId = acessibilidadeMutationRef.current + 1;
+    acessibilidadeMutationRef.current = mutationId;
+
+    const optimisticUser = {
+      ...currentUser,
+      acessibilidade: acessibilidadeAtualizada,
+    };
+
+    setUsuario(optimisticUser);
+    usuarioRef.current = optimisticUser;
+    writeStoredAcessibilidade(optimisticUser.id, optimisticUser.acessibilidade);
+    await applyAccessibilityPlugins(acessibilidadeAtualizada);
+
+    try {
+      const result = await apiAtualizarAcessibilidade(currentUser.id, acessibilidadeAtualizada, token);
+
+      if (mutationId !== acessibilidadeMutationRef.current) {
+        return result;
+      }
+
+      const responseUser = result?.data?.user || result?.data?.usuario;
+
+      if (responseUser) {
+        const normalizedResponseUser = mergeUsuarioAcessibilidade(responseUser);
+        setUsuario(normalizedResponseUser);
+        usuarioRef.current = normalizedResponseUser;
+      }
+
+      return result;
+    } catch (error) {
+      if (mutationId !== acessibilidadeMutationRef.current) {
+        throw error;
+      }
+
+      setUsuario(previousUser);
+      usuarioRef.current = previousUser;
+      writeStoredAcessibilidade(previousUser.id, previousUser.acessibilidade);
+      await applyAccessibilityPlugins(previousUser.acessibilidade);
+      throw error;
+    }
+  };
+
   const safeUsuario = loading ? null : (usuario || usuarioRef.current);
 
   return (
-    <UsuarioContext.Provider value={{ usuario: safeUsuario, token, login, cadastro, logout, usuarioRef, loading }}>
+    <UsuarioContext.Provider value={{ usuario: safeUsuario, token, login, cadastro, logout, atualizarAcessibilidade, usuarioRef, loading }}>
       {children}
     </UsuarioContext.Provider>
   );

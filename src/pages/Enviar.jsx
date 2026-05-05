@@ -2,9 +2,11 @@ import "../assets/css/enviar.css";
 import UploadFile from "../components/UploadFile";
 import enviar from "../assets/images/send_icon.svg";
 import { useEffect, useState } from "react";
-import { getContextos, postArquivo } from "../api/Enviar";
+import { getContextos, postArquivo, postTermoAceite } from "../api/Enviar";
 import { useUsuario } from "../context/usuarioContext";
-import { ActionButton, Loading, ErrorMessage } from "../utils/Utilidades";
+import { Loading, ErrorMessage } from "../utils/Utilidades";
+import TermoAceiteModal from "../components/TermoPopUp";
+import { getLatestPolicyVersion } from "../data/policyData";
 
 // Componente principal para envio de vídeos ou links
 const Enviar = () => {
@@ -19,11 +21,14 @@ const Enviar = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
+  const [showTermos, setShowTermos] = useState(false);
   const { usuario, token } = useUsuario();
 
-  // Função para envio do formulário
-  const upload = async () => {
-    // Validações dos campos obrigatórios
+  const TERMO_ID = "termo-video-sinal";
+  const TAG = "TERMO_ACEITO"
+  const termoLatest = getLatestPolicyVersion(TERMO_ID);
+
+  const validateForm = () => {
     if (!contextoSelecionado) {
       setError("Selecione o contexto.");
       return false;
@@ -47,10 +52,14 @@ const Enviar = () => {
       return false;
     }
 
-    // Monta o dado para envio
+    setError("");
+    return true;
+  };
+
+  const doUpload = async () => {
     const fileOrLink = activeTab === "Link" ? link : file;
+
     try {
-      setLoading(true);
       // Envia o arquivo ou link para a API
       await postArquivo(fileOrLink, contextoSelecionado, usuario, palavra, observacao, linguagem, token)
         .then(res => console.log(res))
@@ -70,9 +79,51 @@ const Enviar = () => {
       setObservacao("");
       setError("");
     } catch (e) {
-      setLoading(false);
-      setError("Erro ao enviar arquivo.", e);
+      setError("Erro ao enviar arquivo.");
+      console.error("Erro ao enviar arquivo:", e);
       return false;
+    }
+  };
+
+  const handlePreSubmit = async () => {
+    if (loading) return;
+    const ok = validateForm();
+    if (!ok) return;
+    setShowTermos(true);
+  };
+
+  const handleAcceptTermsAndUpload = async ({ checked }) => {
+    if (!checked) return;
+    if (!usuario?.id) {
+      setError("Você precisa estar logado para aceitar os termos.");
+      return;
+    }
+    if (!termoLatest?.version) {
+      setError("Não foi possível identificar a versão do termo.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await postTermoAceite(
+        {
+          usuarioId: usuario.id,
+          termoId: TERMO_ID,
+          termoVersion: termoLatest.version,
+          acceptedAt: new Date().toISOString(),
+          tag: TAG,
+        },
+        token
+      );
+
+      setShowTermos(false);
+      await doUpload();
+    } catch (e) {
+      setError("Erro ao registrar aceite do termo.");
+      console.error("Erro ao registrar aceite do termo:", e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,7 +170,7 @@ const Enviar = () => {
                 <label htmlFor="linguagem">Linguagem</label>
                 <select id="linguagem" required onChange={(e) => setLinguagem(e.target.value)} value={linguagem}>
                   <option value="">Selecione a Linguagem</option>
-                  <option value="portugues">Português</option>
+                  <option value="portugues">Libras</option>
                   <option value="terena">Terena</option>
                 </select>
               </div>
@@ -185,22 +236,31 @@ const Enviar = () => {
                 ></textarea>
               </div>
               {/* Botão de envio com feedback */}
-              <ActionButton
-                type={"message"}
-                class={"submit-button"}
-                title={"Enviar"}
-                message={"Enviado com sucesso!"}
-                loading={loading}
-                action={upload}
+              <button
+                type="button"
+                className="submit-button"
+                onClick={handlePreSubmit}
                 disabled={loading}
-                isSubmit
+                title="Enviar"
               >
                 <img src={enviar} alt="Enviar" />
-              </ActionButton>
+              </button>
             </form>
           </div>
         </div>
       </div>
+
+      <TermoAceiteModal
+        open={showTermos}
+        title={"Termo de Autorização para Submissão de Vídeo-Sinal"}
+        versionLabel={`Última atualização • ${termoLatest.effectiveDate}`}
+        loading={loading}
+        onCancel={() => {
+          if (loading) return;
+          setShowTermos(false);
+        }}
+        onConfirm={handleAcceptTermsAndUpload}
+      />
     </>
   );
 };

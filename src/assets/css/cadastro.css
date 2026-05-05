@@ -87,6 +87,45 @@
     font-size: 1.05rem;
 }
 
+.accept-terms {
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 8px;
+    margin-left: 20%;
+    width: 80%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.accept-terms input[type="checkbox"] {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.accept-terms label {
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.cadastro-terms {
+   display: block;
+   width: 100%;
+}
+
+.cadastro-terms-link {
+    text-decoration: underline;
+    text-decoration-color: #1976d2;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 0;
+}
+
 /* Responsive Typography */
 @media (max-width: 1024px) {
     .cadastro-container h1 {
@@ -137,6 +176,12 @@
     .cadastro-redirect-text,
     .cadastro-redirect-link {
         font-size: 0.95rem;
+    }
+
+    .accept-terms {
+        margin-left: 16%;
+        font-size: 0.9rem;
+        width: 75%;
     }
 }
 

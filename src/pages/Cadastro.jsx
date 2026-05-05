@@ -125,6 +125,21 @@ const Cadastro = () => {
                         required
                     />
                 </i>
+                {/* <div className='accept-terms'>
+                    <input
+                        type="checkbox"
+                        id="cadastro-terms"
+                        checked={termsAccepted}
+                        onChange={(e) => setTermsAccepted(e.target.checked)}
+                        required
+                    />
+                    <div className="cadastro-terms">
+                        <label htmlFor="cadastro-terms">
+                            Eu li e eu aceito os <Link to={`${base}termos`} className="cadastro-terms-link">Termos de Uso
+                            </Link>
+                        </label>
+                    </div>
+                </div> */}
                 {passwordError && (
                     <span style={{ color: 'red', fontSize: '0.95rem' }}>{passwordError}</span>
                 )}

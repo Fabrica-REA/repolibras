@@ -21,6 +21,7 @@ const Cadastro = lazy(() => import("../pages/Cadastro"));
 const Estatistica = lazy(() => import("../pages/Estatistica"));
 const Pesquisar = lazy(() => import("../pages/Pesquisar"));
 const Conta = lazy(() => import("../pages/Conta"));
+const Politicas = lazy(() => import("../pages/Politicas"));
 const BASE_URL = import.meta.env.BASE_URL; 
 
 // Rota protegida: só permite acesso se o usuário estiver autenticado e tiver o papel permitido
@@ -307,6 +308,7 @@ const Header = () => {
             element={<GuestRoute loading={loading} element={<Cadastro />} />}
           />
           <Route path={withBase("/pesquisar")} element={<Pesquisar />} />
+          <Route path={withBase("/politicas")} element={<Politicas />} />
           <Route path="*" element={<Pagina404 />} />
         </Routes>
       </Suspense>
